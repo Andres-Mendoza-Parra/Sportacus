@@ -1,0 +1,35 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: sportacus-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sportacus
+    username: sportacus_app
+    password: lyoko
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        default_schema: sportacus
+        format_sql: true
+    show-sql: true
+
+sportacus:
+  gemini:
+    # Solo por variable de entorno; nunca escribas la clave aquí. Sin ella la IA se desactiva sin romper nada.
+    api-key: ${GEMINI_API_KEY:}
+    model: gemini-3.1-flash-lite
+  jwt:
+    # Cambia este secreto en un entorno real. Debe tener al menos 32 caracteres.
+    secret: "c3BvcnRhY3VzLXByb2Qtc3VwZXItc2VjdXJlLWp3dC1zZWNyZXQta2V5LTIwMjY="
+    expiration-minutes: 1440 # 24 horas
+
+cors:
+  allowed-origins: "*"
