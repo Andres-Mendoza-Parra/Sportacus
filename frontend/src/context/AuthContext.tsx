@@ -6,6 +6,7 @@ import { AUTH_TOKEN_KEY, AUTH_USER_KEY } from "../constants/config";
 import * as authService from "../services/authService";
 import { clearCache } from "../services/cache";
 import { resetChatSession } from "../services/chatService";
+import { useTheme } from "../theme";
 
 interface AuthUser {
   userId: string;
@@ -23,8 +24,8 @@ interface AuthContextValue {
   logout: () => Promise<void>;
   /** Actualiza datos locales del usuario (p. ej. el nombre tras editarlo en Ajustes). */
   updateUser: (patch: Partial<Pick<AuthUser, "name">>) => Promise<void>;
-  /** Marca el onboarding (elección de módulo) como completo, en el servidor y localmente. */
-  completeOnboarding: () => Promise<void>;
+  /** Marca localmente el recibimiento como completo (el servidor lo marca al inscribirse en el primer mundo). */
+  markOnboarded: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -33,6 +34,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { setWorldColor } = useTheme();
 
   // Al abrir la app, intenta restaurar la sesión guardada.
   useEffect(() => {
@@ -44,9 +46,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         ]);
         if (storedToken && storedUser) {
           setToken(storedToken);
-          const parsed = JSON.parse(storedUser);
-          // Sesiones guardadas antes de este campo: se asumen ya completas (no son cuentas nuevas).
-          setUser({ onboardingCompleted: true, ...parsed });
+          const parsed = JSON.parse(storedUser) as AuthUser;
+          setUser({ ...parsed, onboardingCompleted: parsed.onboardingCompleted === true });
         }
       } finally {
         setIsLoading(false);
@@ -94,6 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Los datos guardados en el dispositivo pertenecen a la cuenta que sale.
     resetChatSession();
     await clearCache();
+    setWorldColor(null);
     setToken(null);
     setUser(null);
   }
@@ -105,9 +107,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await AsyncStorage.setItem(AUTH_USER_KEY, JSON.stringify(next));
   }
 
-  async function completeOnboarding() {
-    await authService.completeOnboarding();
-    if (!user) return;
+  async function markOnboarded() {
+    if (!user || user.onboardingCompleted) return;
     const next = { ...user, onboardingCompleted: true };
     setUser(next);
     await AsyncStorage.setItem(AUTH_USER_KEY, JSON.stringify(next));
@@ -115,7 +116,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, token, isLoading, login, register, logout, updateUser, completeOnboarding }}
+      value={{ user, token, isLoading, login, register, logout, updateUser, markOnboarded }}
     >
       {children}
     </AuthContext.Provider>

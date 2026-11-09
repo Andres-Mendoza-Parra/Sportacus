@@ -32,7 +32,9 @@ class ExerciseMediaServiceTest {
 
     @Test
     void pasosDesdeParrafosSeSeparanPorFrases() {
-        List<String> steps = ExerciseMediaService.steps("<p>Primera frase. Segunda frase.</p>");
-        assertEquals(2, steps.size());
+        // Con un solo párrafo, la primera frase pasa a ser la descripción y el resto, los pasos.
+        var text = ExerciseMediaService.describe("<p>Primera frase. Segunda frase.</p>");
+        assertEquals("Primera frase.", text.description());
+        assertEquals(List.of("Segunda frase."), text.steps());
     }
 }

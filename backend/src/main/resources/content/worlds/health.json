@@ -1,0 +1,4595 @@
+{
+  "world": "health",
+  "metrics": [
+    {
+      "key": "hea_dolor_antes",
+      "name": "Dolor antes de la sesión",
+      "unit": "0-10",
+      "valueType": "scale_0_10",
+      "direction": "down",
+      "description": "Dolor en reposo al empezar (línea base de la sesión)."
+    },
+    {
+      "key": "hea_dolor_durante",
+      "name": "Dolor máximo durante la sesión",
+      "unit": "0-10",
+      "valueType": "scale_0_10",
+      "direction": "down",
+      "description": "Máximo dolor registrado en los ejercicios."
+    },
+    {
+      "key": "hea_dolor_despues",
+      "name": "Dolor después de la sesión",
+      "unit": "0-10",
+      "valueType": "scale_0_10",
+      "direction": "down"
+    },
+    {
+      "key": "hea_semaforo",
+      "name": "Semáforo de dolor",
+      "unit": "0-2",
+      "valueType": "integer",
+      "direction": "down",
+      "description": "0 verde, 1 amarillo, 2 rojo (modelo de monitorización del dolor, Silbernagel 2007, versión conservadora)."
+    },
+    {
+      "key": "hea_adherencia",
+      "name": "Adherencia semanal",
+      "unit": "%",
+      "valueType": "percent",
+      "direction": "up",
+      "description": "Sesiones hechas sobre las planificadas en la semana."
+    },
+    {
+      "key": "hea_chair_stand",
+      "name": "Levantarse de la silla en 30 s",
+      "unit": "reps",
+      "valueType": "integer",
+      "direction": "up",
+      "description": "CDC STEADI 30-Second Chair Stand."
+    },
+    {
+      "key": "hea_tug_s",
+      "name": "Timed Up and Go",
+      "unit": "s",
+      "valueType": "number",
+      "direction": "down",
+      "description": "CDC STEADI TUG: 12 s o más indica riesgo de caídas."
+    },
+    {
+      "key": "hea_equilibrio_etapa",
+      "name": "Equilibrio en 4 etapas",
+      "unit": "etapa",
+      "valueType": "integer",
+      "direction": "up",
+      "description": "Etapa más alta sostenida 10 s (0–4). CDC STEADI 4-Stage Balance Test."
+    },
+    {
+      "key": "hea_funcion",
+      "name": "Función en tu actividad más difícil",
+      "unit": "0-10",
+      "valueType": "scale_0_10",
+      "direction": "up",
+      "description": "Autorreporte: 0 = no puedo hacerla, 10 = como antes del problema."
+    }
+  ],
+  "movements": [
+    {
+      "key": "hea_respiracion_diafragmatica",
+      "name": "Respiración diafragmática",
+      "role": "calentamiento",
+      "level": 1,
+      "pattern": "respiracion",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "cadera",
+          "lumbar",
+          "hombro",
+          "tobillo",
+          "adulto_mayor",
+          "cardiometabolico",
+          "movilidad_general"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "rodilla": [
+            1,
+            2,
+            3
+          ],
+          "cadera": [
+            1,
+            2,
+            3
+          ],
+          "lumbar": [
+            1,
+            2,
+            3
+          ],
+          "hombro": [
+            1,
+            2,
+            3
+          ],
+          "tobillo": [
+            1,
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            1,
+            2,
+            3
+          ],
+          "cardiometabolico": [
+            1,
+            2,
+            3
+          ],
+          "movilidad_general": [
+            1,
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "time",
+          "durationS": 90
+        }
+      },
+      "description": "Respiración lenta llevando el aire hacia el abdomen. Ayuda a relajar la musculatura y a empezar la sesión con calma.",
+      "steps": [
+        "Siéntate o acuéstate cómodo con una mano en el pecho y otra en el abdomen.",
+        "Inhala por la nariz en 3–4 segundos dejando que el abdomen se eleve.",
+        "Exhala despacio por la boca en 4–6 segundos.",
+        "Repite sin forzar durante el tiempo indicado."
+      ],
+      "cues": [
+        "La mano del pecho casi no se mueve",
+        "Exhala más largo de lo que inhalas"
+      ],
+      "mistakes": [
+        "Subir los hombros al inhalar",
+        "Respirar demasiado rápido"
+      ],
+      "regions": [
+        "core"
+      ],
+      "muscles": [
+        "core"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio",
+        "parque",
+        "exterior"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_movilidad_articular_suave",
+      "name": "Movilidad articular suave",
+      "role": "calentamiento",
+      "level": 1,
+      "pattern": "movilidad",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "cadera",
+          "lumbar",
+          "hombro",
+          "tobillo",
+          "adulto_mayor",
+          "cardiometabolico",
+          "movilidad_general"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "rodilla": [
+            1,
+            2,
+            3
+          ],
+          "cadera": [
+            1,
+            2,
+            3
+          ],
+          "lumbar": [
+            1,
+            2,
+            3
+          ],
+          "hombro": [
+            1,
+            2,
+            3
+          ],
+          "tobillo": [
+            1,
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            1,
+            2,
+            3
+          ],
+          "cardiometabolico": [
+            1,
+            2,
+            3
+          ],
+          "movilidad_general": [
+            1,
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "time",
+          "durationS": 180
+        }
+      },
+      "description": "Movimientos circulares lentos de las articulaciones grandes para preparar el cuerpo sin provocar dolor. Puede hacerse sentado.",
+      "steps": [
+        "Sentado o de pie con apoyo, haz círculos lentos con los tobillos (10 por lado).",
+        "Dobla y estira las rodillas alternando (10 por lado).",
+        "Haz círculos con los hombros hacia atrás (10).",
+        "Gira suavemente la cabeza a cada lado (5 por lado), sin llegar al límite."
+      ],
+      "cues": [
+        "Movimientos amplios pero cómodos",
+        "Si una zona duele, reduce el rango"
+      ],
+      "mistakes": [
+        "Forzar el final del movimiento",
+        "Hacerlo con prisa"
+      ],
+      "regions": [
+        "cuerpo_completo"
+      ],
+      "muscles": [],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio",
+        "parque",
+        "exterior"
+      ],
+      "impact": "bajo",
+      "source": "nia_exercise",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_relajacion_guiada",
+      "name": "Relajación con respiración",
+      "role": "vuelta_calma",
+      "level": 1,
+      "pattern": "respiracion",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "cadera",
+          "lumbar",
+          "hombro",
+          "tobillo",
+          "adulto_mayor",
+          "cardiometabolico",
+          "movilidad_general"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "rodilla": [
+            1,
+            2,
+            3
+          ],
+          "cadera": [
+            1,
+            2,
+            3
+          ],
+          "lumbar": [
+            1,
+            2,
+            3
+          ],
+          "hombro": [
+            1,
+            2,
+            3
+          ],
+          "tobillo": [
+            1,
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            1,
+            2,
+            3
+          ],
+          "cardiometabolico": [
+            1,
+            2,
+            3
+          ],
+          "movilidad_general": [
+            1,
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "time",
+          "durationS": 120
+        }
+      },
+      "description": "Cierre de la sesión con respiración lenta y relajación consciente de cada zona del cuerpo.",
+      "steps": [
+        "Acuéstate o siéntate cómodo.",
+        "Respira lento: 4 segundos al inhalar, 6 al exhalar.",
+        "Recorre mentalmente el cuerpo desde los pies hasta la cabeza soltando la tensión.",
+        "Nota cómo está tu dolor ahora para registrarlo."
+      ],
+      "cues": [
+        "Suelta mandíbula y hombros"
+      ],
+      "mistakes": [],
+      "regions": [
+        "cuerpo_completo"
+      ],
+      "muscles": [],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio",
+        "parque",
+        "exterior"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_estiramiento_isquios_sentado",
+      "name": "Estiramiento de isquiotibiales sentado",
+      "role": "vuelta_calma",
+      "level": 1,
+      "pattern": "estiramiento",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "cadera",
+          "lumbar",
+          "adulto_mayor",
+          "cardiometabolico",
+          "movilidad_general",
+          "tobillo"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "rodilla": [
+            1,
+            2,
+            3
+          ],
+          "cadera": [
+            1,
+            2,
+            3
+          ],
+          "lumbar": [
+            1,
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            1,
+            2,
+            3
+          ],
+          "cardiometabolico": [
+            1,
+            2,
+            3
+          ],
+          "movilidad_general": [
+            1,
+            2,
+            3
+          ],
+          "tobillo": [
+            1,
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "hold",
+          "holdS": 30,
+          "sets": 2
+        },
+        "unilateral": true
+      },
+      "description": "Estiramiento suave de la parte de atrás del muslo sentado al borde de una silla.",
+      "steps": [
+        "Siéntate al borde de una silla firme.",
+        "Estira una pierna al frente con el talón en el suelo y la punta hacia arriba.",
+        "Con la espalda recta, inclínate un poco hacia delante desde la cadera hasta sentir un estiramiento suave.",
+        "Sostén y cambia de pierna."
+      ],
+      "cues": [
+        "Espalda larga, no la curves",
+        "Estiramiento suave, nunca dolor"
+      ],
+      "mistakes": [
+        "Rebotar",
+        "Bloquear la rodilla con fuerza"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "isquiotibiales"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "nia_exercise",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_estiramiento_pantorrilla_pared",
+      "name": "Estiramiento de pantorrilla en la pared",
+      "role": "vuelta_calma",
+      "level": 1,
+      "pattern": "estiramiento",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "tobillo",
+          "adulto_mayor",
+          "cardiometabolico",
+          "cadera"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "rodilla": [
+            1,
+            2,
+            3
+          ],
+          "tobillo": [
+            1,
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            1,
+            2,
+            3
+          ],
+          "cardiometabolico": [
+            1,
+            2,
+            3
+          ],
+          "cadera": [
+            1,
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "hold",
+          "holdS": 30,
+          "sets": 2
+        },
+        "unilateral": true
+      },
+      "description": "Estiramiento de gemelos con las manos apoyadas en la pared.",
+      "steps": [
+        "De pie frente a una pared, apoya las manos a la altura del pecho.",
+        "Lleva una pierna atrás con el talón en el suelo y la rodilla estirada.",
+        "Dobla la rodilla de delante hasta sentir el estiramiento en la pantorrilla de atrás.",
+        "Sostén y cambia de pierna."
+      ],
+      "cues": [
+        "Talón de atrás pegado al suelo",
+        "Pies apuntando al frente"
+      ],
+      "mistakes": [],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gemelos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "nia_exercise",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_estiramiento_pecho_pared",
+      "name": "Estiramiento de pecho en el marco de la puerta",
+      "role": "vuelta_calma",
+      "level": 1,
+      "pattern": "estiramiento",
+      "attrs": {
+        "tracks": [
+          "hombro",
+          "movilidad_general"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "hombro": [
+            2,
+            3
+          ],
+          "movilidad_general": [
+            1,
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "hold",
+          "holdS": 20,
+          "sets": 2
+        }
+      },
+      "description": "Apertura suave del pecho para contrarrestar la postura encorvada.",
+      "steps": [
+        "Párate en el marco de una puerta con los antebrazos apoyados a los lados, codos a la altura de los hombros o más abajo.",
+        "Da un paso corto hacia delante hasta sentir un estiramiento suave en el pecho.",
+        "Respira lento y sostén."
+      ],
+      "cues": [
+        "Cuello largo, mirada al frente"
+      ],
+      "mistakes": [
+        "Arquear la espalda baja"
+      ],
+      "regions": [
+        "tren_superior"
+      ],
+      "muscles": [
+        "pecho",
+        "hombros"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_contraccion_cuadriceps",
+      "name": "Contracción isométrica de cuádriceps",
+      "role": "principal",
+      "level": 1,
+      "pattern": "isometrico",
+      "attrs": {
+        "tracks": [
+          "rodilla"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "rodilla": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "sostén 5 s"
+        },
+        "unilateral": true
+      },
+      "description": "Activa el músculo del muslo sin mover la rodilla. Útil cuando doblar la rodilla todavía molesta.",
+      "steps": [
+        "Siéntate o acuéstate con la pierna estirada y una toalla enrollada bajo la rodilla.",
+        "Aprieta el muslo empujando la parte de atrás de la rodilla contra la toalla.",
+        "Sostén 5 segundos y relaja por completo.",
+        "Repite las veces indicadas y cambia de pierna."
+      ],
+      "cues": [
+        "Notas cómo la rótula sube un poco",
+        "Respira mientras sostienes"
+      ],
+      "mistakes": [
+        "Contener la respiración",
+        "Apretar los glúteos en lugar del muslo"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "cuadriceps"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_deslizamiento_talon",
+      "name": "Deslizamiento de talón",
+      "role": "principal",
+      "level": 1,
+      "pattern": "movilidad",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "cadera"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "rodilla": [
+            1
+          ],
+          "cadera": [
+            1
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "3-1-3"
+        },
+        "unilateral": true
+      },
+      "description": "Doblar y estirar la rodilla de forma lenta y asistida para recuperar movilidad.",
+      "steps": [
+        "Acuéstate boca arriba con las piernas estiradas (puedes poner una bolsa plástica bajo el talón para que deslice).",
+        "Desliza el talón hacia los glúteos doblando la rodilla hasta donde sea cómodo.",
+        "Sostén un segundo y vuelve a estirar despacio."
+      ],
+      "cues": [
+        "Rango cómodo, ganando un poco cada semana"
+      ],
+      "mistakes": [
+        "Forzar el final con dolor",
+        "Levantar la pierna del suelo"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "isquiotibiales",
+        "cuadriceps"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_elevacion_pierna_recta",
+      "name": "Elevación de pierna recta",
+      "role": "principal",
+      "level": 1,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "cadera"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "rodilla": [
+            1,
+            2
+          ],
+          "cadera": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "3-1-3"
+        },
+        "unilateral": true
+      },
+      "description": "Fortalece el muslo y la cadera sin cargar la rodilla en flexión.",
+      "steps": [
+        "Acuéstate boca arriba con una rodilla doblada y el pie apoyado.",
+        "Aprieta el muslo de la pierna estirada (como en la contracción de cuádriceps).",
+        "Elévala hasta la altura de la otra rodilla, sostén un segundo y baja despacio."
+      ],
+      "cues": [
+        "Rodilla totalmente estirada durante todo el movimiento",
+        "Espalda baja apoyada"
+      ],
+      "mistakes": [
+        "Doblar la rodilla al subir",
+        "Hacerlo rápido"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "cuadriceps"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "lumbar",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_extension_rodilla_sentado",
+      "name": "Extensión de rodilla sentado",
+      "role": "principal",
+      "level": 1,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "adulto_mayor"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "rodilla": [
+            1,
+            2
+          ],
+          "adulto_mayor": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "3-1-3"
+        },
+        "unilateral": true
+      },
+      "description": "Estirar la rodilla sentado en una silla para fortalecer el cuádriceps. Ejercicio clásico de las guías para adultos mayores.",
+      "steps": [
+        "Siéntate en una silla firme con la espalda apoyada y los pies en el suelo.",
+        "Estira despacio una rodilla hasta dejar la pierna recta al frente.",
+        "Sostén un segundo con la punta del pie hacia arriba y baja despacio."
+      ],
+      "cues": [
+        "Sube en 3 segundos y baja en 3",
+        "No te recuestes hacia atrás"
+      ],
+      "mistakes": [
+        "Patear con impulso"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "cuadriceps"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "nia_exercise",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_flexion_rodilla_de_pie",
+      "name": "Flexión de rodilla de pie con apoyo",
+      "role": "principal",
+      "level": 2,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "adulto_mayor"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "rodilla": [
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "3-1-3"
+        },
+        "unilateral": true
+      },
+      "description": "Llevar el talón hacia el glúteo de pie, sujetándote de una silla. Fortalece la parte de atrás del muslo.",
+      "steps": [
+        "De pie detrás de una silla firme, sujétate del respaldo.",
+        "Dobla una rodilla llevando el talón hacia el glúteo, sin mover el muslo.",
+        "Baja despacio y cambia de pierna."
+      ],
+      "cues": [
+        "Rodillas juntas",
+        "Tronco erguido"
+      ],
+      "mistakes": [
+        "Inclinarte hacia delante"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "isquiotibiales"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "otago",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_sentarse_levantarse",
+      "name": "Sentarse y levantarse de la silla",
+      "role": "principal",
+      "level": 1,
+      "pattern": "funcional",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "cadera",
+          "lumbar",
+          "adulto_mayor",
+          "cardiometabolico",
+          "movilidad_general"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "rodilla": [
+            2,
+            3
+          ],
+          "cadera": [
+            2,
+            3
+          ],
+          "lumbar": [
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            1,
+            2,
+            3
+          ],
+          "cardiometabolico": [
+            1,
+            2,
+            3
+          ],
+          "movilidad_general": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "3-1-2"
+        }
+      },
+      "description": "Levantarse y sentarse de una silla de forma controlada: fuerza de piernas para la vida diaria. Al inicio puedes ayudarte con las manos.",
+      "steps": [
+        "Siéntate en la mitad delantera de una silla firme apoyada contra la pared, pies separados al ancho de la cadera.",
+        "Inclínate un poco hacia delante y levántate empujando con las piernas (usa las manos si lo necesitas).",
+        "Quédate de pie un segundo y siéntate despacio, sin dejarte caer."
+      ],
+      "cues": [
+        "Nariz por encima de los dedos de los pies al levantarte",
+        "Bajar en 3 segundos"
+      ],
+      "mistakes": [
+        "Dejarse caer en la silla",
+        "Rodillas que se juntan"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "cuadriceps",
+        "gluteos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "nia_exercise",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_minisentadilla_apoyo",
+      "name": "Minisentadilla con apoyo",
+      "role": "principal",
+      "level": 2,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "cadera",
+          "tobillo",
+          "adulto_mayor"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "rodilla": [
+            2,
+            3
+          ],
+          "cadera": [
+            2,
+            3
+          ],
+          "tobillo": [
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "3-1-2"
+        }
+      },
+      "description": "Flexión parcial de rodillas sujetándote de una silla o mesón. Basada en las flexiones de rodilla del programa Otago.",
+      "steps": [
+        "De pie, sujétate con las manos del respaldo de una silla o un mesón.",
+        "Dobla las rodillas un poco (como si fueras a sentarte) llevando la cadera atrás.",
+        "Baja solo hasta donde no haya dolor y sube despacio."
+      ],
+      "cues": [
+        "Rodillas alineadas con los pies",
+        "Talones siempre en el suelo"
+      ],
+      "mistakes": [
+        "Bajar demasiado al principio",
+        "Rodillas hacia dentro"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "cuadriceps",
+        "gluteos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "otago",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_subir_escalon",
+      "name": "Subir y bajar un escalón",
+      "role": "principal",
+      "level": 3,
+      "pattern": "funcional",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "cadera",
+          "tobillo",
+          "adulto_mayor",
+          "cardiometabolico"
+        ],
+        "phase": 3,
+        "phasesByTrack": {
+          "rodilla": [
+            3
+          ],
+          "cadera": [
+            3
+          ],
+          "tobillo": [
+            3
+          ],
+          "adulto_mayor": [
+            3
+          ],
+          "cardiometabolico": [
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-2"
+        },
+        "unilateral": true
+      },
+      "description": "Subir y bajar un escalón bajo de forma controlada, con un pasamanos o pared cerca.",
+      "steps": [
+        "Ponte frente a un escalón bajo con un pasamanos o pared a tu lado.",
+        "Sube con una pierna, lleva la otra arriba y baja empezando por la misma.",
+        "Haz todas las repeticiones con la misma pierna y cambia."
+      ],
+      "cues": [
+        "Todo el pie en el escalón",
+        "Rodilla alineada con el pie"
+      ],
+      "mistakes": [
+        "Impulsarse con la pierna de abajo",
+        "Escalón demasiado alto"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "cuadriceps",
+        "gluteos"
+      ],
+      "equipment": [
+        "escalon"
+      ],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "otago",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "mareos",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_isometrico_aductores",
+      "name": "Apretar un cojín entre las rodillas",
+      "role": "principal",
+      "level": 1,
+      "pattern": "isometrico",
+      "attrs": {
+        "tracks": [
+          "cadera",
+          "rodilla"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "cadera": [
+            1
+          ],
+          "rodilla": [
+            1
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "sostén 5 s"
+        }
+      },
+      "description": "Activación isométrica de la parte interna del muslo sin mover la articulación.",
+      "steps": [
+        "Acuéstate boca arriba con las rodillas dobladas y un cojín o toalla doblada entre ellas.",
+        "Aprieta el cojín con las rodillas durante 5 segundos.",
+        "Relaja por completo y repite."
+      ],
+      "cues": [
+        "Fuerza moderada, sin dolor",
+        "Respira mientras aprietas"
+      ],
+      "mistakes": [],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "aductores"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_almeja",
+      "name": "Almeja (apertura de rodilla de lado)",
+      "role": "principal",
+      "level": 1,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "cadera",
+          "rodilla",
+          "lumbar"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "cadera": [
+            1,
+            2
+          ],
+          "rodilla": [
+            1,
+            2
+          ],
+          "lumbar": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-2"
+        },
+        "unilateral": true
+      },
+      "description": "Acostado de lado, abrir la rodilla de arriba manteniendo los pies juntos. Fortalece el glúteo medio, clave para cadera y rodilla.",
+      "steps": [
+        "Acuéstate de lado con las caderas y rodillas dobladas y los pies juntos.",
+        "Sin separar los pies, abre la rodilla de arriba como una almeja.",
+        "Baja despacio. Haz las repeticiones y cambia de lado."
+      ],
+      "cues": [
+        "La pelvis no rota hacia atrás",
+        "Movimiento pequeño y controlado"
+      ],
+      "mistakes": [
+        "Abrir rodando el tronco"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gluteos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_abduccion_cadera_de_pie",
+      "name": "Elevación lateral de pierna de pie",
+      "role": "principal",
+      "level": 2,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "cadera",
+          "adulto_mayor",
+          "rodilla"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "cadera": [
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            2,
+            3
+          ],
+          "rodilla": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-2"
+        },
+        "unilateral": true
+      },
+      "description": "Separar la pierna hacia el lado de pie, sujetándote de una silla. Fortalece la cadera y mejora la estabilidad al caminar.",
+      "steps": [
+        "De pie detrás de una silla firme, sujétate con las manos.",
+        "Lleva una pierna hacia el lado con la punta del pie al frente.",
+        "Baja despacio y cambia de pierna al terminar."
+      ],
+      "cues": [
+        "Tronco recto, sin inclinarte al otro lado",
+        "Movimiento lento"
+      ],
+      "mistakes": [
+        "Girar la punta del pie hacia arriba"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gluteos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "otago",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_extension_cadera_de_pie",
+      "name": "Extensión de cadera de pie",
+      "role": "principal",
+      "level": 2,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "cadera",
+          "adulto_mayor",
+          "lumbar"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "cadera": [
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            2,
+            3
+          ],
+          "lumbar": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-2"
+        },
+        "unilateral": true
+      },
+      "description": "Llevar la pierna estirada hacia atrás de pie, apoyado en una silla. Activa el glúteo mayor.",
+      "steps": [
+        "De pie frente al respaldo de una silla, inclínate un poco hacia delante sujetándote.",
+        "Lleva una pierna estirada hacia atrás sin arquear la espalda.",
+        "Sostén un segundo y vuelve despacio."
+      ],
+      "cues": [
+        "Aprieta el glúteo",
+        "Espalda baja quieta"
+      ],
+      "mistakes": [
+        "Arquear la espalda para subir más"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gluteos",
+        "isquiotibiales"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "nia_exercise",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_puente_gluteo",
+      "name": "Puente de glúteos",
+      "role": "principal",
+      "level": 2,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "rodilla",
+          "cadera",
+          "lumbar",
+          "cardiometabolico"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "rodilla": [
+            2,
+            3
+          ],
+          "cadera": [
+            2,
+            3
+          ],
+          "lumbar": [
+            2,
+            3
+          ],
+          "cardiometabolico": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-2-2"
+        }
+      },
+      "description": "Elevar la cadera acostado boca arriba. Fortalece glúteos y la parte de atrás del muslo protegiendo la espalda baja.",
+      "steps": [
+        "Acuéstate boca arriba con las rodillas dobladas y los pies apoyados al ancho de la cadera.",
+        "Aprieta los glúteos y eleva la cadera hasta formar una línea de hombros a rodillas.",
+        "Sostén 2 segundos y baja vértebra por vértebra."
+      ],
+      "cues": [
+        "Empuja con los talones",
+        "Costillas abajo, sin arquear"
+      ],
+      "mistakes": [
+        "Subir arqueando la espalda baja"
+      ],
+      "regions": [
+        "tren_inferior",
+        "core"
+      ],
+      "muscles": [
+        "gluteos",
+        "isquiotibiales"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_bisagra_cadera_apoyo",
+      "name": "Bisagra de cadera con apoyo",
+      "role": "principal",
+      "level": 3,
+      "pattern": "funcional",
+      "attrs": {
+        "tracks": [
+          "lumbar",
+          "cadera"
+        ],
+        "phase": 3,
+        "phasesByTrack": {
+          "lumbar": [
+            3
+          ],
+          "cadera": [
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "3-1-2"
+        }
+      },
+      "description": "Aprender a inclinarse desde la cadera con la espalda neutra: la base para recoger objetos del suelo sin sobrecargar la espalda.",
+      "steps": [
+        "De pie con las manos en la cadera y las rodillas un poco dobladas.",
+        "Lleva la cadera hacia atrás inclinando el tronco con la espalda recta, hasta sentir tensión en la parte de atrás de los muslos.",
+        "Vuelve a subir apretando los glúteos."
+      ],
+      "cues": [
+        "Imagina cerrar un cajón con los glúteos",
+        "Espalda larga"
+      ],
+      "mistakes": [
+        "Doblar la espalda en lugar de la cadera"
+      ],
+      "regions": [
+        "tren_inferior",
+        "core"
+      ],
+      "muscles": [
+        "gluteos",
+        "isquiotibiales"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_estiramiento_flexores_cadera",
+      "name": "Estiramiento de flexores de cadera",
+      "role": "principal",
+      "level": 2,
+      "pattern": "estiramiento",
+      "attrs": {
+        "tracks": [
+          "movilidad_general",
+          "lumbar",
+          "cadera"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "movilidad_general": [
+            2,
+            3
+          ],
+          "lumbar": [
+            2,
+            3
+          ],
+          "cadera": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "hold",
+          "holdS": 30
+        },
+        "unilateral": true
+      },
+      "description": "Estira la parte delantera de la cadera, que se acorta al pasar muchas horas sentado.",
+      "steps": [
+        "De pie, da un paso largo hacia delante sujetándote de una silla.",
+        "Dobla un poco la rodilla de delante y mete la pelvis (como guardando la cola).",
+        "Siente el estiramiento delante de la cadera de atrás; sostén y cambia."
+      ],
+      "cues": [
+        "Pelvis metida, no arquees la espalda"
+      ],
+      "mistakes": [],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "cuadriceps"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_bascula_pelvica",
+      "name": "Báscula pélvica",
+      "role": "principal",
+      "level": 1,
+      "pattern": "movilidad",
+      "attrs": {
+        "tracks": [
+          "lumbar",
+          "cadera"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "lumbar": [
+            1
+          ],
+          "cadera": [
+            1
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-2-2"
+        }
+      },
+      "description": "Inclinar la pelvis acostado para movilizar suavemente la espalda baja y activar el abdomen profundo.",
+      "steps": [
+        "Acuéstate boca arriba con las rodillas dobladas.",
+        "Aplana la espalda baja contra el suelo contrayendo suavemente el abdomen.",
+        "Sostén 2 segundos y relaja volviendo a la posición neutra."
+      ],
+      "cues": [
+        "Movimiento pequeño",
+        "Respira al aplanar"
+      ],
+      "mistakes": [
+        "Empujar con las piernas"
+      ],
+      "regions": [
+        "core"
+      ],
+      "muscles": [
+        "core"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_rodilla_pecho",
+      "name": "Rodilla al pecho",
+      "role": "principal",
+      "level": 1,
+      "pattern": "estiramiento",
+      "attrs": {
+        "tracks": [
+          "lumbar"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "lumbar": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "hold",
+          "holdS": 20
+        },
+        "unilateral": true
+      },
+      "description": "Llevar una rodilla hacia el pecho acostado para aliviar la tensión de la espalda baja.",
+      "steps": [
+        "Acuéstate boca arriba con las rodillas dobladas.",
+        "Abraza una rodilla con las manos y llévala hacia el pecho sin dolor.",
+        "Sostén respirando lento y cambia de pierna."
+      ],
+      "cues": [
+        "Cabeza y hombros apoyados"
+      ],
+      "mistakes": [],
+      "regions": [
+        "core",
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gluteos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "cadera",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_rotacion_lumbar_suave",
+      "name": "Rotación suave de tronco acostado",
+      "role": "principal",
+      "level": 1,
+      "pattern": "movilidad",
+      "attrs": {
+        "tracks": [
+          "lumbar"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "lumbar": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-2"
+        }
+      },
+      "description": "Dejar caer las rodillas juntas hacia un lado y otro para movilizar la columna sin carga.",
+      "steps": [
+        "Acuéstate boca arriba con las rodillas dobladas y los pies juntos.",
+        "Deja caer ambas rodillas hacia un lado, solo hasta donde sea cómodo.",
+        "Vuelve al centro y repite hacia el otro lado (cuenta una repetición por lado)."
+      ],
+      "cues": [
+        "Hombros apoyados en el suelo",
+        "Rango pequeño al inicio"
+      ],
+      "mistakes": [],
+      "regions": [
+        "core"
+      ],
+      "muscles": [
+        "core"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_gato_camello",
+      "name": "Gato–camello",
+      "role": "principal",
+      "level": 1,
+      "pattern": "movilidad",
+      "attrs": {
+        "tracks": [
+          "lumbar",
+          "movilidad_general"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "lumbar": [
+            1,
+            2
+          ],
+          "movilidad_general": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "3-1-3"
+        }
+      },
+      "description": "En cuatro apoyos, redondear y extender la espalda despacio para movilizar toda la columna.",
+      "steps": [
+        "Ponte en cuatro apoyos: manos bajo los hombros y rodillas bajo las caderas.",
+        "Exhala redondeando la espalda hacia el techo y llevando la mirada al ombligo.",
+        "Inhala dejando bajar el abdomen y elevando suavemente la mirada.",
+        "Muévete despacio en el rango cómodo."
+      ],
+      "cues": [
+        "Movimiento fluido con la respiración"
+      ],
+      "mistakes": [
+        "Forzar la extensión"
+      ],
+      "regions": [
+        "core"
+      ],
+      "muscles": [
+        "espalda",
+        "core"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "muneca",
+          "level": "precaucion"
+        },
+        {
+          "tag": "rodilla",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_pajaro_perro",
+      "name": "Pájaro–perro",
+      "role": "principal",
+      "level": 2,
+      "pattern": "estabilidad",
+      "attrs": {
+        "tracks": [
+          "lumbar"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "lumbar": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-3-2"
+        },
+        "unilateral": true
+      },
+      "description": "En cuatro apoyos, extender un brazo y la pierna contraria manteniendo el tronco quieto. Entrena la estabilidad de la espalda baja.",
+      "steps": [
+        "En cuatro apoyos, con la espalda neutra.",
+        "Extiende despacio un brazo al frente y la pierna contraria atrás.",
+        "Sostén 3 segundos sin que la pelvis rote y vuelve. Alterna lados."
+      ],
+      "cues": [
+        "Imagina un vaso de agua sobre tu espalda",
+        "Empieza solo con la pierna si te cuesta"
+      ],
+      "mistakes": [
+        "Arquear la espalda",
+        "Levantar la pierna demasiado alto"
+      ],
+      "regions": [
+        "core"
+      ],
+      "muscles": [
+        "core",
+        "gluteos",
+        "espalda"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "muneca",
+          "level": "precaucion"
+        },
+        {
+          "tag": "rodilla",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_bicho_muerto",
+      "name": "Bicho muerto (dead bug)",
+      "role": "principal",
+      "level": 2,
+      "pattern": "estabilidad",
+      "attrs": {
+        "tracks": [
+          "lumbar"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "lumbar": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-2"
+        },
+        "unilateral": true
+      },
+      "description": "Boca arriba, mover brazos y piernas de forma alterna manteniendo la espalda baja apoyada. Fortalece el abdomen profundo.",
+      "steps": [
+        "Acuéstate boca arriba con los brazos hacia el techo y las caderas y rodillas a 90°.",
+        "Baja despacio un brazo hacia atrás y la pierna contraria hacia el suelo sin tocarlo.",
+        "Vuelve y alterna. Empieza moviendo solo las piernas si es mucho."
+      ],
+      "cues": [
+        "Espalda baja pegada al suelo",
+        "Exhala al extender"
+      ],
+      "mistakes": [
+        "Despegar la espalda baja"
+      ],
+      "regions": [
+        "core"
+      ],
+      "muscles": [
+        "core"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "embarazo",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_plancha_lateral_rodillas",
+      "name": "Plancha lateral con rodillas apoyadas",
+      "role": "principal",
+      "level": 3,
+      "pattern": "estabilidad",
+      "attrs": {
+        "tracks": [
+          "lumbar"
+        ],
+        "phase": 3,
+        "phasesByTrack": {
+          "lumbar": [
+            3
+          ]
+        },
+        "rx": {
+          "type": "hold",
+          "holdS": 15
+        },
+        "unilateral": true
+      },
+      "description": "Versión apoyada en rodillas de la plancha lateral para fortalecer los costados del tronco.",
+      "steps": [
+        "Acuéstate de lado apoyado en el antebrazo, codo bajo el hombro y rodillas dobladas.",
+        "Eleva la cadera hasta formar una línea de cabeza a rodillas.",
+        "Sostén respirando y baja. Cambia de lado."
+      ],
+      "cues": [
+        "Cadera alta",
+        "Hombro lejos de la oreja"
+      ],
+      "mistakes": [],
+      "regions": [
+        "core"
+      ],
+      "muscles": [
+        "core"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "hombro",
+          "level": "precaucion"
+        },
+        {
+          "tag": "embarazo",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_pendulo",
+      "name": "Péndulo de hombro",
+      "role": "principal",
+      "level": 1,
+      "pattern": "movilidad",
+      "attrs": {
+        "tracks": [
+          "hombro"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "hombro": [
+            1
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "sets": 2,
+          "reps": 10,
+          "fixed": true
+        },
+        "unilateral": true
+      },
+      "description": "Dejar colgar el brazo y moverlo en pequeños círculos usando el balanceo del cuerpo: movilidad sin esfuerzo del hombro.",
+      "steps": [
+        "Apóyate con la mano sana en una mesa e inclínate un poco hacia delante.",
+        "Deja el brazo afectado colgando y relajado.",
+        "Balancea el cuerpo para que el brazo dibuje círculos pequeños (10 en cada sentido)."
+      ],
+      "cues": [
+        "El brazo se mueve por el balanceo, no por fuerza"
+      ],
+      "mistakes": [
+        "Mover el brazo con el hombro tenso"
+      ],
+      "regions": [
+        "tren_superior"
+      ],
+      "muscles": [
+        "hombros"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "lumbar",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_flexion_hombro_baston",
+      "name": "Elevación de brazos con bastón",
+      "role": "principal",
+      "level": 1,
+      "pattern": "movilidad",
+      "attrs": {
+        "tracks": [
+          "hombro"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "hombro": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "3-1-3"
+        }
+      },
+      "description": "Elevar los brazos al frente sujetando un palo de escoba o una toalla; el brazo sano ayuda al afectado.",
+      "steps": [
+        "Acostado boca arriba o sentado, sujeta un palo con ambas manos al ancho de los hombros.",
+        "Eleva los brazos hacia arriba despacio, ayudando con el brazo sano.",
+        "Llega hasta donde sea cómodo y baja despacio."
+      ],
+      "cues": [
+        "Hombros lejos de las orejas"
+      ],
+      "mistakes": [
+        "Arquear la espalda para subir más"
+      ],
+      "regions": [
+        "tren_superior"
+      ],
+      "muscles": [
+        "hombros"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_isometrico_hombro_pared",
+      "name": "Isométricos de hombro contra la pared",
+      "role": "principal",
+      "level": 1,
+      "pattern": "isometrico",
+      "attrs": {
+        "tracks": [
+          "hombro"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "hombro": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "hold",
+          "holdS": 10
+        },
+        "unilateral": true
+      },
+      "description": "Empujar suavemente contra una pared sin mover el brazo, hacia delante, hacia fuera y hacia dentro.",
+      "steps": [
+        "De pie junto a una pared con el codo doblado a 90° pegado al cuerpo.",
+        "Empuja suavemente con el puño o el dorso de la mano contra la pared (hacia delante, hacia fuera y hacia dentro).",
+        "Sostén sin mover el brazo y relaja."
+      ],
+      "cues": [
+        "Fuerza suave (2–3 de 10)",
+        "Sin dolor durante el empuje"
+      ],
+      "mistakes": [],
+      "regions": [
+        "tren_superior"
+      ],
+      "muscles": [
+        "hombros"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_retraccion_escapular",
+      "name": "Retracción escapular",
+      "role": "principal",
+      "level": 1,
+      "pattern": "postura",
+      "attrs": {
+        "tracks": [
+          "hombro",
+          "movilidad_general"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "hombro": [
+            1,
+            2
+          ],
+          "movilidad_general": [
+            1,
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "sostén 3 s"
+        }
+      },
+      "description": "Juntar suavemente los omóplatos hacia atrás y abajo. Mejora la postura y la posición del hombro.",
+      "steps": [
+        "Sentado o de pie con los brazos relajados.",
+        "Lleva los omóplatos hacia atrás y hacia abajo, como guardándolos en los bolsillos de atrás.",
+        "Sostén 3 segundos y relaja."
+      ],
+      "cues": [
+        "Cuello largo",
+        "Sin sacar costillas"
+      ],
+      "mistakes": [
+        "Subir los hombros"
+      ],
+      "regions": [
+        "tren_superior"
+      ],
+      "muscles": [
+        "espalda"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio",
+        "parque",
+        "exterior"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_deslizamiento_pared",
+      "name": "Deslizamientos de brazos en la pared",
+      "role": "principal",
+      "level": 2,
+      "pattern": "movilidad",
+      "attrs": {
+        "tracks": [
+          "hombro",
+          "movilidad_general"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "hombro": [
+            2,
+            3
+          ],
+          "movilidad_general": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "3-1-3"
+        }
+      },
+      "description": "Deslizar los antebrazos hacia arriba por la pared para ganar movilidad y control del omóplato.",
+      "steps": [
+        "De frente a la pared, apoya los antebrazos en ella a la altura de los hombros.",
+        "Desliza los brazos hacia arriba despacio hasta donde sea cómodo.",
+        "Baja controlando el movimiento."
+      ],
+      "cues": [
+        "Omóplatos que se mueven suaves"
+      ],
+      "mistakes": [
+        "Encoger los hombros"
+      ],
+      "regions": [
+        "tren_superior"
+      ],
+      "muscles": [
+        "hombros",
+        "espalda"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_rotacion_externa_lado",
+      "name": "Rotación externa acostado de lado",
+      "role": "principal",
+      "level": 2,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "hombro"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "hombro": [
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "3-1-3"
+        },
+        "unilateral": true
+      },
+      "description": "Girar el antebrazo hacia el techo acostado de lado, sin peso o con una botella pequeña de agua.",
+      "steps": [
+        "Acuéstate sobre el lado sano con una toalla doblada entre el codo y el cuerpo.",
+        "Con el codo a 90° pegado al cuerpo, gira el antebrazo hacia el techo.",
+        "Baja despacio. Añade una botella pequeña solo si no hay dolor."
+      ],
+      "cues": [
+        "Codo pegado a la toalla"
+      ],
+      "mistakes": [],
+      "regions": [
+        "tren_superior"
+      ],
+      "muscles": [
+        "hombros"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_rotacion_externa_banda",
+      "name": "Rotación externa con banda",
+      "role": "principal",
+      "level": 2,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "hombro"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "hombro": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-3"
+        },
+        "unilateral": true
+      },
+      "description": "Girar el antebrazo hacia fuera contra una banda elástica suave, con el codo pegado al cuerpo.",
+      "steps": [
+        "Sujeta la banda con ambas manos o fíjala a una manija a la altura del codo.",
+        "Con el codo a 90° y pegado al costado, gira el antebrazo hacia fuera.",
+        "Vuelve despacio en 3 segundos."
+      ],
+      "cues": [
+        "Banda suave al inicio",
+        "Codo quieto"
+      ],
+      "mistakes": [
+        "Separar el codo del cuerpo"
+      ],
+      "regions": [
+        "tren_superior"
+      ],
+      "muscles": [
+        "hombros"
+      ],
+      "equipment": [
+        "bandas"
+      ],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_remo_banda",
+      "name": "Remo con banda",
+      "role": "principal",
+      "level": 2,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "hombro",
+          "movilidad_general",
+          "cardiometabolico"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "hombro": [
+            2,
+            3
+          ],
+          "movilidad_general": [
+            2,
+            3
+          ],
+          "cardiometabolico": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-2"
+        }
+      },
+      "description": "Llevar los codos hacia atrás tirando de una banda elástica. Fortalece la espalda alta y mejora la postura.",
+      "steps": [
+        "Fija la banda a la altura del pecho o pásala por tus pies sentado con las piernas estiradas.",
+        "Tira llevando los codos hacia atrás y juntando los omóplatos.",
+        "Vuelve despacio."
+      ],
+      "cues": [
+        "Pecho abierto",
+        "Hombros abajo"
+      ],
+      "mistakes": [
+        "Tirar con el cuello"
+      ],
+      "regions": [
+        "tren_superior"
+      ],
+      "muscles": [
+        "espalda",
+        "biceps"
+      ],
+      "equipment": [
+        "bandas"
+      ],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "nia_exercise",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_flexion_pared",
+      "name": "Flexión de brazos en la pared",
+      "role": "principal",
+      "level": 1,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "hombro",
+          "movilidad_general",
+          "cardiometabolico",
+          "adulto_mayor"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "hombro": [
+            3
+          ],
+          "movilidad_general": [
+            3
+          ],
+          "cardiometabolico": [
+            1,
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-2"
+        }
+      },
+      "description": "Flexiones de brazos con las manos en la pared: fuerza de brazos y pecho con muy poca carga.",
+      "steps": [
+        "De pie frente a una pared, a un brazo de distancia, con las manos apoyadas a la altura de los hombros.",
+        "Dobla los codos acercando el pecho a la pared con el cuerpo recto.",
+        "Empuja para volver."
+      ],
+      "cues": [
+        "Cuerpo en bloque",
+        "Codos a 45° del cuerpo"
+      ],
+      "mistakes": [
+        "Hundir la cadera"
+      ],
+      "regions": [
+        "tren_superior"
+      ],
+      "muscles": [
+        "pecho",
+        "triceps",
+        "hombros"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "nia_exercise",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "muneca",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_elevacion_frontal_brazos",
+      "name": "Elevación frontal de brazos",
+      "role": "principal",
+      "level": 2,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "hombro",
+          "adulto_mayor"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "hombro": [
+            3
+          ],
+          "adulto_mayor": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-3"
+        }
+      },
+      "description": "Elevar los brazos al frente hasta la altura de los hombros, sin peso o con botellas pequeñas de agua.",
+      "steps": [
+        "De pie o sentado, brazos a los lados con las palmas hacia el cuerpo.",
+        "Eleva los brazos al frente hasta la altura de los hombros.",
+        "Baja despacio en 3 segundos."
+      ],
+      "cues": [
+        "Sin balancear el tronco"
+      ],
+      "mistakes": [
+        "Subir por encima del hombro si duele"
+      ],
+      "regions": [
+        "tren_superior"
+      ],
+      "muscles": [
+        "hombros"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "nia_exercise",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_bombeo_tobillo",
+      "name": "Bombeo de tobillos",
+      "role": "principal",
+      "level": 1,
+      "pattern": "movilidad",
+      "attrs": {
+        "tracks": [
+          "tobillo",
+          "rodilla",
+          "adulto_mayor"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "tobillo": [
+            1
+          ],
+          "rodilla": [
+            1
+          ],
+          "adulto_mayor": [
+            1
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "sets": 2,
+          "reps": 15,
+          "fixed": true,
+          "tempo": "1-1-1"
+        }
+      },
+      "description": "Mover los pies hacia arriba y hacia abajo de forma rítmica. Favorece la circulación y la movilidad del tobillo.",
+      "steps": [
+        "Sentado o acostado con las piernas estiradas.",
+        "Lleva las puntas de los pies hacia ti y luego hacia abajo.",
+        "Hazlo a ritmo constante."
+      ],
+      "cues": [
+        "Rango completo y cómodo"
+      ],
+      "mistakes": [],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gemelos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio",
+        "parque",
+        "exterior"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_alfabeto_tobillo",
+      "name": "Alfabeto con el tobillo",
+      "role": "principal",
+      "level": 1,
+      "pattern": "movilidad",
+      "attrs": {
+        "tracks": [
+          "tobillo"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "tobillo": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "sets": 1,
+          "reps": 2,
+          "fixed": true
+        },
+        "unilateral": true
+      },
+      "description": "Dibujar las letras del alfabeto en el aire con la punta del pie para recuperar la movilidad del tobillo en todas las direcciones.",
+      "steps": [
+        "Siéntate con la pierna estirada o el pie colgando.",
+        "Con la punta del pie, dibuja despacio las letras de la A a la Z (cada alfabeto cuenta como una repetición).",
+        "Mueve solo el tobillo, no la rodilla."
+      ],
+      "cues": [
+        "Letras grandes pero cómodas"
+      ],
+      "mistakes": [],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gemelos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_toalla_dedos",
+      "name": "Arrugar una toalla con los dedos",
+      "role": "principal",
+      "level": 1,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "tobillo"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "tobillo": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "1-1-1"
+        },
+        "unilateral": true
+      },
+      "description": "Recoger una toalla con los dedos de los pies para fortalecer la musculatura propia del pie.",
+      "steps": [
+        "Sentado, pon el pie descalzo sobre una toalla extendida en el suelo.",
+        "Recoge la toalla hacia ti arrugándola con los dedos.",
+        "Extiéndela de nuevo y repite."
+      ],
+      "cues": [
+        "Talón apoyado"
+      ],
+      "mistakes": [],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gemelos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_elevacion_talones_sentado",
+      "name": "Elevación de talones sentado",
+      "role": "principal",
+      "level": 1,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "tobillo",
+          "adulto_mayor"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "tobillo": [
+            1
+          ],
+          "adulto_mayor": [
+            1
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-2"
+        }
+      },
+      "description": "Elevar los talones sentado en una silla: fuerza de pantorrillas sin cargar el peso del cuerpo.",
+      "steps": [
+        "Siéntate con los pies apoyados en el suelo.",
+        "Eleva los talones quedando sobre las puntas.",
+        "Baja despacio. Puedes poner las manos sobre las rodillas para añadir algo de resistencia."
+      ],
+      "cues": [
+        "Sube recto, sin rodar hacia fuera"
+      ],
+      "mistakes": [],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gemelos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "otago",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_elevacion_talones_apoyo",
+      "name": "Elevación de talones de pie con apoyo",
+      "role": "principal",
+      "level": 2,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "tobillo",
+          "adulto_mayor",
+          "rodilla",
+          "cardiometabolico"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "tobillo": [
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            2,
+            3
+          ],
+          "rodilla": [
+            2,
+            3
+          ],
+          "cardiometabolico": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-2"
+        }
+      },
+      "description": "Ponerse de puntillas sujetándose de una silla o mesón. Fortalece las pantorrillas y mejora el equilibrio (basado en Otago).",
+      "steps": [
+        "De pie, sujétate del respaldo de una silla firme o de un mesón.",
+        "Eleva los talones despacio quedando sobre las puntas de los pies.",
+        "Baja en 2 segundos."
+      ],
+      "cues": [
+        "Peso sobre el dedo gordo y el segundo"
+      ],
+      "mistakes": [
+        "Soltar el apoyo",
+        "Rebotar"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gemelos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "otago",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_elevacion_puntas_apoyo",
+      "name": "Elevación de puntas de pie con apoyo",
+      "role": "principal",
+      "level": 2,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "tobillo",
+          "adulto_mayor"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "tobillo": [
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-2"
+        }
+      },
+      "description": "Elevar las puntas de los pies quedando sobre los talones, sujetándose de una silla (basado en Otago).",
+      "steps": [
+        "De pie, sujétate del respaldo de una silla.",
+        "Eleva las puntas de los pies apoyándote sobre los talones.",
+        "Baja despacio."
+      ],
+      "cues": [
+        "Cadera quieta, sin sacar los glúteos"
+      ],
+      "mistakes": [],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gemelos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "otago",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_eversion_banda",
+      "name": "Eversión de tobillo con banda",
+      "role": "principal",
+      "level": 2,
+      "pattern": "fuerza",
+      "attrs": {
+        "tracks": [
+          "tobillo"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "tobillo": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-1-2"
+        },
+        "unilateral": true
+      },
+      "description": "Llevar el pie hacia fuera contra una banda elástica: fortalece los músculos que protegen de los esguinces.",
+      "steps": [
+        "Sentado con la pierna estirada, pasa la banda por la parte externa del pie y sujétala con la otra pierna o la mano.",
+        "Lleva la planta del pie hacia fuera contra la banda.",
+        "Vuelve despacio."
+      ],
+      "cues": [
+        "Solo se mueve el tobillo"
+      ],
+      "mistakes": [],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gemelos"
+      ],
+      "equipment": [
+        "bandas"
+      ],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_equilibrio_un_pie_apoyo",
+      "name": "Equilibrio en un pie junto a la pared",
+      "role": "principal",
+      "level": 2,
+      "pattern": "equilibrio",
+      "attrs": {
+        "tracks": [
+          "tobillo",
+          "adulto_mayor",
+          "rodilla"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "tobillo": [
+            2,
+            3
+          ],
+          "adulto_mayor": [
+            2,
+            3
+          ],
+          "rodilla": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "hold",
+          "holdS": 10
+        },
+        "unilateral": true
+      },
+      "description": "Sostenerse sobre un pie con una pared, mesón o silla al alcance de la mano.",
+      "steps": [
+        "Párate junto a una pared o mesón con una mano apoyada.",
+        "Levanta un pie del suelo y mantén el equilibrio.",
+        "Cuando puedas, apoya solo un dedo o suelta la mano (sin alejarte del apoyo)."
+      ],
+      "cues": [
+        "Mirada fija en un punto",
+        "Rodilla de apoyo un poco suelta"
+      ],
+      "mistakes": [
+        "Alejarse del apoyo",
+        "Hacerlo con calzado inestable"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gemelos",
+        "gluteos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "nia_exercise",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "mareos",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_tandem_apoyo",
+      "name": "Posición en tándem con apoyo",
+      "role": "principal",
+      "level": 1,
+      "pattern": "equilibrio",
+      "attrs": {
+        "tracks": [
+          "adulto_mayor",
+          "tobillo"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "adulto_mayor": [
+            1,
+            2
+          ],
+          "tobillo": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "hold",
+          "holdS": 10
+        }
+      },
+      "description": "Pararse con un pie justo delante del otro (talón contra punta) sujetándose de un mesón. Basado en los ejercicios de equilibrio de Otago.",
+      "steps": [
+        "Párate junto a un mesón con ambas manos apoyadas.",
+        "Pon un pie delante del otro, talón tocando la punta del de atrás.",
+        "Sostén la posición; luego cambia el pie de delante."
+      ],
+      "cues": [
+        "Mirada al frente",
+        "Apoyo firme siempre al alcance"
+      ],
+      "mistakes": [
+        "Hacerlo lejos de un apoyo"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gemelos",
+        "gluteos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "otago",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "mareos",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_marcha_tandem",
+      "name": "Caminar talón–punta",
+      "role": "principal",
+      "level": 3,
+      "pattern": "equilibrio",
+      "attrs": {
+        "tracks": [
+          "adulto_mayor",
+          "tobillo"
+        ],
+        "phase": 3,
+        "phasesByTrack": {
+          "adulto_mayor": [
+            3
+          ],
+          "tobillo": [
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "sets": 2,
+          "reps": 10,
+          "fixed": true
+        }
+      },
+      "description": "Caminar en línea recta poniendo el talón justo delante de la punta del otro pie, junto a un mesón o pared (basado en Otago).",
+      "steps": [
+        "Ponte junto a un mesón o pared largos.",
+        "Camina 10 pasos poniendo cada talón delante de la punta del otro pie.",
+        "Date la vuelta con cuidado y repite."
+      ],
+      "cues": [
+        "Mirada al frente, no a los pies"
+      ],
+      "mistakes": [
+        "Hacerlo con prisa"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gemelos",
+        "gluteos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "otago",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "mareos",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_caminar_hacia_atras",
+      "name": "Caminar hacia atrás",
+      "role": "principal",
+      "level": 2,
+      "pattern": "equilibrio",
+      "attrs": {
+        "tracks": [
+          "adulto_mayor"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "adulto_mayor": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "sets": 2,
+          "reps": 10,
+          "fixed": true
+        }
+      },
+      "description": "Dar pasos hacia atrás junto a un mesón para entrenar el equilibrio dinámico (basado en Otago).",
+      "steps": [
+        "De pie junto a un mesón, con una mano apoyada si lo necesitas.",
+        "Da 10 pasos lentos hacia atrás, apoyando primero la punta.",
+        "Date la vuelta y repite."
+      ],
+      "cues": [
+        "Espacio despejado detrás de ti"
+      ],
+      "mistakes": [
+        "Mirar atrás girando todo el cuerpo bruscamente"
+      ],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gluteos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "otago",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "mareos",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_caminar_lateral",
+      "name": "Caminar de lado",
+      "role": "principal",
+      "level": 2,
+      "pattern": "equilibrio",
+      "attrs": {
+        "tracks": [
+          "adulto_mayor",
+          "cadera"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "adulto_mayor": [
+            2,
+            3
+          ],
+          "cadera": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "sets": 2,
+          "reps": 10,
+          "fixed": true
+        }
+      },
+      "description": "Dar pasos laterales junto a un mesón para fortalecer la cadera y el equilibrio (basado en Otago).",
+      "steps": [
+        "De pie junto a un mesón, rodillas un poco dobladas.",
+        "Da 10 pasos hacia un lado y luego 10 hacia el otro.",
+        "Pies apuntando siempre al frente."
+      ],
+      "cues": [
+        "Pasos medianos y controlados"
+      ],
+      "mistakes": [],
+      "regions": [
+        "tren_inferior"
+      ],
+      "muscles": [
+        "gluteos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "otago",
+      "license": null,
+      "author": null,
+      "contraindications": [
+        {
+          "tag": "mareos",
+          "level": "precaucion"
+        }
+      ]
+    },
+    {
+      "key": "hea_marcha_sentado",
+      "name": "Marcha sentado",
+      "role": "principal",
+      "level": 1,
+      "pattern": "aerobico",
+      "attrs": {
+        "tracks": [
+          "adulto_mayor",
+          "cardiometabolico"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "adulto_mayor": [
+            1
+          ],
+          "cardiometabolico": [
+            1
+          ]
+        },
+        "rx": {
+          "type": "time",
+          "durationS": 120,
+          "intensity": "suave"
+        }
+      },
+      "description": "Marchar sentado en una silla, levantando las rodillas de forma alterna y moviendo los brazos.",
+      "steps": [
+        "Siéntate en la mitad delantera de una silla firme, espalda recta.",
+        "Levanta las rodillas alternando, como si marcharas.",
+        "Acompaña con el balanceo de los brazos y respira con ritmo."
+      ],
+      "cues": [
+        "Ritmo en el que puedas hablar"
+      ],
+      "mistakes": [],
+      "regions": [
+        "cardio"
+      ],
+      "muscles": [
+        "cuadriceps"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "nia_exercise",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_marcha_estatica",
+      "name": "Marcha en el sitio",
+      "role": "principal",
+      "level": 1,
+      "pattern": "aerobico",
+      "attrs": {
+        "tracks": [
+          "cardiometabolico",
+          "adulto_mayor",
+          "movilidad_general"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "cardiometabolico": [
+            1,
+            2
+          ],
+          "adulto_mayor": [
+            2
+          ],
+          "movilidad_general": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "time",
+          "durationS": 180,
+          "intensity": "suave a moderada"
+        }
+      },
+      "description": "Marchar en el mismo sitio de pie, cerca de un apoyo, elevando las rodillas a una altura cómoda.",
+      "steps": [
+        "De pie junto a una silla o mesón.",
+        "Marcha levantando las rodillas alternando y moviendo los brazos.",
+        "Mantén un ritmo que te permita hablar."
+      ],
+      "cues": [
+        "Puedes hablar pero no cantar = moderada"
+      ],
+      "mistakes": [],
+      "regions": [
+        "cardio"
+      ],
+      "muscles": [
+        "cuadriceps",
+        "gemelos"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_2020",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_cardio_silla",
+      "name": "Cardio en silla",
+      "role": "principal",
+      "level": 1,
+      "pattern": "aerobico",
+      "attrs": {
+        "tracks": [
+          "cardiometabolico"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "cardiometabolico": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "time",
+          "durationS": 300,
+          "intensity": "suave a moderada"
+        }
+      },
+      "description": "Secuencia rítmica sentado: marcha, golpes al aire y aperturas de brazos para elevar el pulso sin impacto.",
+      "steps": [
+        "Sentado al borde de una silla firme.",
+        "Alterna 30 s de marcha con brazos, 30 s de golpes suaves al aire y 30 s de aperturas de brazos.",
+        "Repite la secuencia durante el tiempo indicado."
+      ],
+      "cues": [
+        "Respira de forma continua"
+      ],
+      "mistakes": [],
+      "regions": [
+        "cardio"
+      ],
+      "muscles": [
+        "hombros",
+        "cuadriceps"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_2020",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_caminata_suave",
+      "name": "Caminata suave",
+      "role": "principal",
+      "level": 1,
+      "pattern": "aerobico",
+      "attrs": {
+        "tracks": [
+          "lumbar",
+          "rodilla",
+          "cadera",
+          "tobillo",
+          "adulto_mayor",
+          "cardiometabolico",
+          "movilidad_general"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "lumbar": [
+            1,
+            2,
+            3
+          ],
+          "rodilla": [
+            2,
+            3
+          ],
+          "cadera": [
+            2,
+            3
+          ],
+          "tobillo": [
+            3
+          ],
+          "adulto_mayor": [
+            3
+          ],
+          "cardiometabolico": [
+            1
+          ],
+          "movilidad_general": [
+            2,
+            3
+          ]
+        },
+        "rx": {
+          "type": "time",
+          "durationS": 600,
+          "intensity": "suave"
+        }
+      },
+      "description": "Caminar a paso cómodo en terreno plano. La actividad más recomendada por las guías para empezar a moverse.",
+      "steps": [
+        "Usa calzado cómodo y elige un terreno plano.",
+        "Camina a un paso que te permita conversar con facilidad.",
+        "Si aparece dolor por encima de 3/10, acorta la caminata."
+      ],
+      "cues": [
+        "Pasos cortos y relajados",
+        "Brazos sueltos"
+      ],
+      "mistakes": [],
+      "regions": [
+        "cardio"
+      ],
+      "muscles": [
+        "gemelos",
+        "cuadriceps"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio",
+        "parque",
+        "exterior"
+      ],
+      "impact": "bajo",
+      "source": "oms_2020",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_caminata_rapida",
+      "name": "Caminata a paso vivo",
+      "role": "principal",
+      "level": 2,
+      "pattern": "aerobico",
+      "attrs": {
+        "tracks": [
+          "cardiometabolico",
+          "movilidad_general"
+        ],
+        "phase": 2,
+        "phasesByTrack": {
+          "cardiometabolico": [
+            2,
+            3
+          ],
+          "movilidad_general": [
+            3
+          ]
+        },
+        "rx": {
+          "type": "time",
+          "durationS": 1200,
+          "intensity": "moderada"
+        }
+      },
+      "description": "Caminar a paso vivo: intensidad moderada en la que puedes hablar pero no cantar. Cuenta para los 150 minutos semanales que recomienda la OMS.",
+      "steps": [
+        "Empieza 3 minutos a paso cómodo.",
+        "Sube el ritmo hasta respirar más rápido pero poder hablar en frases cortas.",
+        "Termina con 2–3 minutos a paso suave."
+      ],
+      "cues": [
+        "Prueba del habla: hablar sí, cantar no"
+      ],
+      "mistakes": [
+        "Pasar a un ritmo en que no puedes hablar"
+      ],
+      "regions": [
+        "cardio"
+      ],
+      "muscles": [
+        "gemelos",
+        "cuadriceps"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio",
+        "parque",
+        "exterior"
+      ],
+      "impact": "bajo",
+      "source": "oms_2020",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_retraccion_menton",
+      "name": "Retracción de mentón",
+      "role": "principal",
+      "level": 1,
+      "pattern": "postura",
+      "attrs": {
+        "tracks": [
+          "movilidad_general"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "movilidad_general": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "sostén 3 s"
+        }
+      },
+      "description": "Llevar la cabeza hacia atrás como haciendo papada, para contrarrestar la postura de cabeza adelantada frente a pantallas.",
+      "steps": [
+        "Sentado con la espalda apoyada y la mirada al frente.",
+        "Lleva el mentón hacia atrás sin inclinar la cabeza (como si hicieras papada).",
+        "Sostén 3 segundos y relaja."
+      ],
+      "cues": [
+        "Mirada horizontal"
+      ],
+      "mistakes": [
+        "Bajar la cabeza"
+      ],
+      "regions": [
+        "tren_superior"
+      ],
+      "muscles": [
+        "espalda"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio",
+        "parque",
+        "exterior"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_apertura_toracica_silla",
+      "name": "Extensión de espalda alta en la silla",
+      "role": "principal",
+      "level": 1,
+      "pattern": "movilidad",
+      "attrs": {
+        "tracks": [
+          "movilidad_general",
+          "lumbar"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "movilidad_general": [
+            1,
+            2
+          ],
+          "lumbar": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-2-2"
+        }
+      },
+      "description": "Con las manos detrás de la cabeza, extender suavemente la espalda alta sobre el respaldo de la silla.",
+      "steps": [
+        "Siéntate con la espalda apoyada en una silla de respaldo bajo y firme.",
+        "Pon las manos detrás de la cabeza y abre los codos.",
+        "Inclínate suavemente hacia atrás sobre el respaldo, sostén 2 segundos y vuelve."
+      ],
+      "cues": [
+        "El movimiento sale de la espalda alta"
+      ],
+      "mistakes": [
+        "Arquear la espalda baja"
+      ],
+      "regions": [
+        "tren_superior",
+        "core"
+      ],
+      "muscles": [
+        "espalda"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    },
+    {
+      "key": "hea_rotacion_tronco_sentado",
+      "name": "Rotación de tronco sentado",
+      "role": "principal",
+      "level": 1,
+      "pattern": "movilidad",
+      "attrs": {
+        "tracks": [
+          "movilidad_general",
+          "lumbar"
+        ],
+        "phase": 1,
+        "phasesByTrack": {
+          "movilidad_general": [
+            1,
+            2
+          ],
+          "lumbar": [
+            1,
+            2
+          ]
+        },
+        "rx": {
+          "type": "reps",
+          "tempo": "2-2-2"
+        },
+        "unilateral": true
+      },
+      "description": "Girar suavemente el tronco sentado para movilizar la columna tras horas en la misma posición.",
+      "steps": [
+        "Sentado con los pies apoyados y los brazos cruzados sobre el pecho.",
+        "Gira el tronco hacia un lado hasta donde sea cómodo, con la cadera quieta.",
+        "Sostén 2 segundos, vuelve al centro y gira al otro lado."
+      ],
+      "cues": [
+        "Crece hacia arriba antes de girar"
+      ],
+      "mistakes": [],
+      "regions": [
+        "core"
+      ],
+      "muscles": [
+        "core",
+        "espalda"
+      ],
+      "equipment": [],
+      "environments": [
+        "casa",
+        "gimnasio",
+        "parque",
+        "exterior"
+      ],
+      "impact": "bajo",
+      "source": "oms_pir",
+      "license": null,
+      "author": null,
+      "contraindications": []
+    }
+  ],
+  "progressions": [
+    {
+      "key": "hea_rodilla",
+      "name": "Protocolo de rodilla",
+      "family": "fases",
+      "icon": "🦵",
+      "source": "silbernagel_2007",
+      "description": "Activación y movilidad sin dolor → fuerza de cuádriceps y glúteos → gestos funcionales (escaleras, sentadilla parcial).",
+      "steps": [
+        {
+          "name": "Fase 1 · Control del dolor y movilidad",
+          "movement": "hea_contraccion_cuadriceps",
+          "target": {
+            "type": "reps",
+            "sets": 2,
+            "repsMin": 8,
+            "repsMax": 10,
+            "restS": 45,
+            "tempo": "3-1-3",
+            "painMax": 3,
+            "intensity": "muy suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 6
+          }
+        },
+        {
+          "name": "Fase 2 · Fortalecimiento progresivo",
+          "movement": "hea_sentarse_levantarse",
+          "target": {
+            "type": "reps",
+            "sets": 3,
+            "repsMin": 8,
+            "repsMax": 12,
+            "restS": 60,
+            "tempo": "3-1-3",
+            "painMax": 3,
+            "intensity": "suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 9
+          }
+        },
+        {
+          "name": "Fase 3 · Función y retorno a la actividad",
+          "movement": "hea_subir_escalon",
+          "target": {
+            "type": "reps",
+            "sets": 3,
+            "repsMin": 10,
+            "repsMax": 15,
+            "restS": 60,
+            "tempo": "2-1-2",
+            "painMax": 3,
+            "intensity": "moderada"
+          },
+          "unlock": {
+            "type": "maintain"
+          }
+        }
+      ]
+    },
+    {
+      "key": "hea_cadera",
+      "name": "Protocolo de cadera",
+      "family": "fases",
+      "icon": "🦴",
+      "source": "silbernagel_2007",
+      "description": "Movilidad y activación del glúteo → fuerza de cadera de pie → estabilidad y marcha.",
+      "steps": [
+        {
+          "name": "Fase 1 · Control del dolor y movilidad",
+          "movement": "hea_almeja",
+          "target": {
+            "type": "reps",
+            "sets": 2,
+            "repsMin": 8,
+            "repsMax": 10,
+            "restS": 45,
+            "tempo": "3-1-3",
+            "painMax": 3,
+            "intensity": "muy suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 6
+          }
+        },
+        {
+          "name": "Fase 2 · Fortalecimiento progresivo",
+          "movement": "hea_puente_gluteo",
+          "target": {
+            "type": "reps",
+            "sets": 3,
+            "repsMin": 8,
+            "repsMax": 12,
+            "restS": 60,
+            "tempo": "3-1-3",
+            "painMax": 3,
+            "intensity": "suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 9
+          }
+        },
+        {
+          "name": "Fase 3 · Función y retorno a la actividad",
+          "movement": "hea_bisagra_cadera_apoyo",
+          "target": {
+            "type": "reps",
+            "sets": 3,
+            "repsMin": 10,
+            "repsMax": 15,
+            "restS": 60,
+            "tempo": "2-1-2",
+            "painMax": 3,
+            "intensity": "moderada"
+          },
+          "unlock": {
+            "type": "maintain"
+          }
+        }
+      ]
+    },
+    {
+      "key": "hea_lumbar",
+      "name": "Protocolo de espalda baja",
+      "family": "fases",
+      "icon": "🔻",
+      "source": "silbernagel_2007",
+      "description": "Movilidad suave y caminatas → control del tronco → gestos de la vida diaria (bisagra de cadera).",
+      "steps": [
+        {
+          "name": "Fase 1 · Control del dolor y movilidad",
+          "movement": "hea_bascula_pelvica",
+          "target": {
+            "type": "reps",
+            "sets": 2,
+            "repsMin": 8,
+            "repsMax": 10,
+            "restS": 45,
+            "tempo": "3-1-3",
+            "painMax": 3,
+            "intensity": "muy suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 6
+          }
+        },
+        {
+          "name": "Fase 2 · Fortalecimiento progresivo",
+          "movement": "hea_pajaro_perro",
+          "target": {
+            "type": "reps",
+            "sets": 3,
+            "repsMin": 8,
+            "repsMax": 12,
+            "restS": 60,
+            "tempo": "3-1-3",
+            "painMax": 3,
+            "intensity": "suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 9
+          }
+        },
+        {
+          "name": "Fase 3 · Función y retorno a la actividad",
+          "movement": "hea_bisagra_cadera_apoyo",
+          "target": {
+            "type": "reps",
+            "sets": 3,
+            "repsMin": 10,
+            "repsMax": 15,
+            "restS": 60,
+            "tempo": "2-1-2",
+            "painMax": 3,
+            "intensity": "moderada"
+          },
+          "unlock": {
+            "type": "maintain"
+          }
+        }
+      ]
+    },
+    {
+      "key": "hea_hombro",
+      "name": "Protocolo de hombro",
+      "family": "fases",
+      "icon": "💪",
+      "source": "silbernagel_2007",
+      "description": "Movilidad asistida e isométricos → fuerza con banda del manguito y la escápula → uso del brazo por encima del hombro.",
+      "steps": [
+        {
+          "name": "Fase 1 · Control del dolor y movilidad",
+          "movement": "hea_pendulo",
+          "target": {
+            "type": "reps",
+            "sets": 2,
+            "repsMin": 8,
+            "repsMax": 10,
+            "restS": 45,
+            "tempo": "3-1-3",
+            "painMax": 3,
+            "intensity": "muy suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 6
+          }
+        },
+        {
+          "name": "Fase 2 · Fortalecimiento progresivo",
+          "movement": "hea_rotacion_externa_banda",
+          "target": {
+            "type": "reps",
+            "sets": 3,
+            "repsMin": 8,
+            "repsMax": 12,
+            "restS": 60,
+            "tempo": "3-1-3",
+            "painMax": 3,
+            "intensity": "suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 9
+          }
+        },
+        {
+          "name": "Fase 3 · Función y retorno a la actividad",
+          "movement": "hea_flexion_pared",
+          "target": {
+            "type": "reps",
+            "sets": 3,
+            "repsMin": 10,
+            "repsMax": 15,
+            "restS": 60,
+            "tempo": "2-1-2",
+            "painMax": 3,
+            "intensity": "moderada"
+          },
+          "unlock": {
+            "type": "maintain"
+          }
+        }
+      ]
+    },
+    {
+      "key": "hea_tobillo",
+      "name": "Protocolo de tobillo y pie",
+      "family": "fases",
+      "icon": "🦶",
+      "source": "silbernagel_2007",
+      "description": "Movilidad del tobillo → fuerza de pantorrilla y equilibrio con apoyo → equilibrio dinámico y escalón.",
+      "steps": [
+        {
+          "name": "Fase 1 · Control del dolor y movilidad",
+          "movement": "hea_alfabeto_tobillo",
+          "target": {
+            "type": "reps",
+            "sets": 2,
+            "repsMin": 8,
+            "repsMax": 10,
+            "restS": 45,
+            "tempo": "3-1-3",
+            "painMax": 3,
+            "intensity": "muy suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 6
+          }
+        },
+        {
+          "name": "Fase 2 · Fortalecimiento progresivo",
+          "movement": "hea_elevacion_talones_apoyo",
+          "target": {
+            "type": "reps",
+            "sets": 3,
+            "repsMin": 8,
+            "repsMax": 12,
+            "restS": 60,
+            "tempo": "3-1-3",
+            "painMax": 3,
+            "intensity": "suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 9
+          }
+        },
+        {
+          "name": "Fase 3 · Función y retorno a la actividad",
+          "movement": "hea_marcha_tandem",
+          "target": {
+            "type": "reps",
+            "sets": 3,
+            "repsMin": 10,
+            "repsMax": 15,
+            "restS": 60,
+            "tempo": "2-1-2",
+            "painMax": 3,
+            "intensity": "moderada"
+          },
+          "unlock": {
+            "type": "maintain"
+          }
+        }
+      ]
+    },
+    {
+      "key": "hea_adulto_mayor",
+      "name": "Fuerza y equilibrio (adulto mayor)",
+      "family": "fases",
+      "icon": "🧓",
+      "source": "otago",
+      "description": "Basado en el programa Otago y CDC STEADI: de ejercicios sentado o con apoyo a caminar con más seguridad.",
+      "steps": [
+        {
+          "name": "Fase 1 · Fuerza y equilibrio sentado o con apoyo",
+          "movement": "hea_extension_rodilla_sentado",
+          "target": {
+            "type": "reps",
+            "sets": 1,
+            "repsMin": 8,
+            "repsMax": 10,
+            "restS": 60,
+            "tempo": "3-1-3",
+            "painMax": 3,
+            "intensity": "muy suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 6
+          }
+        },
+        {
+          "name": "Fase 2 · De pie con apoyo",
+          "movement": "hea_elevacion_talones_apoyo",
+          "target": {
+            "type": "reps",
+            "sets": 2,
+            "repsMin": 8,
+            "repsMax": 10,
+            "restS": 60,
+            "tempo": "3-1-3",
+            "painMax": 3,
+            "intensity": "suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 9,
+            "testMetric": "hea_equilibrio_etapa",
+            "testMin": 3,
+            "testLabel": "sostener la posición en tándem 10 s (test de equilibrio en 4 etapas)"
+          }
+        },
+        {
+          "name": "Fase 3 · Sin apoyo y marcha",
+          "movement": "hea_marcha_tandem",
+          "target": {
+            "type": "reps",
+            "sets": 2,
+            "repsMin": 10,
+            "repsMax": 12,
+            "restS": 60,
+            "tempo": "2-1-2",
+            "painMax": 3,
+            "intensity": "moderada"
+          },
+          "unlock": {
+            "type": "maintain"
+          }
+        }
+      ]
+    },
+    {
+      "key": "hea_cardiometabolico",
+      "name": "Actividad progresiva (salud cardiometabólica)",
+      "family": "fases",
+      "icon": "🫀",
+      "source": "oms_2020",
+      "description": "Minutos aeróbicos crecientes hacia los 150 min semanales de actividad moderada y 2 días de fuerza que recomienda la OMS.",
+      "steps": [
+        {
+          "name": "Fase 1 · Activación suave",
+          "movement": "hea_marcha_sentado",
+          "target": {
+            "type": "time",
+            "durationS": 600,
+            "painMax": 3,
+            "intensity": "suave (puedes cantar)"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 6,
+            "rpeMax": 5
+          }
+        },
+        {
+          "name": "Fase 2 · Actividad moderada y fuerza",
+          "movement": "hea_caminata_rapida",
+          "target": {
+            "type": "time",
+            "durationS": 1200,
+            "painMax": 3,
+            "intensity": "moderada (hablas, no cantas)"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 8,
+            "rpeMax": 6
+          }
+        },
+        {
+          "name": "Fase 3 · Meta OMS: 150 min por semana",
+          "movement": "hea_caminata_rapida",
+          "target": {
+            "type": "time",
+            "durationS": 1800,
+            "painMax": 3,
+            "intensity": "moderada (hablas, no cantas)"
+          },
+          "unlock": {
+            "type": "maintain"
+          }
+        }
+      ]
+    },
+    {
+      "key": "hea_movilidad_general",
+      "name": "Movilidad y postura",
+      "family": "fases",
+      "icon": "🧍",
+      "source": "oms_2020",
+      "description": "Pausas activas y movilidad → postura y fuerza de espalda → hábito activo con caminatas.",
+      "steps": [
+        {
+          "name": "Fase 1 · Pausas activas y movilidad",
+          "movement": "hea_retraccion_escapular",
+          "target": {
+            "type": "reps",
+            "sets": 1,
+            "repsMin": 8,
+            "repsMax": 10,
+            "restS": 30,
+            "tempo": "2-2-2",
+            "painMax": 3,
+            "intensity": "muy suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 6
+          }
+        },
+        {
+          "name": "Fase 2 · Postura y fuerza",
+          "movement": "hea_remo_banda",
+          "target": {
+            "type": "reps",
+            "sets": 2,
+            "repsMin": 10,
+            "repsMax": 12,
+            "restS": 45,
+            "tempo": "2-1-2",
+            "painMax": 3,
+            "intensity": "suave"
+          },
+          "unlock": {
+            "type": "pain",
+            "maxDuring": 3,
+            "maxNextDay": 3,
+            "sessions": 9
+          }
+        },
+        {
+          "name": "Fase 3 · Hábito activo",
+          "movement": "hea_caminata_rapida",
+          "target": {
+            "type": "reps",
+            "sets": 2,
+            "repsMin": 12,
+            "repsMax": 15,
+            "restS": 45,
+            "tempo": "2-1-2",
+            "painMax": 3,
+            "intensity": "moderada"
+          },
+          "unlock": {
+            "type": "maintain"
+          }
+        }
+      ]
+    }
+  ],
+  "assessments": [
+    {
+      "key": "hea_test_silla_30s",
+      "name": "Levantarse de la silla en 30 segundos",
+      "kind": "count",
+      "durationS": 30,
+      "metric": "hea_chair_stand",
+      "unit": "reps",
+      "retestDays": 28,
+      "source": "cdc_steadi",
+      "sortOrder": 1,
+      "description": "Mide la fuerza y resistencia de las piernas. Protocolo 30-Second Chair Stand de CDC STEADI. Las normas aplican de 60 a 94 años.",
+      "instructions": [
+        "Usa una silla firme sin brazos (unos 43 cm de alto) apoyada contra la pared.",
+        "Siéntate en el centro, espalda recta, pies apoyados y brazos cruzados sobre el pecho.",
+        "Al iniciar el tiempo, levántate por completo y vuelve a sentarte tantas veces como puedas en 30 segundos.",
+        "Cuenta cada vez que quedas de pie del todo. Si al terminar estás a más de la mitad de la subida, cuenta esa también.",
+        "Si necesitas usar los brazos para levantarte, detén el test y registra 0."
+      ],
+      "safetyNote": "Silla contra la pared y alguien cerca si tienes 65 años o más o te sientes inestable. Detente si hay dolor por encima de 5/10 o mareo.",
+      "norms": {
+        "groups": [
+          {
+            "sex": "masculino",
+            "ageMin": 60,
+            "ageMax": 64,
+            "bands": [
+              {
+                "max": 14,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 14,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "masculino",
+            "ageMin": 65,
+            "ageMax": 69,
+            "bands": [
+              {
+                "max": 12,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 12,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "masculino",
+            "ageMin": 70,
+            "ageMax": 74,
+            "bands": [
+              {
+                "max": 12,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 12,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "masculino",
+            "ageMin": 75,
+            "ageMax": 79,
+            "bands": [
+              {
+                "max": 11,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 11,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "masculino",
+            "ageMin": 80,
+            "ageMax": 84,
+            "bands": [
+              {
+                "max": 10,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 10,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "masculino",
+            "ageMin": 85,
+            "ageMax": 89,
+            "bands": [
+              {
+                "max": 8,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 8,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "masculino",
+            "ageMin": 90,
+            "ageMax": 120,
+            "bands": [
+              {
+                "max": 7,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 7,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "femenino",
+            "ageMin": 60,
+            "ageMax": 64,
+            "bands": [
+              {
+                "max": 12,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 12,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "femenino",
+            "ageMin": 65,
+            "ageMax": 69,
+            "bands": [
+              {
+                "max": 11,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 11,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "femenino",
+            "ageMin": 70,
+            "ageMax": 74,
+            "bands": [
+              {
+                "max": 10,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 10,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "femenino",
+            "ageMin": 75,
+            "ageMax": 79,
+            "bands": [
+              {
+                "max": 10,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 10,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "femenino",
+            "ageMin": 80,
+            "ageMax": 84,
+            "bands": [
+              {
+                "max": 9,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 9,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "femenino",
+            "ageMin": 85,
+            "ageMax": 89,
+            "bands": [
+              {
+                "max": 8,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 8,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          },
+          {
+            "sex": "femenino",
+            "ageMin": 90,
+            "ageMax": 120,
+            "bands": [
+              {
+                "max": 4,
+                "label": "Bajo el promedio (riesgo de caídas)",
+                "risk": true
+              },
+              {
+                "min": 4,
+                "label": "En el promedio o mejor"
+              }
+            ]
+          }
+        ],
+        "bands": [
+          {
+            "label": "Valor de seguimiento (las normas STEADI aplican de 60 a 94 años)"
+          }
+        ]
+      }
+    },
+    {
+      "key": "hea_test_tug",
+      "name": "Levántate y anda cronometrado (TUG)",
+      "kind": "stopwatch",
+      "durationS": null,
+      "metric": "hea_tug_s",
+      "unit": "s",
+      "retestDays": 28,
+      "source": "cdc_steadi",
+      "sortOrder": 2,
+      "description": "Mide la movilidad y el riesgo de caídas: levantarse, caminar 3 metros, girar, volver y sentarse. Según CDC STEADI, 12 segundos o más indica riesgo de caídas.",
+      "instructions": [
+        "Marca una línea a 3 metros (10 pies) de una silla con brazos.",
+        "Siéntate con la espalda apoyada y tu calzado habitual (y tu bastón si lo usas).",
+        "Con la palabra «ya», levántate, camina a tu paso normal hasta la línea, gira, vuelve y siéntate.",
+        "El tiempo se detiene cuando te sientas. Registra los segundos."
+      ],
+      "safetyNote": "Hazlo con otra persona a tu lado, en un espacio despejado. Camina a tu paso normal, no corras.",
+      "norms": {
+        "bands": [
+          {
+            "max": 12,
+            "label": "Sin riesgo aumentado de caídas"
+          },
+          {
+            "min": 12,
+            "label": "Riesgo de caídas: prioriza el equilibrio y consulta",
+            "risk": true
+          }
+        ]
+      }
+    },
+    {
+      "key": "hea_test_equilibrio_4",
+      "name": "Equilibrio en 4 etapas",
+      "kind": "manual",
+      "durationS": null,
+      "metric": "hea_equilibrio_etapa",
+      "unit": "etapa",
+      "retestDays": 28,
+      "source": "cdc_steadi",
+      "sortOrder": 3,
+      "description": "Cuatro posiciones de pie cada vez más difíciles, sosteniendo cada una 10 segundos sin apoyarte. Registra la etapa más alta que sostuviste (0 a 4). Según CDC STEADI, no sostener la posición en tándem (etapa 3) 10 segundos indica riesgo de caídas.",
+      "instructions": [
+        "Etapa 1: pies juntos, uno al lado del otro.",
+        "Etapa 2: un pie un poco adelantado, con el empeine tocando el dedo gordo del otro (semitándem).",
+        "Etapa 3: un pie justo delante del otro, talón tocando la punta (tándem).",
+        "Etapa 4: sobre un solo pie.",
+        "Sostén cada etapa 10 segundos sin moverte ni apoyarte; si lo logras, pasa a la siguiente. Registra la última etapa completada (0 si no sostuviste la primera)."
+      ],
+      "safetyNote": "Hazlo junto a una pared o mesón y con otra persona a tu lado lista para sujetarte. No sigas si te mareas.",
+      "norms": {
+        "bands": [
+          {
+            "max": 3,
+            "label": "Riesgo de caídas (no sostiene el tándem 10 s)",
+            "risk": true
+          },
+          {
+            "min": 3,
+            "max": 4,
+            "label": "Sin riesgo aumentado"
+          },
+          {
+            "min": 4,
+            "label": "Muy buen equilibrio"
+          }
+        ]
+      }
+    },
+    {
+      "key": "hea_test_funcion",
+      "name": "Tu actividad más difícil (autorreporte)",
+      "kind": "manual",
+      "durationS": null,
+      "metric": "hea_funcion",
+      "unit": "0-10",
+      "retestDays": 14,
+      "source": "sportacus",
+      "sortOrder": 4,
+      "description": "Piensa en la actividad del día a día que más te cuesta por tu molestia (subir escaleras, levantarte, cargar bolsas…). Del 0 al 10, ¿qué tan bien la puedes hacer hoy? 0 = no puedo, 10 = como antes. Repite el registro cada 2 semanas con la misma actividad.",
+      "instructions": [
+        "Elige una actividad concreta y anótala para usar siempre la misma.",
+        "Califica de 0 (no puedo hacerla) a 10 (la hago como antes del problema).",
+        "Registra el número."
+      ],
+      "safetyNote": null,
+      "norms": {
+        "bands": [
+          {
+            "max": 4,
+            "label": "Limitación importante"
+          },
+          {
+            "min": 4,
+            "max": 7,
+            "label": "Limitación moderada"
+          },
+          {
+            "min": 7,
+            "label": "Buena función"
+          }
+        ]
+      }
+    }
+  ]
+}

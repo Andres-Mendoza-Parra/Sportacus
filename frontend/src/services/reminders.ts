@@ -35,6 +35,18 @@ export async function saveReminderPrefs(prefs: ReminderPrefs): Promise<void> {
   await AsyncStorage.setItem(KEY, JSON.stringify(prefs));
 }
 
+/**
+ * Convierte los días del plan (backend: 1 = lunes … 7 = domingo) a la convención de
+ * expo-notifications (1 = domingo … 7 = sábado), sin repetidos.
+ */
+export function planWeekdaysToReminder(weekdays: (number | null | undefined)[]): number[] {
+  const out = new Set<number>();
+  for (const w of weekdays) {
+    if (w && w >= 1 && w <= 7) out.add(w === 7 ? 1 : w + 1);
+  }
+  return [...out].sort((a, b) => a - b);
+}
+
 /** Pide permiso (si hace falta). Devuelve true si se puede notificar. */
 export async function ensureNotificationPermission(): Promise<boolean> {
   if (!REMINDERS_SUPPORTED) return false;
@@ -64,7 +76,7 @@ export async function applyReminders(prefs: ReminderPrefs): Promise<void> {
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "¡Hora de entrenar! 💪",
-        body: "Tu rutina de hoy te espera en Sportacus.",
+        body: "Tu sesión de hoy te espera en Sportacus.",
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.WEEKLY,

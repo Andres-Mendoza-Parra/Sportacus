@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AUTH_USER_KEY } from "../constants/config";
 
 /**
- * Preferencias locales por usuario (favoritos, plan semanal, modo de cuidado…).
+ * Preferencias locales por usuario (historial del chat, etc.).
  * Se guardan bajo "pref:<userId>:<clave>" y se borran al cerrar sesión.
  */
 async function storageKey(name: string): Promise<string> {

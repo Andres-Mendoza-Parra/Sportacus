@@ -6,10 +6,21 @@ spring:
     name: sportacus-backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/sportacus
-    username: sportacus_app
-    password: lyoko
+    # Esquema por Mundos (docs/14 §6). El esquema antiguo "sportacus" queda como respaldo.
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/sportacus?currentSchema=sportacus_v2}
+    username: ${DB_USER:sportacus_app}
+    password: ${DB_PASSWORD:lyoko}
     driver-class-name: org.postgresql.Driver
+
+  jackson:
+    # Las prescripciones y widgets tienen muchos campos opcionales: no se envían los nulos.
+    default-property-inclusion: non_null
+
+  flyway:
+    schemas: sportacus_v2
+    default-schema: sportacus_v2
+    create-schemas: true
+    locations: classpath:db/migration
 
   jpa:
     open-in-view: false
@@ -17,15 +28,20 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        default_schema: sportacus
+        default_schema: sportacus_v2
         format_sql: true
-    show-sql: true
+    show-sql: false
 
 sportacus:
-  gemini:
-    # Solo por variable de entorno; nunca escribas la clave aquí. Sin ella la IA se desactiva sin romper nada.
-    api-key: ${GEMINI_API_KEY:}
-    model: gemini-3.1-flash-lite
+  rag:
+    # Todo el motor de IA corre local vía Ollama (Docker, puerto 11434): ningún dato
+    # de usuarios ni del catálogo sale de esta máquina. Sin Ollama corriendo, el chat
+    # y el enriquecimiento de ejercicios se desactivan solos sin romper el resto de la app.
+    ollama-base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+    embedding-model: ${RAG_EMBEDDING_MODEL:nomic-embed-text}
+    embedding-dimensions: ${RAG_EMBEDDING_DIMENSIONS:768}
+    chat-model: ${RAG_CHAT_MODEL:qwen2.5:7b-instruct}
+    top-k: ${RAG_TOP_K:5}
   jwt:
     # Cambia este secreto en un entorno real. Debe tener al menos 32 caracteres.
     secret: "c3BvcnRhY3VzLXByb2Qtc3VwZXItc2VjdXJlLWp3dC1zZWNyZXQta2V5LTIwMjY="

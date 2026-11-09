@@ -18,8 +18,5 @@ const HOST = Platform.OS === "web" ? "localhost" : LOCAL_IP;
 
 export const API_BASE_URL = `http://${HOST}:8082/api`;
 
-/** Webhook del chat de n8n (workflow con Google Gemini). Corre en Docker, puerto 5678. */
-export const N8N_CHAT_URL = `http://${HOST}:5678/webhook/e445d7ac-0bd7-43af-8add-147cf1e6c55b/chat`;
-
 export const AUTH_TOKEN_KEY = "sportacus_auth_token";
 export const AUTH_USER_KEY = "sportacus_auth_user";

@@ -40,14 +40,8 @@ export default function RegisterScreen() {
     setIsSubmitting(true);
     try {
       await register(name.trim(), email.trim(), password);
-      toast.success("¡Cuenta creada! Primero elige tu enfoque; el resto del perfil es opcional.");
-      // "personal" (datos esenciales) y "enfoque" (objetivo/nivel/entorno) son los únicos pasos
-      // del onboarding; cada uno se puede omitir con la ✕, pero el paso de elegir módulo al
-      // final de la cadena (ver questionnaires/[key].tsx → advance()) no.
-      router.replace({
-        pathname: "/questionnaires/[key]",
-        params: { key: "personal", onb: "1", flow: "enfoque" },
-      });
+      toast.success("¡Cuenta creada! Empecemos por conocerte.");
+      router.replace("/onboarding");
     } catch (error) {
       toast.error(extractErrorMessage(error));
     } finally {

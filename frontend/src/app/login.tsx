@@ -30,7 +30,7 @@ export default function LoginScreen() {
     setIsSubmitting(true);
     try {
       await login(email.trim(), password);
-      router.replace("/home");
+      router.replace("/"); // el punto de entrada decide: recibimiento pendiente o pestañas
     } catch (error) {
       toast.error(extractErrorMessage(error));
     } finally {

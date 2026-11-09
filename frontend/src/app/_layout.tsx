@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { FeedbackProvider } from "../components/ui/Feedback";
 import { AuthProvider } from "../context/AuthContext";
+import { WorldProvider } from "../context/WorldContext";
 import { initNotificationHandler } from "../services/reminders";
 import { ThemeProvider, useTheme } from "../theme";
 
@@ -22,17 +23,10 @@ function ThemedStack() {
         <Stack.Screen name="login" options={{ animation: "fade" }} />
         <Stack.Screen name="register" />
         <Stack.Screen name="(tabs)" options={{ animation: "fade" }} />
-        <Stack.Screen name="onboarding/module" options={{ animation: "fade", gestureEnabled: false }} />
-        <Stack.Screen name="questionnaires/[key]" />
-        <Stack.Screen name="routine/[id]" />
-        <Stack.Screen name="settings" />
-        <Stack.Screen name="workout" options={{ animation: "slide_from_bottom", gestureEnabled: false }} />
-        <Stack.Screen name="progress" />
-        <Stack.Screen name="tests" />
-        <Stack.Screen name="plan" />
-        <Stack.Screen name="library/index" />
-        <Stack.Screen name="workshop/index" />
-        <Stack.Screen name="workshop/pick-exercise" />
+        <Stack.Screen name="onboarding/index" options={{ animation: "fade", gestureEnabled: false }} />
+        <Stack.Screen name="session/[id]" options={{ animation: "slide_from_bottom", gestureEnabled: false }} />
+        <Stack.Screen name="pain-check/[logId]" options={{ animation: "slide_from_bottom" }} />
+        <Stack.Screen name="assessments/[key]" options={{ gestureEnabled: false }} />
       </Stack>
     </>
   );
@@ -42,9 +36,11 @@ export default function RootLayout() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <FeedbackProvider>
-          <ThemedStack />
-        </FeedbackProvider>
+        <WorldProvider>
+          <FeedbackProvider>
+            <ThemedStack />
+          </FeedbackProvider>
+        </WorldProvider>
       </AuthProvider>
     </ThemeProvider>
   );

@@ -2,6 +2,8 @@ package com.sportacus.backend.common;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -13,18 +15,26 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.sportacus.backend.auth.EmailAlreadyRegisteredException;
 import com.sportacus.backend.auth.InvalidCredentialsException;
+import com.sportacus.backend.rag.RagUnavailableException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @ExceptionHandler(RagUnavailableException.class)
+    public ResponseEntity<ApiError> handleRagUnavailable(RagUnavailableException ex) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(ApiError.of(503, "Asistente no disponible",
+                        List.of("El motor de IA local no está disponible en este momento. Intenta de nuevo en un momento.")));
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleValidation(MethodArgumentNotValidException ex) {
         List<String> messages = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> fieldError.getDefaultMessage())
                 .toList();
-
-        return ResponseEntity.badRequest()
-                .body(ApiError.of(400, "Datos inválidos", messages));
+        return ResponseEntity.badRequest().body(ApiError.of(400, "Datos inválidos", messages));
     }
 
     @ExceptionHandler(EmailAlreadyRegisteredException.class)
@@ -52,9 +62,11 @@ public class GlobalExceptionHandler {
                 .body(ApiError.of(400, "Datos inválidos", List.of("El cuerpo de la petición no es válido")));
     }
 
+    /** Errores no previstos: se registran completos en el log y al cliente se le da un mensaje neutro. */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGeneric(Exception ex) {
+        log.error("Error no controlado", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiError.of(500, "Error interno", List.of(ex.getMessage())));
+                .body(ApiError.of(500, "Error interno", List.of("Ocurrió un error inesperado. Intenta de nuevo.")));
     }
 }

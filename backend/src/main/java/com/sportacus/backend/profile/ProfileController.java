@@ -2,9 +2,7 @@ package com.sportacus.backend.profile;
 
 import java.util.Map;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,52 +13,55 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sportacus.backend.profile.dto.ProfileRequests.ChangePasswordRequest;
-import com.sportacus.backend.profile.dto.ProfileRequests.DeleteAccountRequest;
-import com.sportacus.backend.profile.dto.ProfileRequests.UpdateProfileRequest;
-import com.sportacus.backend.profile.dto.ProfileResponse;
+import com.sportacus.backend.common.Answers;
 import com.sportacus.backend.user.User;
-
-import jakarta.validation.Valid;
+import com.sportacus.backend.world.form.FormSpec;
 
 @RestController
 @RequestMapping("/api/profile")
 public class ProfileController {
 
-    private final ProfileService profileService;
+    private final ProfileService profiles;
 
-    public ProfileController(ProfileService profileService) {
-        this.profileService = profileService;
+    public ProfileController(ProfileService profiles) {
+        this.profiles = profiles;
     }
 
     @GetMapping
-    public ProfileResponse getProfile(@AuthenticationPrincipal User currentUser) {
-        return profileService.getProfile(currentUser);
+    public ProfileService.AccountView account(@AuthenticationPrincipal User user) {
+        return profiles.account(user);
+    }
+
+    @GetMapping("/form")
+    public FormSpec form(@AuthenticationPrincipal User user) {
+        return profiles.form(user);
+    }
+
+    @PostMapping("/form")
+    public ProfileService.AccountView saveForm(@AuthenticationPrincipal User user, @RequestBody Map<String, Object> answers) {
+        return profiles.saveForm(user, new Answers(answers));
     }
 
     @PatchMapping
-    public ProfileResponse update(@AuthenticationPrincipal User currentUser,
-            @Valid @RequestBody UpdateProfileRequest request) {
-        return profileService.updateProfile(currentUser, request);
+    public ProfileService.AccountView patch(@AuthenticationPrincipal User user,
+            @RequestBody ProfileService.PatchRequest body) {
+        return profiles.patch(user, body);
     }
 
     @PostMapping("/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void changePassword(@AuthenticationPrincipal User currentUser,
-            @Valid @RequestBody ChangePasswordRequest request) {
-        profileService.changePassword(currentUser, request.currentPassword(), request.newPassword());
+    public void password(@AuthenticationPrincipal User user, @RequestBody ProfileService.PasswordRequest body) {
+        profiles.changePassword(user, body);
     }
 
     @GetMapping("/export")
-    public ResponseEntity<Map<String, Object>> export(@AuthenticationPrincipal User currentUser) {
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"sportacus-datos.json\"")
-                .body(profileService.exportData(currentUser));
+    public Map<String, Object> export(@AuthenticationPrincipal User user) {
+        return profiles.export(user);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@AuthenticationPrincipal User currentUser, @Valid @RequestBody DeleteAccountRequest request) {
-        profileService.deleteAccount(currentUser, request.password());
+    public void delete(@AuthenticationPrincipal User user) {
+        profiles.delete(user);
     }
 }

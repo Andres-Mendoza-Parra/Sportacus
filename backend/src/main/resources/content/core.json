@@ -1,0 +1,125 @@
+{
+  "sources": [
+    { "key": "sportacus", "name": "Contenido propio del equipo Sportacus", "url": null, "license": "Propietario Sportacus", "attribution": "Equipo Sportacus", "notes": "Redactado por el equipo a partir de las fuentes citadas en cada ítem." },
+    { "key": "wger", "name": "wger Workout Manager", "url": "https://wger.de/api/v2/", "license": "CC-BY-SA 3.0/4.0 (por ejercicio)", "attribution": "wger.de y sus colaboradores", "notes": "Solo datos, nunca código (AGPL). Licencia y autor por ejercicio." },
+    { "key": "free_exercise_db", "name": "free-exercise-db (yuhonas)", "url": "https://github.com/yuhonas/free-exercise-db", "license": "Unlicense (dominio público)", "attribution": "yuhonas/free-exercise-db", "notes": "Base importable; traducida al español por el equipo." },
+    { "key": "oms_2020", "name": "OMS — Directrices sobre actividad física y comportamientos sedentarios (2020)", "url": "https://iris.who.int/items/2abc9ed0-2a55-4a07-a65f-ab4b7c412ecc", "license": "CC BY-NC-SA 3.0 IGO", "attribution": "Organización Mundial de la Salud, 2020. ISBN 978-92-4-001512-8", "notes": "Se citan y parafrasean recomendaciones; no se copia texto." },
+    { "key": "oms_pir", "name": "OMS — Package of Interventions for Rehabilitation", "url": "https://www.who.int/activities/integrating-rehabilitation-into-health-systems/service-delivery/package-of-interventions-for-rehabilitation", "license": "CC BY-NC-SA 3.0 IGO", "attribution": "Organización Mundial de la Salud", "notes": "Se cita y parafrasea." },
+    { "key": "cdc_steadi", "name": "CDC STEADI — Stopping Elderly Accidents, Deaths & Injuries", "url": "https://www.cdc.gov/steadi/materials.html", "license": "Dominio público (Gobierno de EE. UU.)", "attribution": "Centers for Disease Control and Prevention", "notes": "Protocolos 30s Chair Stand, TUG y 4-Stage Balance con puntos de corte." },
+    { "key": "nia_exercise", "name": "NIA/NIH — Exercise and Physical Activity for older adults", "url": "https://www.nia.nih.gov/health/exercise-and-physical-activity", "license": "Dominio público (Gobierno de EE. UU.)", "attribution": "National Institute on Aging", "notes": "Ejercicios parafraseados; imágenes no incluidas." },
+    { "key": "otago", "name": "Otago Exercise Programme (ACC, 2007) — referencia", "url": "https://www.med.unc.edu/aging/cgwep/wp-content/uploads/sites/865/2024/04/Otago-Guide-for-PT_April-2024-update.pdf", "license": "© ACC 2007 — solo cita", "attribution": "Accident Compensation Corporation, Nueva Zelanda", "notes": "Ejercicios descritos con texto propio, 'basado en'." },
+    { "key": "acsm_2015", "name": "Riebe D. et al. Updating ACSM's recommendations for exercise preparticipation health screening", "url": "https://doi.org/10.1249/MSS.0000000000000664", "license": "Cita académica", "attribution": "Med Sci Sports Exerc 2015;47(11):2473-9", "notes": "Base del chequeo de salud propio." },
+    { "key": "silbernagel_2007", "name": "Silbernagel K.G. et al. Pain-monitoring model", "url": "https://doi.org/10.1177/0363546506298279", "license": "Cita académica", "attribution": "Am J Sports Med 2007;35(6):897-906", "notes": "Regla de dolor durante y a las 24 h." },
+    { "key": "finucane_2020", "name": "Finucane L.M. et al. International Framework for Red Flags", "url": "https://doi.org/10.2519/jospt.2020.9971", "license": "Cita académica", "attribution": "JOSPT 2020;50(7):350-372", "notes": "Banderas rojas del chequeo." },
+    { "key": "riegel_1981", "name": "Riegel P.S. Athletic records and human endurance", "url": null, "license": "Fórmula de uso libre", "attribution": "American Scientist 1981;69(3):285-290", "notes": "T2 = T1 · (D2/D1)^1.06" },
+    { "key": "cooper_1968", "name": "Cooper K.H. A means of assessing maximal oxygen intake", "url": null, "license": "Fórmula de uso libre", "attribution": "JAMA 1968;203(3):201-204", "notes": "VO2máx ≈ (d − 504,9) / 44,73" },
+    { "key": "epley_1985", "name": "Epley B. Poundage chart (1RM estimado)", "url": null, "license": "Fórmula de uso libre", "attribution": "Boyd Epley Workout, 1985", "notes": "1RM = peso · (1 + reps/30)" },
+    { "key": "zourdos_2016", "name": "Zourdos M.C. et al. Novel resistance training-specific RPE scale (RIR)", "url": "https://doi.org/10.1519/JSC.0000000000001049", "license": "Cita académica", "attribution": "J Strength Cond Res 2016;30(1):267-275", "notes": "Repeticiones en reserva." },
+    { "key": "schoenfeld_2017", "name": "Schoenfeld B.J. et al. Dose-response relationship between weekly volume and muscle mass", "url": "https://doi.org/10.1080/02640414.2016.1210197", "license": "Cita académica", "attribution": "J Sports Sci 2017;35(11):1073-1082", "notes": "Rango de series semanales por grupo muscular." },
+    { "key": "foster_2001", "name": "Foster C. et al. A new approach to monitoring exercise training (sRPE)", "url": "https://doi.org/10.1519/00124278-200102000-00019", "license": "Cita académica", "attribution": "J Strength Cond Res 2001;15(1):109-115", "notes": "Carga de sesión = RPE × minutos." },
+    { "key": "gabbett_2016", "name": "Gabbett T.J. The training—injury prevention paradox", "url": "https://doi.org/10.1136/bjsports-2015-095788", "license": "Cita académica", "attribution": "Br J Sports Med 2016;50(5):273-280", "notes": "Relación aguda:crónica (ACWR)." },
+    { "key": "fifa_11plus", "name": "Basado en el programa FIFA 11+ (Bizzini & Dvorak, 2015)", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4413741", "license": "Cita académica — ejercicios descritos con texto propio", "attribution": "Br J Sports Med 2015;49(9):577-579", "notes": "Pedir permiso a FIFA antes de usar su nombre o láminas en producción." },
+    { "key": "nhs_c25k", "name": "NHS Couch to 5K — estructura de referencia", "url": "https://www.nhs.uk/live-well/exercise/running-and-aerobic-exercises/get-running-with-couch-to-5k/", "license": "OGL (texto) — estructura reescrita", "attribution": "National Health Service (Reino Unido)", "notes": "Solo la progresión de 9 semanas, con texto propio." },
+    { "key": "minsalud_af", "name": "MinSalud Colombia — Directrices de promoción y consejería de actividad física", "url": "https://www.minsalud.gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/VS/PP/ENT/directrices-promocion-consejeria-af-ths.pdf", "license": "Sin licencia explícita — solo cita", "attribution": "Ministerio de Salud y Protección Social de Colombia", "notes": "Tono local." }
+  ],
+  "tags": [
+    { "key": "rodilla", "label": "Rodilla", "kind": "zona", "bodyZone": "miembro_inferior" },
+    { "key": "cadera", "label": "Cadera", "kind": "zona", "bodyZone": "miembro_inferior" },
+    { "key": "tobillo", "label": "Tobillo", "kind": "zona", "bodyZone": "miembro_inferior" },
+    { "key": "pie", "label": "Pie", "kind": "zona", "bodyZone": "miembro_inferior" },
+    { "key": "lumbar", "label": "Espalda baja", "kind": "zona", "bodyZone": "columna" },
+    { "key": "dorsal", "label": "Espalda alta", "kind": "zona", "bodyZone": "columna" },
+    { "key": "cervical", "label": "Cuello", "kind": "zona", "bodyZone": "columna" },
+    { "key": "hombro", "label": "Hombro", "kind": "zona", "bodyZone": "miembro_superior" },
+    { "key": "codo", "label": "Codo", "kind": "zona", "bodyZone": "miembro_superior" },
+    { "key": "muneca", "label": "Muñeca o mano", "kind": "zona", "bodyZone": "miembro_superior" },
+    { "key": "cardiopatia", "label": "Enfermedad cardíaca", "kind": "condicion", "bodyZone": null },
+    { "key": "hipertension", "label": "Hipertensión", "kind": "condicion", "bodyZone": null },
+    { "key": "diabetes", "label": "Diabetes", "kind": "condicion", "bodyZone": null },
+    { "key": "renal", "label": "Enfermedad renal", "kind": "condicion", "bodyZone": null },
+    { "key": "asma", "label": "Asma", "kind": "condicion", "bodyZone": null },
+    { "key": "osteoporosis", "label": "Osteoporosis", "kind": "condicion", "bodyZone": null },
+    { "key": "artritis", "label": "Artritis o artrosis", "kind": "condicion", "bodyZone": null },
+    { "key": "embarazo", "label": "Embarazo o posparto", "kind": "estado", "bodyZone": null },
+    { "key": "postoperatorio", "label": "Cirugía reciente", "kind": "estado", "bodyZone": null },
+    { "key": "mareos", "label": "Mareos o desmayos", "kind": "estado", "bodyZone": null }
+  ],
+  "metrics": [
+    { "key": "minutos_sesion", "name": "Minutos de entrenamiento", "unit": "min", "valueType": "integer", "direction": "up" },
+    { "key": "rpe_sesion", "name": "Esfuerzo percibido (RPE)", "unit": "1-10", "valueType": "integer", "direction": "range" },
+    { "key": "carga_sesion", "name": "Carga de la sesión (sRPE)", "unit": "UA", "valueType": "number", "direction": "range", "description": "RPE × minutos (Foster et al., 2001)." },
+    { "key": "dolor_24h", "name": "Dolor a las 24 horas", "unit": "0-10", "valueType": "scale_0_10", "direction": "down" }
+  ],
+  "worlds": [
+    {
+      "key": "gym", "name": "Gimnasio", "icon": "🏋️", "color": "#E4572E", "sortOrder": 1,
+      "tagline": "Fuerza e hipertrofia con cargas, medidas en números",
+      "description": "Entrenamiento con pesas y máquinas guiado por sobrecarga progresiva: cada serie se registra, la app te sugiere la carga de la próxima sesión y ves crecer tu fuerza estimada y tu volumen por músculo.",
+      "highlights": ["Registro por serie con peso, repeticiones y RIR", "Carga sugerida automática (doble progresión)", "Radar de series semanales por músculo", "1RM estimado de tus levantamientos"],
+      "tracks": [
+        { "key": "hipertrofia", "name": "Hipertrofia", "icon": "💪", "description": "Ganar masa muscular con 8–12 repeticiones y volumen semanal suficiente por músculo.", "config": { "repsMin": 8, "repsMax": 12, "sets": 3, "rir": 2, "restS": 90 } },
+        { "key": "fuerza", "name": "Fuerza", "icon": "🏆", "description": "Levantar más en los básicos (sentadilla, peso muerto, press) con series pesadas de 3–6 repeticiones.", "config": { "repsMin": 3, "repsMax": 6, "sets": 4, "rir": 2, "restS": 180 } },
+        { "key": "recomposicion", "name": "Recomposición", "icon": "🔥", "description": "Perder grasa conservando músculo: rangos de 10–15 repeticiones, descansos cortos y más densidad.", "config": { "repsMin": 10, "repsMax": 15, "sets": 3, "rir": 2, "restS": 60 } },
+        { "key": "base", "name": "Base general", "icon": "🧱", "description": "Aprender la técnica de los patrones básicos y construir el hábito con cargas cómodas.", "config": { "repsMin": 10, "repsMax": 12, "sets": 2, "rir": 3, "restS": 75 } }
+      ]
+    },
+    {
+      "key": "calisthenics", "name": "Calistenia", "icon": "🤸", "color": "#7B61FF", "sortOrder": 2,
+      "tagline": "Domina tu cuerpo, desbloquea habilidades",
+      "description": "Entrenamiento con tu propio peso organizado en árboles de habilidades: cada ejercicio es un escalón con un criterio de desbloqueo. Avanzas de flexiones en la pared a la parada de manos o de colgarte de la barra al muscle-up.",
+      "highlights": ["Árboles de habilidades con escalones desbloqueables", "Te ubicamos en tu escalón con un test inicial", "Repeticiones máximas y tiempos de sostenimiento", "Casa o parque, sin gimnasio"],
+      "tracks": [
+        { "key": "fundamentos", "name": "Fundamentos", "icon": "🌱", "description": "Construir la base: flexiones, remo australiano, sentadilla, plancha y colgado de barra.", "config": { "trees": ["empuje", "jale", "piernas", "core"] } },
+        { "key": "fuerza_relativa", "name": "Fuerza relativa", "icon": "💥", "description": "Dominar dominadas, fondos y pistol squat con variantes cada vez más exigentes.", "config": { "trees": ["empuje", "jale", "fondos", "piernas", "core"] } },
+        { "key": "habilidades", "name": "Habilidades", "icon": "⭐", "description": "Perseguir habilidades: parada de manos, L-sit y muscle-up, con la fuerza básica como soporte.", "config": { "trees": ["parada_manos", "jale", "fondos", "core"] } }
+      ]
+    },
+    {
+      "key": "running", "name": "Running", "icon": "🏃", "color": "#00A6A6", "sortOrder": 3,
+      "tagline": "Corre más lejos y más rápido, semana a semana",
+      "description": "Planes periodizados hacia tu meta (primer 5K, 10K, media maratón): rodajes suaves, intervalos y tiradas largas con ritmos calculados para ti, aumento de volumen seguro y semanas de descarga.",
+      "highlights": ["Plan por semanas hacia tu carrera", "Ritmos personalizados a partir de tu marca", "Temporizador de intervalos correr/caminar", "Km semanales, ritmo y 5K estimado"],
+      "tracks": [
+        { "key": "primer_5k", "name": "Mi primer 5K", "icon": "🌱", "description": "De caminar a correr 5 km seguidos en 9 semanas, alternando carrera y caminata.", "config": { "weeks": 9, "targetKm": 5 } },
+        { "key": "mejorar_5k", "name": "Mejorar mi 5K", "icon": "⚡", "description": "Bajar tu marca de 5 km con intervalos y tempo durante 8 semanas.", "config": { "weeks": 8, "targetKm": 5 } },
+        { "key": "10k", "name": "10K", "icon": "🎯", "description": "Preparar 10 km en 10 semanas con tiradas largas progresivas.", "config": { "weeks": 10, "targetKm": 10 } },
+        { "key": "media_maraton", "name": "Media maratón", "icon": "🏅", "description": "Preparar 21 km en 12 semanas. Requiere poder correr 30 minutos seguidos.", "config": { "weeks": 12, "targetKm": 21.1 } },
+        { "key": "base_aerobica", "name": "Base aeróbica", "icon": "🫀", "description": "Correr por salud: rodajes suaves que construyen resistencia sin carrera objetivo.", "config": { "weeks": 6, "targetKm": null } }
+      ]
+    },
+    {
+      "key": "health", "name": "Salud y Rehabilitación", "icon": "❤️‍🩹", "color": "#2E9E5B", "sortOrder": 4,
+      "tagline": "Movimiento para recuperarte y cuidar tu salud",
+      "description": "Programas de ejercicio por fases para recuperar movilidad y fuerza, prevenir caídas o cuidar condiciones crónicas. Basados en guías oficiales (OMS, CDC, NIA), con control de dolor en cada sesión. No reemplazan la valoración de un profesional.",
+      "highlights": ["Protocolos por fases con criterios de avance", "Control de dolor antes, después y a las 24 h", "Tests funcionales oficiales (CDC STEADI)", "Sesiones cortas y seguras"],
+      "tracks": [
+        { "key": "rodilla", "name": "Rodilla", "icon": "🦵", "description": "Movilidad y fuerza para rodillas con dolor o tras una lesión.", "config": { "zone": "rodilla" } },
+        { "key": "cadera", "name": "Cadera", "icon": "🦴", "description": "Movilidad y estabilidad de cadera.", "config": { "zone": "cadera" } },
+        { "key": "lumbar", "name": "Espalda baja", "icon": "🔻", "description": "Control del tronco y movilidad para la espalda baja.", "config": { "zone": "lumbar" } },
+        { "key": "hombro", "name": "Hombro", "icon": "💪", "description": "Movilidad y fuerza del hombro y la escápula.", "config": { "zone": "hombro" } },
+        { "key": "tobillo", "name": "Tobillo y pie", "icon": "🦶", "description": "Estabilidad y fuerza de tobillo tras esguinces o molestias.", "config": { "zone": "tobillo" } },
+        { "key": "adulto_mayor", "name": "Adulto mayor", "icon": "🧓", "description": "Fuerza, equilibrio y prevención de caídas (basado en CDC STEADI y el programa Otago).", "config": { "zone": null } },
+        { "key": "cardiometabolico", "name": "Salud cardiometabólica", "icon": "🫀", "description": "Actividad progresiva para hipertensión, diabetes o sobrepeso según las recomendaciones de la OMS.", "config": { "zone": null } },
+        { "key": "movilidad_general", "name": "Movilidad y postura", "icon": "🧍", "description": "Contrarrestar el sedentarismo y las molestias por pasar muchas horas sentado.", "config": { "zone": null } }
+      ]
+    },
+    {
+      "key": "football", "name": "Fútbol", "icon": "⚽", "color": "#2D6BE4", "sortOrder": 5,
+      "tagline": "Prepárate para jugar más y lesionarte menos",
+      "description": "Preparación física y técnica para futbolistas: sesiones organizadas alrededor de tu día de partido, prevención de lesiones basada en evidencia y control de tu carga semanal para llegar fresco al partido.",
+      "highlights": ["Semana organizada alrededor del partido", "Calentamiento preventivo basado en FIFA 11+", "Carga semanal y relación aguda:crónica", "Técnica, velocidad y resistencia por posición"],
+      "tracks": [
+        { "key": "recreativo", "name": "Recreativo", "icon": "😄", "description": "Juegas con amigos o en torneos de barrio: mejora tu condición y llega entero al partido.", "config": {} },
+        { "key": "prevencion", "name": "Prevención de lesiones", "icon": "🛡️", "description": "Fuerza preventiva (isquiotibiales, aductores, tobillo) y calentamiento estructurado.", "config": {} },
+        { "key": "rendimiento", "name": "Rendimiento", "icon": "🚀", "description": "Juegas en liga o competitivo: velocidad, repetición de sprints y fuerza según tu posición.", "config": {} }
+      ]
+    },
+    {
+      "key": "yoga", "name": "Yoga", "icon": "🧘", "color": "#C2185B", "sortOrder": 6, "status": "proximamente",
+      "tagline": "Calma, flexibilidad y respiración",
+      "description": "Secuencias guiadas por estilo y objetivo, con radar de movilidad por articulación. Llegará pronto.",
+      "highlights": ["Secuencias guiadas con respiración", "Radar de movilidad", "Calma antes y después"],
+      "tracks": []
+    }
+  ]
+}

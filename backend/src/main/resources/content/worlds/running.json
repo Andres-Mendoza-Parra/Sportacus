@@ -1,0 +1,340 @@
+{
+  "world": "running",
+  "metrics": [
+    { "key": "run_km_sesion", "name": "Distancia de la sesión", "unit": "km", "valueType": "number", "direction": "up",
+      "description": "Kilómetros registrados en la sesión (distancia total o suma de los bloques)." },
+    { "key": "run_ritmo", "name": "Ritmo medio", "unit": "s/km", "valueType": "pace_s_km", "direction": "down",
+      "description": "Duración de la sesión ÷ distancia. Solo con 1 km o más registrado." },
+    { "key": "run_tirada_larga", "name": "Tirada larga", "unit": "km", "valueType": "number", "direction": "up",
+      "description": "Distancia de las sesiones de tirada larga." },
+    { "key": "run_5k_estimado", "name": "5K estimado", "unit": "s", "valueType": "duration_s", "direction": "down",
+      "description": "Tiempo estimado en 5 km (Riegel 1981: T2 = T1 · (D2/D1)^1,06) a partir de un test o de un esfuerzo continuo exigente." },
+    { "key": "run_cooper_m", "name": "Test de Cooper", "unit": "m", "valueType": "integer", "direction": "up",
+      "description": "Metros recorridos en 12 minutos (Cooper, 1968)." },
+    { "key": "run_5k_tiempo_s", "name": "5K contrarreloj", "unit": "s", "valueType": "duration_s", "direction": "down",
+      "description": "Tiempo real en 5 km a máximo esfuerzo sostenible." },
+    { "key": "run_vo2max", "name": "VO₂máx estimado", "unit": "ml/kg/min", "valueType": "number", "direction": "up",
+      "description": "Estimación a partir del test de Cooper: (metros − 504,9) / 44,73." }
+  ],
+  "movements": [
+    {
+      "key": "movilidad_dinamica_corredor",
+      "name": "Movilidad dinámica para correr",
+      "role": "calentamiento", "level": 1, "pattern": "movilidad", "attrs": { "run": false },
+      "description": "Secuencia de 3–5 minutos para despertar tobillos, rodillas y cadera antes de correr.",
+      "steps": [
+        "Círculos de tobillo: 10 por lado.",
+        "Balanceos de pierna adelante-atrás apoyado en un poste: 10 por lado.",
+        "Balanceos laterales de pierna: 10 por lado.",
+        "Sentadillas suaves sin peso: 10.",
+        "Caminata con rodillas al pecho alternas: 20 pasos."
+      ],
+      "cues": ["Movimientos amplios pero sin rebotes", "Respira tranquilo, aún no es esfuerzo"],
+      "mistakes": ["Hacer estiramientos estáticos largos antes de correr", "Saltarse el calentamiento en días de calidad"],
+      "regions": ["tren_inferior"], "muscles": ["gemelos", "isquiotibiales", "gluteos"],
+      "equipment": [], "environments": ["exterior", "parque", "casa"], "impact": "bajo", "source": "sportacus"
+    },
+    {
+      "key": "caminata_rapida",
+      "name": "Caminata rápida",
+      "role": "principal", "level": 1, "pattern": "caminata", "attrs": { "run": false, "walk": true },
+      "description": "Caminar a paso vivo, más rápido que un paseo: respiras más fuerte pero puedes hablar con frases completas. Es el calentamiento de los principiantes y la base de los planes sin impacto.",
+      "steps": [
+        "Empieza 2 minutos a paso normal.",
+        "Acelera hasta un paso en el que notes calor y respiración más rápida.",
+        "Braceo activo con los codos a unos 90°.",
+        "Pisa con el talón y rueda el pie hacia la punta."
+      ],
+      "cues": ["Paso corto y frecuente", "Mirada al frente, hombros relajados"],
+      "mistakes": ["Zancadas demasiado largas", "Inclinarse hacia adelante desde la cintura"],
+      "regions": ["cardio", "tren_inferior"], "muscles": ["gemelos", "cuadriceps", "gluteos"],
+      "equipment": [], "environments": ["exterior", "parque"], "impact": "bajo", "source": "oms_2020"
+    },
+    {
+      "key": "caminata_cuestas",
+      "name": "Caminata en cuesta",
+      "role": "principal", "level": 2, "pattern": "caminata", "attrs": { "run": false, "walk": true },
+      "description": "Caminar subiendo una pendiente suave (o la cinta inclinada al 4–8 %): sube la exigencia cardiovascular sin el impacto de correr.",
+      "steps": [
+        "Busca una subida de 1–3 minutos o inclina la cinta.",
+        "Sube a paso firme, inclinando el cuerpo ligeramente desde los tobillos.",
+        "Baja caminando tranquilo para recuperar."
+      ],
+      "cues": ["Empuja el suelo con todo el pie", "Pasos cortos en la subida"],
+      "mistakes": ["Agarrarse a la barra de la cinta", "Bajar deprisa cargando las rodillas"],
+      "regions": ["cardio", "tren_inferior"], "muscles": ["gluteos", "gemelos", "cuadriceps"],
+      "equipment": [], "environments": ["exterior", "parque"], "impact": "bajo", "source": "sportacus",
+      "contraindications": [{ "tag": "rodilla", "level": "precaucion" }]
+    },
+    {
+      "key": "caminar_trotar",
+      "name": "Caminar y trotar",
+      "role": "principal", "level": 1, "pattern": "caminar_correr", "attrs": { "run": true },
+      "description": "Alternar tramos cortos de trote suave con tramos de caminata. Es la puerta de entrada a correr: el cuerpo se adapta al impacto poco a poco.",
+      "steps": [
+        "Trota muy suave el tiempo indicado: debes poder hablar.",
+        "Pasa a caminar rápido durante la recuperación.",
+        "Repite los ciclos que marque el temporizador."
+      ],
+      "cues": ["Trote lento: más lento de lo que crees", "Pasos cortos y ligeros"],
+      "mistakes": ["Correr demasiado rápido el primer tramo", "Detenerse del todo en la caminata"],
+      "regions": ["cardio", "tren_inferior"], "muscles": ["gemelos", "cuadriceps", "gluteos"],
+      "equipment": [], "environments": ["exterior", "parque"], "impact": "medio", "source": "nhs_c25k",
+      "contraindications": [
+        { "tag": "rodilla", "level": "precaucion" }, { "tag": "tobillo", "level": "precaucion" },
+        { "tag": "pie", "level": "precaucion" }, { "tag": "cadera", "level": "precaucion" }
+      ]
+    },
+    {
+      "key": "trote_suave",
+      "name": "Rodaje suave",
+      "role": "principal", "level": 2, "pattern": "rodaje", "attrs": { "run": true, "zone": "suave" },
+      "description": "Carrera continua a ritmo conversacional (zona 2): el 80 % de tu entrenamiento debería ser así. Construye la base aeróbica con el menor coste.",
+      "steps": [
+        "Empieza aún más lento los primeros 5 minutos.",
+        "Mantén un ritmo en el que puedas hablar con frases completas (prueba del habla).",
+        "Si no puedes hablar, baja el ritmo o camina 1 minuto."
+      ],
+      "cues": ["Cadencia ágil, pasos cortos", "Aterriza con el pie bajo la cadera"],
+      "mistakes": ["Convertir cada rodaje en una carrera", "Mirar solo el reloj e ignorar las sensaciones"],
+      "regions": ["cardio", "tren_inferior"], "muscles": ["gemelos", "cuadriceps", "isquiotibiales", "gluteos"],
+      "equipment": [], "environments": ["exterior", "parque"], "impact": "medio", "source": "sportacus",
+      "contraindications": [
+        { "tag": "rodilla", "level": "precaucion" }, { "tag": "tobillo", "level": "precaucion" },
+        { "tag": "pie", "level": "precaucion" }, { "tag": "cadera", "level": "precaucion" }
+      ]
+    },
+    {
+      "key": "tirada_larga",
+      "name": "Tirada larga",
+      "role": "principal", "level": 2, "pattern": "tirada_larga", "attrs": { "run": true, "zone": "suave" },
+      "description": "La sesión más larga de la semana, siempre a ritmo suave. Entrena la resistencia, la economía y la cabeza para la distancia de la carrera.",
+      "steps": [
+        "Sal con agua si vas a superar los 60 minutos.",
+        "Ritmo suave de principio a fin; la segunda mitad puede ser un poco más viva si te sientes bien.",
+        "Si aparece dolor (no cansancio), acorta la tirada."
+      ],
+      "cues": ["Paciencia: se gana terminando, no yendo rápido", "Bebe a sorbos cada 20–30 min en tiradas largas"],
+      "mistakes": ["Empezar rápido y terminar arrastrándose", "Subir la distancia más de 1–2 km por semana"],
+      "regions": ["cardio", "tren_inferior"], "muscles": ["gemelos", "cuadriceps", "isquiotibiales", "gluteos"],
+      "equipment": [], "environments": ["exterior", "parque"], "impact": "medio", "source": "sportacus",
+      "contraindications": [
+        { "tag": "rodilla", "level": "precaucion" }, { "tag": "tobillo", "level": "precaucion" },
+        { "tag": "pie", "level": "precaucion" }, { "tag": "cadera", "level": "precaucion" }
+      ]
+    },
+    {
+      "key": "carrera_tempo",
+      "name": "Carrera a ritmo tempo",
+      "role": "principal", "level": 3, "pattern": "calidad", "attrs": { "run": true, "zone": "tempo" },
+      "description": "Tramo continuo a ritmo \"cómodamente duro\" (RPE 7): solo puedes decir frases cortas. Mejora el umbral, la capacidad de sostener un ritmo alto.",
+      "steps": [
+        "Calienta al menos 10 minutos suave.",
+        "Sube al ritmo tempo y sostenlo de forma uniforme.",
+        "Termina con 5–10 minutos suaves."
+      ],
+      "cues": ["Uniforme: ni empezar rápido ni acelerar al final", "Hombros sueltos, respiración rítmica"],
+      "mistakes": ["Correrlo a ritmo de carrera de 5K", "Hacerlo el día antes de la tirada larga"],
+      "regions": ["cardio", "tren_inferior"], "muscles": ["gemelos", "cuadriceps", "isquiotibiales", "gluteos"],
+      "equipment": [], "environments": ["exterior", "parque"], "impact": "alto", "source": "sportacus",
+      "contraindications": [
+        { "tag": "rodilla", "level": "precaucion" }, { "tag": "tobillo", "level": "precaucion" },
+        { "tag": "cardiopatia", "level": "precaucion" }
+      ]
+    },
+    {
+      "key": "intervalos_carrera",
+      "name": "Intervalos de carrera",
+      "role": "principal", "level": 3, "pattern": "calidad", "attrs": { "run": true, "zone": "intervalo" },
+      "description": "Repeticiones a ritmo de 5K o algo más rápido con trote de recuperación. Mejoran el VO₂máx y la velocidad.",
+      "steps": [
+        "Calienta 10 minutos suave y haz los ejercicios técnicos.",
+        "Corre cada repetición al ritmo indicado (RPE 8).",
+        "Recupera trotando muy suave el tiempo marcado.",
+        "La última repetición debe salir igual que la primera."
+      ],
+      "cues": ["Rápido pero relajado", "Brazos activos, mirada al frente"],
+      "mistakes": ["Salir a tope en la primera", "Recuperar parado en lugar de trotando"],
+      "regions": ["cardio", "tren_inferior"], "muscles": ["gemelos", "cuadriceps", "isquiotibiales", "gluteos"],
+      "equipment": [], "environments": ["exterior", "parque"], "impact": "alto", "source": "sportacus",
+      "contraindications": [
+        { "tag": "rodilla", "level": "precaucion" }, { "tag": "tobillo", "level": "precaucion" },
+        { "tag": "cardiopatia", "level": "precaucion" }, { "tag": "hipertension", "level": "precaucion" }
+      ]
+    },
+    {
+      "key": "cuestas_carrera",
+      "name": "Cuestas",
+      "role": "principal", "level": 3, "pattern": "calidad", "attrs": { "run": true, "zone": "cuesta" },
+      "description": "Subidas cortas a buen ritmo y bajada trotando. Fuerza específica para correr con menos impacto que la velocidad en llano.",
+      "steps": [
+        "Busca una pendiente moderada de 60–100 m.",
+        "Sube con pasos cortos y rodillas activas (RPE 8).",
+        "Baja trotando o caminando para recuperar."
+      ],
+      "cues": ["Inclínate desde los tobillos", "Empuja con los brazos"],
+      "mistakes": ["Bajar rápido (es lo que más carga las rodillas)", "Pendientes demasiado empinadas"],
+      "regions": ["cardio", "tren_inferior"], "muscles": ["gluteos", "gemelos", "cuadriceps"],
+      "equipment": [], "environments": ["exterior", "parque"], "impact": "alto", "source": "sportacus",
+      "contraindications": [
+        { "tag": "rodilla", "level": "precaucion" }, { "tag": "tobillo", "level": "precaucion" },
+        { "tag": "cardiopatia", "level": "precaucion" }
+      ]
+    },
+    {
+      "key": "drills_carrera",
+      "name": "Ejercicios técnicos de carrera",
+      "role": "tecnica", "level": 2, "pattern": "tecnica", "attrs": { "run": false },
+      "description": "Skipping bajo, talones al glúteo y rodillas altas en tramos de 20 m: mejoran la coordinación, la cadencia y el apoyo.",
+      "steps": [
+        "Skipping bajo: pasos muy cortos y rápidos sobre la punta del pie, 20 m.",
+        "Talones al glúteo: lleva el talón hacia atrás sin adelantar la rodilla, 20 m.",
+        "Rodillas altas: eleva la rodilla a la altura de la cadera, 20 m.",
+        "Vuelve caminando entre cada ejercicio."
+      ],
+      "cues": ["Tronco alto, sin sentarse", "Contacto con el suelo breve y silencioso"],
+      "mistakes": ["Hacerlos con prisa y sin técnica", "Echar el tronco hacia atrás"],
+      "regions": ["tren_inferior"], "muscles": ["gemelos", "cuadriceps", "isquiotibiales"],
+      "equipment": [], "environments": ["exterior", "parque"], "impact": "medio", "source": "sportacus",
+      "contraindications": [
+        { "tag": "rodilla", "level": "precaucion" }, { "tag": "tobillo", "level": "precaucion" },
+        { "tag": "pie", "level": "precaucion" }
+      ]
+    },
+    {
+      "key": "zancadas_aceleracion",
+      "name": "Progresiones (aceleraciones)",
+      "role": "tecnica", "level": 2, "pattern": "tecnica", "attrs": { "run": true },
+      "description": "Aceleraciones de 15–20 s hasta un ritmo rápido pero relajado, caminando de vuelta. Enseñan a correr rápido sin tensión al final de un rodaje.",
+      "steps": [
+        "Al terminar el rodaje, busca un tramo llano de 80–100 m.",
+        "Acelera de forma progresiva hasta un 85 % y deja de acelerar antes del final.",
+        "Vuelve caminando y repite."
+      ],
+      "cues": ["Relajado: cara y manos sueltas", "Cadencia rápida"],
+      "mistakes": ["Esprintar al 100 %", "Hacerlas sin haber calentado"],
+      "regions": ["tren_inferior"], "muscles": ["gemelos", "cuadriceps", "isquiotibiales", "gluteos"],
+      "equipment": [], "environments": ["exterior", "parque"], "impact": "alto", "source": "sportacus",
+      "contraindications": [{ "tag": "rodilla", "level": "precaucion" }, { "tag": "tobillo", "level": "precaucion" }]
+    },
+    {
+      "key": "estiramiento_gemelo_soleo",
+      "name": "Estiramiento de gemelo y sóleo",
+      "role": "vuelta_calma", "level": 1, "pattern": "movilidad", "attrs": { "run": false },
+      "description": "Estiramiento suave de la pantorrilla contra una pared, con la rodilla estirada (gemelo) y flexionada (sóleo).",
+      "steps": [
+        "Apoya las manos en una pared y adelanta una pierna.",
+        "Pierna de atrás estirada, talón en el suelo: 30 s.",
+        "Flexiona un poco la rodilla de atrás sin levantar el talón: 30 s.",
+        "Cambia de pierna."
+      ],
+      "cues": ["Tensión suave, nunca dolor", "Pie de atrás apuntando al frente"],
+      "mistakes": ["Rebotar", "Levantar el talón"],
+      "regions": ["tren_inferior"], "muscles": ["gemelos"],
+      "equipment": [], "environments": ["exterior", "parque", "casa"], "impact": "bajo", "source": "sportacus"
+    },
+    {
+      "key": "movilidad_cadera_corredor",
+      "name": "Movilidad de cadera y flexores",
+      "role": "vuelta_calma", "level": 1, "pattern": "movilidad", "attrs": { "run": false },
+      "description": "Estiramiento del flexor de cadera en zancada y del glúteo en figura de cuatro para soltar la cadera después de correr.",
+      "steps": [
+        "Rodilla atrás en el suelo (sobre una toalla), pie adelante: empuja la cadera al frente 30 s por lado.",
+        "Tumbado boca arriba, cruza un tobillo sobre la rodilla contraria y acerca las piernas: 30 s por lado.",
+        "Respira lento y profundo."
+      ],
+      "cues": ["Aprieta el glúteo de la pierna de atrás", "Espalda neutra"],
+      "mistakes": ["Arquear la zona lumbar"],
+      "regions": ["tren_inferior"], "muscles": ["gluteos", "cuadriceps", "aductores"],
+      "equipment": [], "environments": ["exterior", "parque", "casa"], "impact": "bajo", "source": "sportacus"
+    },
+    { "ref": "elevacion_talones", "role": "accesorio", "level": 1, "pattern": "fuerza_corredor", "attrs": { "run": false } },
+    { "ref": "puente_gluteo", "role": "accesorio", "level": 1, "pattern": "fuerza_corredor", "attrs": { "run": false } },
+    { "ref": "plancha", "role": "accesorio", "level": 1, "pattern": "fuerza_corredor", "attrs": { "run": false, "hold": true } }
+  ],
+  "progressions": [],
+  "assessments": [
+    {
+      "key": "run_cooper", "name": "Test de Cooper (12 minutos)", "kind": "timer_distance", "durationS": 720,
+      "metric": "run_cooper_m", "unit": "m", "retestDays": 42, "source": "cooper_1968",
+      "description": "Recorre la mayor distancia posible en 12 minutos. Estima tu VO₂máx y tu tiempo en 5 km, y con eso tus ritmos de entrenamiento.",
+      "instructions": [
+        "Calienta 10 minutos: trote suave y ejercicios técnicos.",
+        "Ve a una pista o a un circuito llano que puedas medir (o usa el GPS).",
+        "Corre 12 minutos al máximo ritmo que puedas sostener de forma uniforme; si lo necesitas, camina.",
+        "Al sonar el final, anota los metros recorridos.",
+        "Termina con 5–10 minutos de caminata suave."
+      ],
+      "safetyNote": "Es un esfuerzo máximo. Hazlo solo si ya corres 20–30 minutos seguidos y no tienes síntomas cardiovasculares; si tu chequeo pidió aval médico, confírmalo antes. Detente ante mareo, dolor en el pecho o falta de aire desproporcionada.",
+      "norms": {
+        "groups": [
+          { "sex": "masculino", "ageMin": 0, "ageMax": 19, "bands": [
+            { "max": 2300, "label": "Por mejorar" }, { "min": 2300, "max": 2500, "label": "Bajo" },
+            { "min": 2500, "max": 2700, "label": "Medio" }, { "min": 2700, "max": 3000, "label": "Bueno" },
+            { "min": 3000, "label": "Excelente" } ] },
+          { "sex": "masculino", "ageMin": 20, "ageMax": 29, "bands": [
+            { "max": 1600, "label": "Por mejorar" }, { "min": 1600, "max": 2200, "label": "Bajo" },
+            { "min": 2200, "max": 2400, "label": "Medio" }, { "min": 2400, "max": 2800, "label": "Bueno" },
+            { "min": 2800, "label": "Excelente" } ] },
+          { "sex": "masculino", "ageMin": 30, "ageMax": 39, "bands": [
+            { "max": 1500, "label": "Por mejorar" }, { "min": 1500, "max": 1900, "label": "Bajo" },
+            { "min": 1900, "max": 2300, "label": "Medio" }, { "min": 2300, "max": 2700, "label": "Bueno" },
+            { "min": 2700, "label": "Excelente" } ] },
+          { "sex": "masculino", "ageMin": 40, "ageMax": 49, "bands": [
+            { "max": 1400, "label": "Por mejorar" }, { "min": 1400, "max": 1700, "label": "Bajo" },
+            { "min": 1700, "max": 2100, "label": "Medio" }, { "min": 2100, "max": 2500, "label": "Bueno" },
+            { "min": 2500, "label": "Excelente" } ] },
+          { "sex": "masculino", "ageMin": 50, "ageMax": 200, "bands": [
+            { "max": 1300, "label": "Por mejorar" }, { "min": 1300, "max": 1600, "label": "Bajo" },
+            { "min": 1600, "max": 2000, "label": "Medio" }, { "min": 2000, "max": 2400, "label": "Bueno" },
+            { "min": 2400, "label": "Excelente" } ] },
+          { "sex": "femenino", "ageMin": 0, "ageMax": 19, "bands": [
+            { "max": 1700, "label": "Por mejorar" }, { "min": 1700, "max": 1800, "label": "Bajo" },
+            { "min": 1800, "max": 2100, "label": "Medio" }, { "min": 2100, "max": 2300, "label": "Bueno" },
+            { "min": 2300, "label": "Excelente" } ] },
+          { "sex": "femenino", "ageMin": 20, "ageMax": 29, "bands": [
+            { "max": 1500, "label": "Por mejorar" }, { "min": 1500, "max": 1800, "label": "Bajo" },
+            { "min": 1800, "max": 2200, "label": "Medio" }, { "min": 2200, "max": 2700, "label": "Bueno" },
+            { "min": 2700, "label": "Excelente" } ] },
+          { "sex": "femenino", "ageMin": 30, "ageMax": 39, "bands": [
+            { "max": 1400, "label": "Por mejorar" }, { "min": 1400, "max": 1700, "label": "Bajo" },
+            { "min": 1700, "max": 2000, "label": "Medio" }, { "min": 2000, "max": 2500, "label": "Bueno" },
+            { "min": 2500, "label": "Excelente" } ] },
+          { "sex": "femenino", "ageMin": 40, "ageMax": 49, "bands": [
+            { "max": 1200, "label": "Por mejorar" }, { "min": 1200, "max": 1500, "label": "Bajo" },
+            { "min": 1500, "max": 1900, "label": "Medio" }, { "min": 1900, "max": 2300, "label": "Bueno" },
+            { "min": 2300, "label": "Excelente" } ] },
+          { "sex": "femenino", "ageMin": 50, "ageMax": 200, "bands": [
+            { "max": 1100, "label": "Por mejorar" }, { "min": 1100, "max": 1400, "label": "Bajo" },
+            { "min": 1400, "max": 1700, "label": "Medio" }, { "min": 1700, "max": 2200, "label": "Bueno" },
+            { "min": 2200, "label": "Excelente" } ] }
+        ],
+        "bands": [
+          { "max": 1400, "label": "Por mejorar" }, { "min": 1400, "max": 1800, "label": "Bajo" },
+          { "min": 1800, "max": 2200, "label": "Medio" }, { "min": 2200, "max": 2600, "label": "Bueno" },
+          { "min": 2600, "label": "Excelente" }
+        ]
+      }
+    },
+    {
+      "key": "run_5k_contrarreloj", "name": "5K contrarreloj", "kind": "stopwatch", "durationS": null,
+      "metric": "run_5k_tiempo_s", "unit": "s", "retestDays": 42, "source": "riegel_1981",
+      "description": "Corre 5 km al mejor ritmo que puedas sostener. Es la referencia más fiable para calcular tus ritmos: suave, tempo e intervalos.",
+      "instructions": [
+        "Calienta 10–15 minutos con trote suave y 3 aceleraciones.",
+        "Elige un recorrido llano medido (pista: 12,5 vueltas) o usa el GPS.",
+        "Inicia el cronómetro y corre 5 km a un ritmo uniforme y exigente.",
+        "Detén el cronómetro al completar los 5 km.",
+        "Termina con 10 minutos suaves."
+      ],
+      "safetyNote": "Esfuerzo muy alto: no lo hagas si tu chequeo pidió aval médico sin confirmarlo, ni con dolor activo en piernas.",
+      "norms": {
+        "bands": [
+          { "min": 2400, "label": "En camino" }, { "min": 1800, "max": 2400, "label": "Base sólida" },
+          { "min": 1500, "max": 1800, "label": "Buen nivel" }, { "min": 1200, "max": 1500, "label": "Muy bueno" },
+          { "max": 1200, "label": "Nivel competitivo" }
+        ]
+      }
+    }
+  ]
+}

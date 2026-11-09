@@ -1,66 +1,25 @@
 import { api } from "./api";
+import { AccountView, Answers, FormSpec, ProfilePatch } from "./types";
 
-export interface ProfileModule {
-  name: string;
-  status: "activo" | "disponible";
+/** Cuenta, perfil común y estado del recibimiento (docs/16 §3 y §7). */
+export async function fetchAccount(): Promise<AccountView> {
+  const { data } = await api.get<AccountView>("/profile");
+  return data;
 }
 
-export interface ProfileSuggestion {
-  questionnaireKey: string;
-  title: string;
-  reason: string;
-  impactPct: number;
+export async function fetchProfileForm(): Promise<FormSpec> {
+  const { data } = await api.get<FormSpec>("/profile/form");
+  return data;
 }
 
-export interface ProfileData {
-  name: string;
-  email: string;
-  age: number | null;
-  weightKg: number | null;
-  heightCm: number | null;
-  country: string | null;
-  city: string | null;
-  language: string | null;
-  memberSince: string | null;
-  profileStrengthPct: number;
-  suggestions: ProfileSuggestion[];
-  activeModule: string | null;
-  modules: ProfileModule[];
+export async function saveProfileForm(answers: Answers): Promise<AccountView> {
+  const { data } = await api.post<AccountView>("/profile/form", answers);
+  return data;
 }
 
-export interface ProfileUpdate {
-  name?: string;
-  country?: string;
-  city?: string;
-  language?: string;
-}
-
-function normalize(raw: Partial<ProfileData>): ProfileData {
-  return {
-    name: raw.name ?? "",
-    email: raw.email ?? "",
-    age: raw.age ?? null,
-    weightKg: raw.weightKg ?? null,
-    heightCm: raw.heightCm ?? null,
-    country: raw.country ?? null,
-    city: raw.city ?? null,
-    language: raw.language ?? null,
-    memberSince: raw.memberSince ?? null,
-    profileStrengthPct: raw.profileStrengthPct ?? 0,
-    suggestions: raw.suggestions ?? [],
-    activeModule: raw.activeModule ?? null,
-    modules: raw.modules ?? [],
-  };
-}
-
-export async function fetchProfile(): Promise<ProfileData> {
-  const { data } = await api.get<ProfileData>("/profile");
-  return normalize(data);
-}
-
-export async function updateProfile(update: ProfileUpdate): Promise<ProfileData> {
-  const { data } = await api.patch<ProfileData>("/profile", update);
-  return normalize(data);
+export async function updateProfile(patch: ProfilePatch): Promise<AccountView> {
+  const { data } = await api.patch<AccountView>("/profile", patch);
+  return data;
 }
 
 export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
@@ -72,6 +31,7 @@ export async function exportProfileData(): Promise<unknown> {
   return data;
 }
 
-export async function deleteAccount(password: string): Promise<void> {
-  await api.delete("/profile", { data: { password } });
+/** Borrado total de la cuenta (el backend no pide cuerpo). */
+export async function deleteAccount(): Promise<void> {
+  await api.delete("/profile");
 }

@@ -24,11 +24,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Mapea la tabla sportacus."user" definida en sportacus_init.sql.
+ * Mapea la tabla app_user del esquema sportacus_v2 (db/migration/V1__mundos_schema.sql).
  * Implementa UserDetails para integrarse directamente con Spring Security.
  */
 @Entity
-@Table(name = "\"user\"", schema = "sportacus")
+@Table(name = "app_user")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -45,6 +45,13 @@ public class User implements UserDetails {
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
+
+    @Column(name = "display_name", length = 80)
+    private String displayName;
+
+    /** Se marca al inscribirse en el primer mundo (fin del recibimiento). */
+    @Column(name = "onboarding_completed_at")
+    private OffsetDateTime onboardingCompletedAt;
 
     @Column(nullable = false, length = 5)
     @Builder.Default
@@ -63,6 +70,14 @@ public class User implements UserDetails {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
+
+    /** Nombre a mostrar: el guardado o, si no hay, la parte local del correo. */
+    public String visibleName() {
+        if (displayName != null && !displayName.isBlank()) {
+            return displayName;
+        }
+        return email.contains("@") ? email.substring(0, email.indexOf('@')) : email;
+    }
 
     // ── UserDetails ─────────────────────────────────────────────
 

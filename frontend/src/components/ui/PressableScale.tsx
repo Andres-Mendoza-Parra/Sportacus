@@ -21,11 +21,11 @@ export default function PressableScale({ style, scaleTo = 0.97, children, onPres
       {...rest}
       style={[style, animated]}
       onPressIn={(e) => {
-        scale.value = withSpring(scaleTo, { damping: 18, stiffness: 320 });
+        scale.set(withSpring(scaleTo, { damping: 18, stiffness: 320 }));
         onPressIn?.(e);
       }}
       onPressOut={(e) => {
-        scale.value = withSpring(1, { damping: 14, stiffness: 260 });
+        scale.set(withSpring(1, { damping: 14, stiffness: 260 }));
         onPressOut?.(e);
       }}
     >
