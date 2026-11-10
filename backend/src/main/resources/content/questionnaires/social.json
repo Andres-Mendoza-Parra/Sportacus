@@ -1,0 +1,303 @@
+{
+  "area": {
+    "key": "social",
+    "name": "Entorno social",
+    "icon": "👨‍👩‍👧",
+    "sortOrder": 120,
+    "description": "Con quién vives y quién te acompaña: familia, hijos, mascotas y apoyo.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "social_hogar",
+      "title": "Tu hogar",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "so_convivencia",
+          "type": "multi",
+          "prompt": "¿Con quién vives?",
+          "hint": null,
+          "options": [
+            {"id":"solo","icon":null,"text":"Solo","sub":null},
+            {"id":"pareja","icon":null,"text":"Pareja","sub":null},
+            {"id":"hijos","icon":null,"text":"Hijos","sub":null},
+            {"id":"padres","icon":null,"text":"Padres","sub":null},
+            {"id":"familia","icon":null,"text":"Otros familiares","sub":null},
+            {"id":"companeros","icon":null,"text":"Compañeros o amigos","sub":null}
+          ],
+          "why": "Nos ayuda a proponer horarios, espacios y actividades compatibles con tu casa.",
+          "uses": ["plan","asistente"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "so_hijos",
+          "type": "options",
+          "prompt": "¿Tienes hijos que dependan de ti?",
+          "hint": null,
+          "options": [
+            {"id":"no","icon":"➖","text":"No","sub":null},
+            {"id":"si_pequenos","icon":"🧒","text":"Sí, pequeños (menos de 12 años)","sub":null},
+            {"id":"si_mayores","icon":"🧑","text":"Sí, mayores","sub":null}
+          ],
+          "why": "Con hijos pequeños priorizamos sesiones cortas, en casa o que puedas hacer con ellos.",
+          "uses": ["plan","asistente"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "so_hijos_actividad",
+          "type": "options",
+          "prompt": "¿Te gustaría hacer actividad física con tus hijos?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí, me encantaría","sub":null},
+            {"id":"a_veces","icon":null,"text":"De vez en cuando","sub":null},
+            {"id":"no","icon":null,"text":"Prefiero mi espacio","sub":null}
+          ],
+          "why": "Te sugerimos juegos y rutinas en familia que también cuentan como entrenamiento.",
+          "uses": ["plan","descubrimiento"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"so_hijos","in":["si_pequenos","si_mayores"]},
+          "cadence": null
+        },
+        {
+          "id": "so_mascota",
+          "type": "multi",
+          "prompt": "¿Tienes mascotas?",
+          "hint": null,
+          "options": [
+            {"id":"perro","icon":"🐕","text":"Perro","sub":null},
+            {"id":"gato","icon":"🐈","text":"Gato","sub":null},
+            {"id":"otra","icon":"🐾","text":"Otra","sub":null},
+            {"id":"ninguna","icon":"➖","text":"Ninguna","sub":null}
+          ],
+          "why": "Un perro puede ser tu mejor compañero de caminatas; lo tenemos en cuenta en tu plan.",
+          "uses": ["plan","descubrimiento"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "so_perro_paseo",
+          "type": "options",
+          "prompt": "¿Sacas a pasear a tu perro?",
+          "hint": null,
+          "options": [
+            {"id":"diario","icon":null,"text":"Todos los días","sub":null},
+            {"id":"a_veces","icon":null,"text":"Algunos días","sub":null},
+            {"id":"no","icon":null,"text":"Casi nunca, lo hace otra persona","sub":null}
+          ],
+          "why": "Contamos esos paseos como actividad y te ayudamos a aprovecharlos más.",
+          "uses": ["plan","base"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"so_mascota","in":["perro"]},
+          "cadence": null
+        },
+        {
+          "id": "so_perro_energia",
+          "type": "options",
+          "prompt": "¿Qué tanta energía tiene tu perro?",
+          "hint": null,
+          "options": [
+            {"id":"tranquilo","icon":null,"text":"Tranquilo o mayor","sub":null},
+            {"id":"medio","icon":null,"text":"Normal","sub":null},
+            {"id":"alta","icon":null,"text":"Mucha energía","sub":null}
+          ],
+          "why": "Ajustamos si conviene caminata, trote suave o juego con tu perro.",
+          "uses": ["plan","running"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"so_mascota","in":["perro"]},
+          "cadence": null
+        },
+        {
+          "id": "so_perro_correr",
+          "type": "options",
+          "prompt": "¿Te gustaría incluir a tu perro en caminatas o trotes?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"quizas","icon":null,"text":"Quizás","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Te proponemos sesiones con tu perro y consejos para que ambos lo disfruten seguros.",
+          "uses": ["plan","running","descubrimiento"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"so_mascota","in":["perro"]},
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "social_apoyo",
+      "title": "Tu red de apoyo",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "so_apoyo",
+          "type": "options",
+          "prompt": "¿Las personas cercanas apoyan que hagas actividad física?",
+          "hint": null,
+          "options": [
+            {"id":"mucho","icon":null,"text":"Mucho","sub":null},
+            {"id":"algo","icon":null,"text":"Algo","sub":null},
+            {"id":"poco","icon":null,"text":"Poco","sub":null},
+            {"id":"nada","icon":null,"text":"Nada","sub":null}
+          ],
+          "why": "Si sientes poco apoyo, te damos ideas para involucrarlas o proteger tu espacio.",
+          "uses": ["asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "so_companero",
+          "type": "options",
+          "prompt": "¿Tienes a alguien con quien entrenar?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"no_quiero","icon":null,"text":"No me interesa","sub":null}
+          ],
+          "why": "Entrenar acompañado mejora la constancia; si no hay, te sugerimos grupos o retos.",
+          "uses": ["plan","descubrimiento"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "so_activos",
+          "type": "options",
+          "prompt": "¿Las personas con las que pasas más tiempo son activas?",
+          "hint": null,
+          "options": [
+            {"id":"mayoria","icon":null,"text":"La mayoría","sub":null},
+            {"id":"algunas","icon":null,"text":"Algunas","sub":null},
+            {"id":"pocas","icon":null,"text":"Pocas o ninguna","sub":null}
+          ],
+          "why": "Un entorno activo facilita el hábito; si no lo es, reforzamos tu autonomía.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "so_grupos",
+          "type": "options",
+          "prompt": "¿Conoces grupos, clubes o clases cerca de ti?",
+          "hint": null,
+          "options": [
+            {"id":"si_voy","icon":null,"text":"Sí, y voy","sub":null},
+            {"id":"si_no_voy","icon":null,"text":"Sí, pero no voy","sub":null},
+            {"id":"no","icon":null,"text":"No conozco","sub":null},
+            {"id":"no_interesa","icon":null,"text":"No me interesa","sub":null}
+          ],
+          "why": "Si te interesa, te ayudamos a encontrar comunidad cerca.",
+          "uses": ["descubrimiento"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "so_compartir",
+          "type": "options",
+          "prompt": "¿Te gusta compartir tus logros con otras personas?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"algunos","icon":null,"text":"Con pocas personas","sub":null},
+            {"id":"no","icon":null,"text":"Prefiero privado","sub":null}
+          ],
+          "why": "Decidimos si ofrecerte opciones para compartir o mantener todo privado.",
+          "uses": ["progreso","asistente"],
+          "priority": 1,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "so_comentarios",
+          "type": "options",
+          "prompt": "¿Recibes comentarios sobre tu cuerpo o tu ejercicio que te incomodan?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"a_menudo","icon":null,"text":"A menudo","sub":null}
+          ],
+          "why": "Así cuidamos el tono y te damos herramientas para que nada te aleje de moverte.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "so_comidas_familia",
+          "type": "options",
+          "prompt": "¿Sueles comer en familia o con otras personas?",
+          "hint": null,
+          "options": [
+            {"id":"casi_todas","icon":null,"text":"Casi todas las comidas","sub":null},
+            {"id":"algunas","icon":null,"text":"Algunas","sub":null},
+            {"id":"pocas","icon":null,"text":"Pocas, como solo","sub":null}
+          ],
+          "why": "Las ideas de alimentación se adaptan a si cocinas para ti o para varios.",
+          "uses": ["asistente"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

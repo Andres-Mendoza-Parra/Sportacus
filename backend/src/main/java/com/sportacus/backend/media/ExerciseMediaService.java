@@ -64,7 +64,12 @@ public class ExerciseMediaService {
             Map.entry("gluteos", List.of(8)),
             Map.entry("cuadriceps", List.of(10)),
             Map.entry("isquiotibiales", List.of(11)),
-            Map.entry("pantorrillas", List.of(7, 15)));
+            Map.entry("pantorrillas", List.of(7, 15)),
+            Map.entry("gemelos", List.of(7, 15)),
+            Map.entry("hombro", List.of(2)),
+            Map.entry("abdomen", List.of(6, 14)),
+            Map.entry("antebrazos", List.of(13)),
+            Map.entry("dorsales", List.of(12)));
 
     private static final String BODY_FRONT = "https://wger.de/static/images/muscles/muscular_system_front.svg";
     private static final String BODY_BACK = "https://wger.de/static/images/muscles/muscular_system_back.svg";
@@ -125,6 +130,28 @@ public class ExerciseMediaService {
         } catch (Exception e) {
             log.debug("Sin material wger para '{}': {}", exerciseName, e.toString());
             return ExerciseMedia.empty();
+        }
+    }
+
+    /**
+     * Diagrama muscular (silueta de wger con los músculos resaltados) para cualquier movimiento a partir de sus
+     * músculos del catálogo propio. Sirve cuando no hay foto. Vacío si wger no responde o ningún músculo se reconoce.
+     */
+    public List<ExerciseMedia.MuscleView> muscleViewsFor(List<String> muscles) {
+        if (muscles == null || muscles.isEmpty()) return List.of();
+        try {
+            Index idx = awaitIndex();
+            if (idx == null) return List.of();
+            List<Muscle> primary = new ArrayList<>();
+            List<Muscle> secondary = new ArrayList<>();
+            for (int i = 0; i < muscles.size(); i++) {
+                List<Muscle> found = fallbackMuscles(idx, muscles.get(i));
+                (i < 2 ? primary : secondary).addAll(found);
+            }
+            return muscleViews(primary, secondary);
+        } catch (Exception e) {
+            log.debug("Sin diagrama muscular: {}", e.toString());
+            return List.of();
         }
     }
 

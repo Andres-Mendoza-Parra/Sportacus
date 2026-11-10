@@ -188,4 +188,19 @@ public class MetricRepository {
                 Integer.class, userWorldId, metricKey);
         return v == null ? 0 : v;
     }
+
+    /**
+     * Últimos {@code limit} puntos de una métrica de nivel usuario (sin mundo: check-in diario, peso del Perfil 360),
+     * en orden cronológico.
+     */
+    public List<Point> seriesForUser(UUID userId, String metricKey, int limit) {
+        List<Point> pts = new ArrayList<>(jdbc.query("""
+                SELECT recorded_at, value FROM metric_entry
+                WHERE user_id = ? AND user_world_id IS NULL AND metric_key = ?
+                ORDER BY recorded_at DESC LIMIT ?
+                """, (rs, i) -> new Point(rs.getObject(1, OffsetDateTime.class).atZoneSameInstant(ZONE).toLocalDate(),
+                rs.getDouble(2)), userId, metricKey, limit));
+        java.util.Collections.reverse(pts);
+        return pts;
+    }
 }

@@ -85,6 +85,41 @@ export function NumberInput({ value, unit, min, max, onChange }: NumberProps) {
   );
 }
 
+/** Da formato AAAA-MM-DD mientras se escribe (solo dígitos; los guiones se ponen solos). */
+export function formatDateDraft(raw: string): string {
+  const digits = raw.replace(/\D/g, "").slice(0, 8);
+  if (digits.length <= 4) return digits;
+  if (digits.length <= 6) return `${digits.slice(0, 4)}-${digits.slice(4)}`;
+  return `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6)}`;
+}
+
+/** Fecha AAAA-MM-DD con teclado numérico (sin dependencias nativas de calendario). */
+export function DateInput({ value, onChange }: { value: string; onChange: (v: string | undefined) => void }) {
+  const styles = useThemedStyles(createStyles);
+  const { colors } = useTheme();
+  return (
+    <View style={{ gap: 6 }}>
+      <View style={styles.inputCard}>
+        <Text style={{ fontSize: 22 }}>📅</Text>
+        <TextInput
+          style={[styles.numberInput, { fontSize: 26 }]}
+          keyboardType="number-pad"
+          placeholder="AAAA-MM-DD"
+          placeholderTextColor={colors.textFaint}
+          value={value}
+          maxLength={10}
+          accessibilityLabel="Fecha en formato año, mes y día"
+          onChangeText={(t) => {
+            const next = formatDateDraft(t);
+            onChange(next === "" ? undefined : next);
+          }}
+        />
+      </View>
+      <Text style={styles.minMax}>Año-mes-día, por ejemplo 2026-12-31</Text>
+    </View>
+  );
+}
+
 /** Texto libre con límite de longitud. */
 export function TextAnswer({ value, maxLength, onChange }: { value: string; maxLength: number; onChange: (v: string) => void }) {
   const styles = useThemedStyles(createStyles);

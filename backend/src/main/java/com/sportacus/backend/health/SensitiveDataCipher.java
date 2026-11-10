@@ -21,8 +21,8 @@ import org.springframework.stereotype.Component;
  * categorías codificadas (zona, severidad) quedan en claro porque el filtro de seguridad las usa en SQL.
  *
  * Formato guardado: base64(iv[12] + texto cifrado + tag[16]).
- * La clave sale de SPORTACUS_DATA_KEY (base64 de 32 bytes). Sin ella se deriva una clave de
- * desarrollo y se avisa en el log: NO usar así en producción.
+ * La clave sale de SPORTACUS_DATA_KEY (propiedad sportacus.crypto.data-key; base64 de 32 bytes). Sin ella se deriva una clave de
+ * desarrollo y se avisa en el log; con el perfil prod la aplicación no arranca.
  */
 @Component
 public class SensitiveDataCipher {
@@ -34,8 +34,12 @@ public class SensitiveDataCipher {
     private final SecretKey key;
     private final SecureRandom random = new SecureRandom();
 
-    public SensitiveDataCipher(@Value("${sportacus.crypto.data-key:}") String base64Key) throws Exception {
+    public SensitiveDataCipher(@Value("${sportacus.crypto.data-key:}") String base64Key,
+            org.springframework.core.env.Environment env) throws Exception {
         if (base64Key == null || base64Key.isBlank()) {
+            if (env.acceptsProfiles(org.springframework.core.env.Profiles.of("prod"))) {
+                throw new IllegalStateException("SPORTACUS_DATA_KEY no está definida: el perfil prod no arranca sin ella.");
+            }
             log.warn("SPORTACUS_DATA_KEY no está definida: se usa una clave de DESARROLLO para cifrar datos de salud.");
             byte[] derived = MessageDigest.getInstance("SHA-256")
                     .digest("sportacus-dev-only-key".getBytes(StandardCharsets.UTF_8));

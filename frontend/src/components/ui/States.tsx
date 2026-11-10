@@ -32,12 +32,21 @@ export function ErrorState({ message, onRetry, style }: { message: string; onRet
   return <EmptyState icon="📡" title="No pudimos cargar esto" body={message} actionLabel={onRetry ? "Reintentar" : undefined} onAction={onRetry} style={style} />;
 }
 
-/** Fila de banner de "datos sin conexión". */
-export function OfflineBanner() {
+/** Banner de "sin conexión" (y, si hay, cuántos entrenamientos esperan para enviarse). */
+export function OfflineBanner({ offline = true, pending = 0, style }: { offline?: boolean; pending?: number; style?: StyleProp<ViewStyle> }) {
   const { colors } = useTheme();
+  const pendingText =
+    pending > 0 ? (pending === 1 ? "Tienes 1 entrenamiento guardado por enviar." : `Tienes ${pending} entrenamientos guardados por enviar.`) : "";
+  const text = offline
+    ? `Sin conexión: mostramos tu última copia guardada.${pendingText ? ` ${pendingText}` : ""}`
+    : `${pendingText} Lo enviaremos en cuanto se pueda.`;
   return (
-    <View style={{ backgroundColor: colors.warnSoft, padding: 10, borderRadius: 12, marginBottom: 10 }}>
-      <Text style={{ color: colors.warn, fontSize: 12, fontWeight: "600" }}>Sin conexión: mostramos tu última copia guardada.</Text>
+    <View
+      accessibilityRole="alert"
+      accessibilityLiveRegion="polite"
+      style={[{ backgroundColor: colors.warnSoft, padding: 10, borderRadius: 12, marginBottom: 10, borderLeftWidth: 4, borderLeftColor: colors.warn }, style]}
+    >
+      <Text style={{ color: colors.text, fontSize: 12, fontWeight: "600", lineHeight: 17 }}>{`📡 ${text}`}</Text>
     </View>
   );
 }

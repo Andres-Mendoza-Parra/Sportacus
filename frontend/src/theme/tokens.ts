@@ -2,7 +2,23 @@
 
 export type ThemePreference = "system" | "light" | "dark";
 export type ResolvedMode = "light" | "dark";
-export type AccentKey = "verde" | "azul" | "naranja" | "violeta";
+export type AccentKey =
+  | "verde"
+  | "esmeralda"
+  | "turquesa"
+  | "cian"
+  | "azul"
+  | "indigo"
+  | "violeta"
+  | "uva"
+  | "rosa"
+  | "coral"
+  | "naranja"
+  | "ambar"
+  | "oliva"
+  | "grafito";
+/** Color elegido en Ajustes: "mundo" = el del mundo activo (por defecto) o una paleta fija. */
+export type AccentChoice = "mundo" | AccentKey;
 
 export interface AccentDef {
   label: string;
@@ -12,13 +28,6 @@ export interface AccentDef {
   soft: string; // fondo suave (chips) en claro
   softDark: string; // fondo suave en oscuro
 }
-
-export const ACCENTS: Record<AccentKey, AccentDef> = {
-  verde: { label: "Verde", main: "#4CAF50", dark: "#2d5a27", deep: "#1a3a2a", soft: "#e8f5e9", softDark: "#1f3a24" },
-  azul: { label: "Azul", main: "#2196F3", dark: "#1565c0", deep: "#0d2f5c", soft: "#e3f2fd", softDark: "#172f4a" },
-  naranja: { label: "Naranja", main: "#FF9800", dark: "#e65100", deep: "#6b2a05", soft: "#fff3e0", softDark: "#4a2c10" },
-  violeta: { label: "Violeta", main: "#8e5cf0", dark: "#5e35b1", deep: "#2c1766", soft: "#ede7f6", softDark: "#2e2250" },
-};
 
 // ───────────────────── Acento derivado de un color arbitrario ─────────────────────
 
@@ -49,16 +58,35 @@ function luminance([r, g, b]: RGB): number {
   return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
 }
 
+/** Contraste mínimo (WCAG AA, texto normal) del texto blanco sobre el color principal. */
+const MIN_WHITE_CONTRAST = 4.5;
+
+function whiteContrast(color: RGB): number {
+  return 1.05 / (luminance(color) + 0.05);
+}
+
+const FALLBACK_ACCENT: AccentDef = {
+  label: "Verde",
+  main: "#2e7d32",
+  dark: "#1f5522",
+  deep: "#112f13",
+  soft: "#e6f0e6",
+  softDark: "#1a3220",
+};
+
 /**
- * Construye un acento completo (principal, degradados y fondos suaves) a partir del color de un mundo.
- * Si el color es muy claro se oscurece el principal para que el texto blanco siga siendo legible.
+ * Construye un acento completo (principal, degradados y fondos suaves) a partir de un color (el del
+ * mundo activo o una paleta). El principal se oscurece lo justo para que el texto blanco cumpla AA.
  */
 export function deriveAccent(hex: string, label = "Mundo"): AccentDef {
   const base = parseHex(hex);
-  if (!base) return ACCENTS.verde;
+  if (!base) return FALLBACK_ACCENT;
   const black: RGB = [0, 0, 0];
   const white: RGB = [255, 255, 255];
-  const main = luminance(base) > 0.45 ? mix(base, black, 0.25) : base;
+  let main = base;
+  for (let t = 0.03; whiteContrast(main) < MIN_WHITE_CONTRAST && t <= 1; t += 0.03) {
+    main = mix(base, black, t);
+  }
   return {
     label,
     main: toHex(main),
@@ -67,6 +95,38 @@ export function deriveAccent(hex: string, label = "Mundo"): AccentDef {
     soft: toHex(mix(main, white, 0.88)),
     softDark: toHex(mix(main, [15, 20, 17], 0.72)),
   };
+}
+
+/**
+ * Paletas de Ajustes → Apariencia: [etiqueta, color base]. Bases vivas: deriveAccent las oscurece justo hasta AA
+ * con texto blanco (≈4.7:1), lo que deja el principal legible también como texto sobre el fondo oscuro (≈3.9:1).
+ */
+const PALETTE: Record<AccentKey, [string, string]> = {
+  verde: ["Verde", "#43a047"],
+  esmeralda: ["Esmeralda", "#10b981"],
+  turquesa: ["Turquesa", "#14b8a6"],
+  cian: ["Cian", "#06b6d4"],
+  azul: ["Azul", "#2196f3"],
+  indigo: ["Índigo", "#6366f1"],
+  violeta: ["Violeta", "#8b5cf6"],
+  uva: ["Uva", "#c026d3"],
+  rosa: ["Rosa", "#ec4899"],
+  coral: ["Coral", "#f05a4a"],
+  naranja: ["Naranja", "#f57c00"],
+  ambar: ["Ámbar", "#f59e0b"],
+  oliva: ["Oliva", "#84a312"],
+  grafito: ["Grafito", "#64748b"],
+};
+
+export const ACCENT_KEYS = Object.keys(PALETTE) as AccentKey[];
+
+export const ACCENTS = Object.fromEntries(ACCENT_KEYS.map((key) => [key, deriveAccent(PALETTE[key][1], PALETTE[key][0])])) as Record<
+  AccentKey,
+  AccentDef
+>;
+
+export function isAccentChoice(value: unknown): value is AccentChoice {
+  return value === "mundo" || (typeof value === "string" && (ACCENT_KEYS as string[]).includes(value));
 }
 
 /** Color con transparencia (hex → rgba) para fondos de chips o zonas de gráficos. */
@@ -115,7 +175,8 @@ export function buildColors(mode: ResolvedMode, a: AccentDef): Colors {
     cardAlt: dark ? "#222b24" : "#f5f6f3",
     text: dark ? "#eef2ee" : "#1a1a1a",
     textMuted: dark ? "#a7b2a9" : "#666666",
-    textFaint: dark ? "#7c887f" : "#999999",
+    // ≥ 4,5:1 sobre bg, card y cardAlt en ambos modos (WCAG AA).
+    textFaint: dark ? "#97a29a" : "#6b6b6b",
     border: dark ? "#2c362e" : "#e8e8e8",
     inputBg: dark ? "#151b17" : "#fafafa",
     track: dark ? "#2c362e" : "#eceeea",

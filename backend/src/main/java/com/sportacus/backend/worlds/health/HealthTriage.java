@@ -67,7 +67,9 @@ public final class HealthTriage {
         return switch (track) {
             case "adulto_mayor" -> falls || age >= 80 || inactive ? 0 : 1;
             case "cardiometabolico", "movilidad_general" -> inactive ? 0 : 1;
-            default -> "mas_3m".equals(onset) || "6s_3m".equals(onset) || onset == null ? 1 : 0;
+            // Sin fecha de inicio: si el motivo es una molestia, no sabemos si es reciente → fase 1 (índice 0).
+            default -> "mas_3m".equals(onset) || "6s_3m".equals(onset)
+                    || (onset == null && !HealthAdaptations.painReason(reason)) ? 1 : 0;
         };
     }
 

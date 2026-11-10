@@ -30,7 +30,7 @@ export default function NextSessionWidget({ widget, delay }: { widget: TypedWidg
 
   const isToday = session.weekday === todayWeekday();
   const day = isToday ? "Hoy" : weekdayName(session.weekday);
-  const meta = [day, session.estMinutes ? `~${session.estMinutes} min` : null, `${session.blocks.length} bloques`].filter(Boolean).join(" · ");
+  const meta = [day, session.estMinutes ? `~${session.estMinutes} min` : null, `${session.blocks.length} ${session.blocks.length === 1 ? "bloque" : "bloques"}`].filter(Boolean).join(" · ");
 
   return (
     <WidgetFrame title={widget.title} subtitle={widget.subtitle} delay={delay}>

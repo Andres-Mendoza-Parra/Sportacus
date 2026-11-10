@@ -18,7 +18,8 @@ public final class ProfileForm {
 
     public static FormSpec form() {
         return Forms.form("perfil", "Cuéntanos de ti", "Con esto adaptamos cualquier mundo que elijas.",
-                number("p_birth_year", "¿En qué año naciste?", null, 1925, 2016, null),
+                number("p_birth_year", "¿En qué año naciste?", "Sportacus es para personas de 12 años o más.", 1925,
+                        java.time.Year.now().getValue() - 12, null),
                 single("p_sex", "Sexo", "Lo usamos para valores de referencia de los tests.",
                         opt("femenino", "♀️", "Femenino"), opt("masculino", "♂️", "Masculino"),
                         opt("otro", "⚧️", "Otro"), opt("prefiero_no_decir", "➖", "Prefiero no decir")),

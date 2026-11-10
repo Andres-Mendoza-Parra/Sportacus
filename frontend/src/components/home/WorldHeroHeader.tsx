@@ -29,12 +29,12 @@ export default function WorldHeroHeader({ greeting, world, streak, caption, chil
             </Text>
           ) : null}
           <Text style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, marginTop: 2 }} numberOfLines={1}>
-            {caption ?? `${world.name} · ${world.trackName}`}
+            {caption ?? [world.name, world.trackName].filter(Boolean).join(" · ")}
           </Text>
         </View>
       </View>
       <View style={{ flexDirection: "row", gap: 8, marginTop: 16, flexWrap: "wrap" }}>
-        <Pill text={`⭐ Nivel ${world.level}`} />
+        {world.key !== "base" ? <Pill text={`⭐ Nivel ${world.level}`} /> : null}
         <Pill text={`🔥 ${days} ${days === 1 ? "día" : "días"} de racha`} />
         {streak && streak.longestDays > 0 ? <Pill text={`🏆 Récord ${streak.longestDays}`} /> : null}
       </View>

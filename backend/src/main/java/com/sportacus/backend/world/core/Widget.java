@@ -119,4 +119,33 @@ public record Widget(String type, String key, String title, String subtitle, Map
     public static Widget notice(String key, String tone, String title, String body) {
         return new Widget("notice", key, title, null, data("tone", tone, "body", body));
     }
+
+    // ── Perfil 360 y Mi Base (docs/19) ────────────────────────
+
+    /** Anillo de "qué tan bien te conocemos" (% global y por área). Toca: /profile360. */
+    public static Widget profileRing(int pct, String level, String label, List<?> areas) {
+        return new Widget("profile_ring", "profile_ring", "Tu perfil", null,
+                data("pct", pct, "level", level, "label", label, "areas", areas));
+    }
+
+    /** Tarjeta de una pregunta sugerida (o de consentimiento, chequeo o afinar plan) para responder sin salir. */
+    public static Widget question(Object nextItem) {
+        return new Widget("question", "question", null, null, data("item", nextItem));
+    }
+
+    /** Invitación al check-in diario (ánimo, sueño, energía, estrés, dolor). */
+    public static Widget checkin(boolean done, Object readiness) {
+        return new Widget("checkin", "checkin", "¿Cómo llegas hoy?", null, data("done", done, "readiness", readiness));
+    }
+
+    /** Disposición de hoy tras el check-in: factor de volumen y motivos. */
+    public static Widget readiness(double factor, String label, List<String> reasons) {
+        return new Widget("readiness", "readiness", "Tu día", null,
+                data("factor", factor, "label", label, "reasons", reasons));
+    }
+
+    /** Mundos sugeridos con sus motivos. */
+    public static Widget worldSuggestions(String title, String subtitle, List<?> items) {
+        return new Widget("world_suggestions", "world_suggestions", title, subtitle, data("items", items));
+    }
 }

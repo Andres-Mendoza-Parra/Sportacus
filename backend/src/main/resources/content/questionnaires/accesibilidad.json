@@ -1,0 +1,293 @@
+{
+  "area": {
+    "key": "accesibilidad",
+    "name": "Accesibilidad",
+    "icon": "♿",
+    "sortOrder": 190,
+    "description": "Detalles para adaptar ejercicios, instrucciones y la app a ti. Lo crítico de seguridad está en el chequeo de salud.",
+    "sensitive": true
+  },
+  "questionnaires": [
+    {
+      "key": "accesibilidad_movimiento",
+      "title": "Adaptar el movimiento",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "ac_necesidades",
+          "type": "multi",
+          "prompt": "¿Hay algo que debamos tener en cuenta para adaptar tus ejercicios?",
+          "hint": "Lo crítico para tu seguridad va en el chequeo de salud; aquí afinamos detalles.",
+          "options": [
+            {"id":"movilidad_reducida","icon":null,"text":"Movilidad reducida","sub":null},
+            {"id":"silla_ruedas","icon":"♿","text":"Uso silla de ruedas","sub":null},
+            {"id":"ayuda_marcha","icon":"🦯","text":"Uso ayuda para caminar","sub":null},
+            {"id":"amputacion","icon":null,"text":"Amputación o diferencia en una extremidad","sub":null},
+            {"id":"vision","icon":"👁️","text":"Baja visión o ceguera","sub":null},
+            {"id":"audicion","icon":"👂","text":"Hipoacusia o sordera","sub":null},
+            {"id":"cognitiva","icon":null,"text":"Me cuesta seguir instrucciones largas","sub":null},
+            {"id":"equilibrio","icon":null,"text":"Problemas de equilibrio","sub":null},
+            {"id":"dolor_cronico","icon":null,"text":"Dolor crónico","sub":null},
+            {"id":"fatiga_cronica","icon":null,"text":"Fatiga crónica","sub":null},
+            {"id":"ninguna","icon":"✅","text":"Ninguna","sub":null}
+          ],
+          "why": "Adaptamos ejercicios, instrucciones y formato para que todo sea accesible para ti.",
+          "uses": ["seguridad","plan","asistente"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ac_silla_tipo",
+          "type": "options",
+          "prompt": "¿Qué tipo de silla usas?",
+          "hint": null,
+          "options": [
+            {"id":"manual","icon":null,"text":"Manual","sub":null},
+            {"id":"electrica","icon":null,"text":"Eléctrica","sub":null},
+            {"id":"ambas","icon":null,"text":"Ambas","sub":null}
+          ],
+          "why": "Ajustamos ejercicios de propulsión y fuerza de tren superior.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ac_necesidades","in":["silla_ruedas"]},
+          "cadence": null
+        },
+        {
+          "id": "ac_transferencias",
+          "type": "options",
+          "prompt": "¿Puedes pasarte de la silla a otra superficie?",
+          "hint": null,
+          "options": [
+            {"id":"solo","icon":null,"text":"Sí, sin ayuda","sub":null},
+            {"id":"ayuda","icon":null,"text":"Con ayuda","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Define si incluimos ejercicios en el suelo, en banco o solo en la silla.",
+          "uses": ["seguridad","plan"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ac_necesidades","in":["silla_ruedas"]},
+          "cadence": null
+        },
+        {
+          "id": "ac_ayuda_tipo",
+          "type": "options",
+          "prompt": "¿Qué ayuda usas para caminar?",
+          "hint": null,
+          "options": [
+            {"id":"baston","icon":null,"text":"Bastón","sub":null},
+            {"id":"muletas","icon":null,"text":"Muletas","sub":null},
+            {"id":"caminador","icon":null,"text":"Caminador","sub":null},
+            {"id":"protesis","icon":null,"text":"Prótesis","sub":null},
+            {"id":"ortesis","icon":null,"text":"Órtesis","sub":null}
+          ],
+          "why": "Elegimos ejercicios estables y con apoyo según tu ayuda.",
+          "uses": ["seguridad","plan"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ac_necesidades","in":["ayuda_marcha"]},
+          "cadence": null
+        },
+        {
+          "id": "ac_extremidades",
+          "type": "multi",
+          "prompt": "¿Qué extremidades puedes usar para ejercitarte?",
+          "hint": null,
+          "options": [
+            {"id":"brazo_izq","icon":null,"text":"Brazo izquierdo","sub":null},
+            {"id":"brazo_der","icon":null,"text":"Brazo derecho","sub":null},
+            {"id":"pierna_izq","icon":null,"text":"Pierna izquierda","sub":null},
+            {"id":"pierna_der","icon":null,"text":"Pierna derecha","sub":null}
+          ],
+          "why": "Diseñamos ejercicios con las partes de tu cuerpo que puedes usar.",
+          "uses": ["seguridad","plan"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ac_necesidades","in":["movilidad_reducida","silla_ruedas","ayuda_marcha","amputacion"]},
+          "cadence": null
+        },
+        {
+          "id": "ac_suelo",
+          "type": "options",
+          "prompt": "¿Puedes bajar al suelo y volver a levantarte?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí, sin problema","sub":null},
+            {"id":"apoyo","icon":null,"text":"Con apoyo","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Si cuesta, evitamos ejercicios en el suelo o los hacemos en cama, banco o silla.",
+          "uses": ["seguridad","plan"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ac_apoyo_pie",
+          "type": "options",
+          "prompt": "¿Necesitas apoyo para hacer ejercicios de pie?",
+          "hint": null,
+          "options": [
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces (pared o silla)","sub":null},
+            {"id":"siempre","icon":null,"text":"Siempre","sub":null}
+          ],
+          "why": "Incluimos la silla o la pared como apoyo para que entrenes con seguridad.",
+          "uses": ["seguridad","plan"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ac_mejor_momento",
+          "type": "options",
+          "prompt": "¿En qué momento del día tienes menos dolor o fatiga?",
+          "hint": null,
+          "options": [
+            {"id":"manana","icon":null,"text":"Mañana","sub":null},
+            {"id":"tarde","icon":null,"text":"Tarde","sub":null},
+            {"id":"noche","icon":null,"text":"Noche","sub":null},
+            {"id":"variable","icon":null,"text":"Varía","sub":null}
+          ],
+          "why": "Ubicamos las sesiones en tu mejor momento del día.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ac_necesidades","in":["dolor_cronico","fatiga_cronica"]},
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "accesibilidad_app",
+      "title": "Adaptar la app y las instrucciones",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "ac_vision_apoyo",
+          "type": "multi",
+          "prompt": "¿Qué te ayuda a usar la app?",
+          "hint": null,
+          "options": [
+            {"id":"texto_grande","icon":null,"text":"Texto grande","sub":null},
+            {"id":"audio","icon":null,"text":"Instrucciones en audio","sub":null},
+            {"id":"contraste","icon":null,"text":"Alto contraste","sub":null},
+            {"id":"lector","icon":null,"text":"Lector de pantalla","sub":null}
+          ],
+          "why": "Priorizamos instrucciones en audio, texto grande o compatibilidad con lector de pantalla.",
+          "uses": ["asistente"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ac_necesidades","in":["vision"]},
+          "cadence": null
+        },
+        {
+          "id": "ac_audicion_apoyo",
+          "type": "multi",
+          "prompt": "¿Qué te ayuda a seguir las sesiones?",
+          "hint": null,
+          "options": [
+            {"id":"subtitulos","icon":null,"text":"Subtítulos","sub":null},
+            {"id":"vibracion","icon":null,"text":"Vibración","sub":null},
+            {"id":"visual","icon":null,"text":"Señales visuales","sub":null},
+            {"id":"lengua_senas","icon":null,"text":"Lengua de señas","sub":null}
+          ],
+          "why": "Usamos señales visuales, subtítulos o vibración en vez de pitidos.",
+          "uses": ["asistente"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ac_necesidades","in":["audicion"]},
+          "cadence": null
+        },
+        {
+          "id": "ac_instrucciones",
+          "type": "options",
+          "prompt": "¿Cómo prefieres las instrucciones?",
+          "hint": null,
+          "options": [
+            {"id":"pasos_cortos","icon":null,"text":"En pasos cortos","sub":null},
+            {"id":"una_vez","icon":null,"text":"Una a la vez","sub":null},
+            {"id":"repetidas","icon":null,"text":"Repetidas y con ejemplos","sub":null},
+            {"id":"normal","icon":null,"text":"Como cualquier otra","sub":null}
+          ],
+          "why": "Damos las indicaciones en el formato que te resulte más claro.",
+          "uses": ["asistente"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ac_necesidades","in":["cognitiva","vision","audicion"]},
+          "cadence": null
+        },
+        {
+          "id": "ac_acompanante",
+          "type": "options",
+          "prompt": "¿Alguien te acompaña cuando haces ejercicio?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Si hay acompañante, podemos incluir ejercicios asistidos o en pareja.",
+          "uses": ["plan"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ac_necesidades","in":["movilidad_reducida","silla_ruedas","ayuda_marcha","amputacion","vision","audicion","cognitiva","equilibrio","dolor_cronico","fatiga_cronica"]},
+          "cadence": null
+        },
+        {
+          "id": "ac_deporte_adaptado",
+          "type": "options",
+          "prompt": "¿Te interesa conocer deportes adaptados o paralímpicos?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"quizas","icon":null,"text":"Quizás","sub":null},
+            {"id":"ya_practico","icon":null,"text":"Ya practico uno","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Te sugerimos opciones y comunidades de deporte adaptado.",
+          "uses": ["descubrimiento"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ac_necesidades","in":["movilidad_reducida","silla_ruedas","ayuda_marcha","amputacion"]},
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

@@ -43,9 +43,27 @@ sportacus:
     chat-model: ${RAG_CHAT_MODEL:qwen2.5:7b-instruct}
     top-k: ${RAG_TOP_K:5}
   jwt:
-    # Cambia este secreto en un entorno real. Debe tener al menos 32 caracteres.
-    secret: "c3BvcnRhY3VzLXByb2Qtc3VwZXItc2VjdXJlLWp3dC1zZWNyZXQta2V5LTIwMjY="
-    expiration-minutes: 1440 # 24 horas
+    # JWT_SECRET: ≥ 32 bytes (texto o Base64). El valor por defecto es SOLO de desarrollo (ver JwtService.DEV_SECRET):
+    # con el perfil prod la aplicación no arranca sin la variable.
+    secret: ${JWT_SECRET:sportacus-dev-only-jwt-secret-cambialo-en-produccion-2026}
+    expiration-minutes: 10080 # 7 días (la app guarda la sesión pendiente si expira)
+  crypto:
+    # Clave AES-256 (Base64 de 32 bytes) para los datos de salud. Sin ella: clave de desarrollo + aviso; en prod no arranca.
+    data-key: ${SPORTACUS_DATA_KEY:}
+  # Correos con acceso a GET /api/admin/analytics/summary (separados por comas). Vacío = nadie.
+  admin-emails: ${SPORTACUS_ADMIN_EMAILS:}
 
 cors:
   allowed-origins: "*"
+
+---
+# Perfil de producción: sin valores por defecto para los secretos (si faltan, la aplicación no arranca).
+spring:
+  config:
+    activate:
+      on-profile: prod
+sportacus:
+  jwt:
+    secret: ${JWT_SECRET}
+  crypto:
+    data-key: ${SPORTACUS_DATA_KEY}

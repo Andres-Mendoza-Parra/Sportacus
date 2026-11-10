@@ -1,0 +1,264 @@
+{
+  "area": {
+    "key": "aprendizaje",
+    "name": "Cómo prefieres aprender",
+    "icon": "🎓",
+    "sortOrder": 220,
+    "description": "Formato, tono y nivel de detalle de las indicaciones. Te hablamos como prefieres.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "aprendizaje_formato",
+      "title": "Cómo aprendes mejor",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "ap_formato",
+          "type": "options",
+          "prompt": "¿Cómo prefieres aprender un ejercicio nuevo?",
+          "hint": null,
+          "options": [
+            {"id":"video","icon":"🎬","text":"Viendo un video","sub":null},
+            {"id":"texto","icon":"📖","text":"Leyendo los pasos","sub":null},
+            {"id":"audio","icon":"🎧","text":"Escuchando","sub":null},
+            {"id":"mixto","icon":"🔀","text":"Una mezcla","sub":null}
+          ],
+          "why": "Te mostramos las indicaciones en el formato que entiendes mejor.",
+          "uses": ["asistente","plan"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ap_tono",
+          "type": "options",
+          "prompt": "¿Qué tono prefieres en los mensajes?",
+          "hint": null,
+          "options": [
+            {"id":"motivador","icon":"🔥","text":"Motivador y con energía","sub":null},
+            {"id":"tecnico","icon":"🔬","text":"Técnico y preciso","sub":null},
+            {"id":"breve","icon":"⚡","text":"Breve y al grano","sub":null},
+            {"id":"cercano","icon":"🤗","text":"Cercano y amable","sub":null}
+          ],
+          "why": "El asistente y los mensajes de la app se adaptan a tu tono favorito.",
+          "uses": ["asistente"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ap_detalle",
+          "type": "options",
+          "prompt": "¿Cuánta explicación quieres?",
+          "hint": null,
+          "options": [
+            {"id":"minimo","icon":null,"text":"Lo mínimo: qué hacer","sub":null},
+            {"id":"breve","icon":null,"text":"Una explicación breve","sub":null},
+            {"id":"porque","icon":null,"text":"Quiero entender el porqué","sub":null}
+          ],
+          "why": "Algunos quieren solo qué hacer; otros, el porqué. Tú eliges.",
+          "uses": ["asistente"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ap_terminos",
+          "type": "options",
+          "prompt": "¿Qué lenguaje prefieres?",
+          "hint": null,
+          "options": [
+            {"id":"sencillo","icon":null,"text":"Sencillo, sin tecnicismos","sub":null},
+            {"id":"tecnico","icon":null,"text":"Técnico, me gusta aprender los términos","sub":null},
+            {"id":"mixto","icon":null,"text":"Técnico pero explicado","sub":null}
+          ],
+          "why": "Usamos términos técnicos solo si te sirven.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ap_correccion",
+          "type": "options",
+          "prompt": "Cuando algo se puede mejorar, ¿cómo prefieres que te lo digamos?",
+          "hint": null,
+          "options": [
+            {"id":"directa","icon":null,"text":"Directo, sin rodeos","sub":null},
+            {"id":"suave","icon":null,"text":"Con suavidad","sub":null},
+            {"id":"ejemplo","icon":null,"text":"Con un ejemplo de cómo hacerlo","sub":null}
+          ],
+          "why": "Ajustamos cómo te damos retroalimentación.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ap_conteo",
+          "type": "options",
+          "prompt": "¿Prefieres contar repeticiones o trabajar por tiempo?",
+          "hint": null,
+          "options": [
+            {"id":"reps","icon":null,"text":"Repeticiones","sub":null},
+            {"id":"tiempo","icon":null,"text":"Por tiempo","sub":null},
+            {"id":"igual","icon":null,"text":"Me da igual","sub":null}
+          ],
+          "why": "Diseñamos tus bloques como te resulte más cómodo seguirlos.",
+          "uses": ["plan"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ap_unidades",
+          "type": "options",
+          "prompt": "¿Qué unidades prefieres?",
+          "hint": null,
+          "options": [
+            {"id":"metrico","icon":null,"text":"Kilos y kilómetros","sub":null},
+            {"id":"imperial","icon":null,"text":"Libras y millas","sub":null}
+          ],
+          "why": "Mostramos pesos y distancias en las unidades que usas.",
+          "uses": ["asistente","progreso"],
+          "priority": 1,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "aprendizaje_comunicacion",
+      "title": "Cómo nos comunicamos",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "ap_temas",
+          "type": "multi",
+          "prompt": "¿Sobre qué temas te gustaría aprender?",
+          "hint": null,
+          "options": [
+            {"id":"tecnica","icon":null,"text":"Técnica de ejercicios","sub":null},
+            {"id":"nutricion","icon":null,"text":"Alimentación","sub":null},
+            {"id":"descanso","icon":null,"text":"Sueño y recuperación","sub":null},
+            {"id":"mente","icon":null,"text":"Mentalidad y hábitos","sub":null},
+            {"id":"ciencia","icon":null,"text":"La ciencia del entrenamiento","sub":null},
+            {"id":"lesiones","icon":null,"text":"Prevenir lesiones","sub":null},
+            {"id":"ninguno","icon":null,"text":"Por ahora ninguno","sub":null}
+          ],
+          "why": "Te compartimos contenido corto sobre lo que te interesa.",
+          "uses": ["asistente","descubrimiento"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ap_asistente",
+          "type": "options",
+          "prompt": "¿Quieres que el asistente te escriba por iniciativa propia?",
+          "hint": null,
+          "options": [
+            {"id":"proactivo","icon":null,"text":"Sí, que me escriba","sub":null},
+            {"id":"a_veces","icon":null,"text":"Solo para cosas importantes","sub":null},
+            {"id":"solo_pregunto","icon":null,"text":"Solo cuando yo pregunte","sub":null}
+          ],
+          "why": "Respetamos si prefieres que solo te responda cuando preguntes.",
+          "uses": ["asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ap_frecuencia",
+          "type": "options",
+          "prompt": "¿Cada cuánto quieres un resumen de tus avances?",
+          "hint": null,
+          "options": [
+            {"id":"diario","icon":null,"text":"A diario","sub":null},
+            {"id":"semanal","icon":null,"text":"Semanal","sub":null},
+            {"id":"mensual","icon":null,"text":"Mensual","sub":null},
+            {"id":"nunca","icon":null,"text":"No los necesito","sub":null}
+          ],
+          "why": "Te enviamos resúmenes con la frecuencia que te sirve.",
+          "uses": ["progreso","asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ap_celebrar",
+          "type": "options",
+          "prompt": "¿Te gusta que celebremos tus logros?",
+          "hint": null,
+          "options": [
+            {"id":"mucho","icon":null,"text":"Sí, a lo grande 🎉","sub":null},
+            {"id":"discreto","icon":null,"text":"Sí, con discreción","sub":null},
+            {"id":"no","icon":null,"text":"Prefiero que no","sub":null}
+          ],
+          "why": "Ajustamos cuánto destacamos tus avances.",
+          "uses": ["progreso","asistente"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ap_preguntas",
+          "type": "options",
+          "prompt": "¿Cómo prefieres responder estas preguntas?",
+          "hint": null,
+          "options": [
+            {"id":"una","icon":null,"text":"Una a la vez, de vez en cuando","sub":null},
+            {"id":"varias","icon":null,"text":"Varias seguidas","sub":null},
+            {"id":"nunca","icon":null,"text":"Solo cuando yo entre a responder","sub":null}
+          ],
+          "why": "Ajustamos cuántas preguntas te sugerimos a la vez.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

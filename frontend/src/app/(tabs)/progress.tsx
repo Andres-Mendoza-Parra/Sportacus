@@ -1,12 +1,14 @@
 import { router } from "expo-router";
 import React from "react";
-import { RefreshControl, ScrollView, View } from "react-native";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
 
+import GoalsSection from "../../components/goals/GoalsSection";
 import WorldHeroHeader from "../../components/home/WorldHeroHeader";
 import AchievementsGrid from "../../components/progress/AchievementsGrid";
 import LinkCard from "../../components/progress/LinkCard";
 import RecentSessions from "../../components/progress/RecentSessions";
 import { SectionTitle } from "../../components/ui/Card";
+import PressableScale from "../../components/ui/PressableScale";
 import { ScreenSkeleton } from "../../components/ui/Skeleton";
 import { EmptyState, ErrorState } from "../../components/ui/States";
 import WidgetList from "../../components/widgets/WidgetList";
@@ -44,6 +46,9 @@ export default function ProgressScreen() {
           highlight
         />
 
+        <SectionTitle>Tus metas</SectionTitle>
+        <GoalsSection world={data.world.key} />
+
         <SectionTitle>Métricas</SectionTitle>
         {data.widgets.length > 0 ? (
           <WidgetList widgets={data.widgets} />
@@ -53,6 +58,14 @@ export default function ProgressScreen() {
 
         <SectionTitle>Logros</SectionTitle>
         <AchievementsGrid achievements={data.achievements} />
+        <PressableScale
+          onPress={() => router.push("/achievements")}
+          accessibilityRole="link"
+          accessibilityLabel="Ver los logros de todos tus mundos"
+          style={{ alignSelf: "center", paddingVertical: 10, paddingHorizontal: 12 }}
+        >
+          <Text style={{ fontSize: 13, fontWeight: "700", color: colors.primary }}>🏅 Ver logros de todos tus mundos ›</Text>
+        </PressableScale>
 
         <SectionTitle>Sesiones recientes</SectionTitle>
         <RecentSessions sessions={data.recentSessions} />

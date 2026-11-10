@@ -20,14 +20,15 @@ const RPE: Record<number, string> = {
 interface Props {
   value: number | undefined;
   onChange: (value: number) => void;
+  title?: string;
 }
 
 /** Esfuerzo percibido (RPE 1–10) con la descripción de cada nivel. */
-export default function RpePicker({ value, onChange }: Props) {
+export default function RpePicker({ value, onChange, title = "¿Qué tan dura fue la sesión?" }: Props) {
   const { colors, shadow } = useTheme();
   return (
     <View style={[{ backgroundColor: colors.card, borderRadius: 18, padding: 16, gap: 12 }, shadow]}>
-      <Text style={{ fontSize: 16, fontWeight: "700", color: colors.text }}>¿Qué tan dura fue la sesión?</Text>
+      <Text style={{ fontSize: 16, fontWeight: "700", color: colors.text }}>{title}</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
         {Object.keys(RPE).map((k) => {
           const n = Number(k);

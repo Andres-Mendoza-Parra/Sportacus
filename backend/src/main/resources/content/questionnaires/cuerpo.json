@@ -1,0 +1,376 @@
+{
+  "area": {
+    "key": "cuerpo",
+    "name": "Físico y composición",
+    "icon": "🧍",
+    "sortOrder": 10,
+    "description": "Tu cuerpo hoy: medidas, condición y lesiones pasadas. Ajusta cargas, tests y referencias.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "cuerpo_basico",
+      "title": "Lo básico de ti",
+      "subtitle": "1 minuto",
+      "minutes": 1,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "p_birth_year",
+          "type": "number",
+          "prompt": "¿En qué año naciste?",
+          "hint": null,
+          "min": 1925,
+          "max": 2016,
+          "step": null,
+          "unit": null,
+          "why": "Tu edad ajusta la intensidad, la recuperación y los valores de referencia de los tests.",
+          "uses": ["seguridad","plan","progreso"],
+          "priority": 5,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": "birth_year",
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "p_sex",
+          "type": "options",
+          "prompt": "Sexo",
+          "hint": null,
+          "options": [
+            {"id":"femenino","icon":"♀️","text":"Femenino","sub":null},
+            {"id":"masculino","icon":"♂️","text":"Masculino","sub":null},
+            {"id":"otro","icon":"⚧️","text":"Otro","sub":null},
+            {"id":"prefiero_no_decir","icon":"➖","text":"Prefiero no decir","sub":null}
+          ],
+          "why": "Lo usamos para valores de referencia de los tests y para ofrecerte preguntas que sí te apliquen.",
+          "uses": ["plan","progreso"],
+          "priority": 5,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": "sex",
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "p_weight",
+          "type": "number",
+          "prompt": "Peso",
+          "hint": null,
+          "min": 25,
+          "max": 300,
+          "step": null,
+          "unit": "kg",
+          "why": "Ajusta cargas, gasto estimado e impacto. Si prefieres no ver tu peso, puedes ocultarlo.",
+          "uses": ["seguridad","plan","progreso"],
+          "priority": 5,
+          "refreshDays": 30,
+          "metric": "peso_kg",
+          "profileField": "weight_kg",
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "p_height",
+          "type": "number",
+          "prompt": "Estatura",
+          "hint": null,
+          "min": 100,
+          "max": 230,
+          "step": null,
+          "unit": "cm",
+          "why": "Con tu estatura estimamos referencias y ajustamos ejercicios de impacto y movilidad.",
+          "uses": ["plan","progreso"],
+          "priority": 4,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": "height_cm",
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "cuerpo_medidas",
+      "title": "Medidas y composición",
+      "subtitle": "2 minutos · opcional",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "cu_cintura",
+          "type": "number",
+          "prompt": "¿Cuánto mide tu cintura?",
+          "hint": "Mide a la altura del ombligo, de pie y sin apretar la cinta.",
+          "min": 40,
+          "max": 200,
+          "step": null,
+          "unit": "cm",
+          "why": "La cintura muestra cambios que la báscula no ve. La seguimos como tendencia, sin juicios.",
+          "uses": ["progreso","health"],
+          "priority": 3,
+          "refreshDays": 30,
+          "metric": "cu_cintura_cm",
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cu_cadera",
+          "type": "number",
+          "prompt": "¿Cuánto mide tu cadera?",
+          "hint": "En la parte más ancha de los glúteos.",
+          "min": 50,
+          "max": 220,
+          "step": null,
+          "unit": "cm",
+          "why": "Junto con la cintura te muestra cómo cambia tu composición con el tiempo.",
+          "uses": ["progreso"],
+          "priority": 2,
+          "refreshDays": 60,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cu_grasa",
+          "type": "number",
+          "prompt": "Si te la han medido, ¿cuál es tu porcentaje de grasa corporal?",
+          "hint": "Solo si viene de una medición (bioimpedancia, pliegues, DEXA).",
+          "min": 3,
+          "max": 60,
+          "step": null,
+          "unit": "%",
+          "why": "Afina las metas de fuerza y composición. Si nunca te la midieron, sáltala sin problema.",
+          "uses": ["progreso","gym"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": "cu_grasa_pct",
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cu_peso_tendencia",
+          "type": "options",
+          "prompt": "En los últimos 3 meses, tu peso…",
+          "hint": null,
+          "options": [
+            {"id":"bajando","icon":null,"text":"Ha bajado","sub":null},
+            {"id":"estable","icon":null,"text":"Se ha mantenido","sub":null},
+            {"id":"subiendo","icon":null,"text":"Ha subido","sub":null},
+            {"id":"no_se","icon":null,"text":"No lo sé","sub":null}
+          ],
+          "why": "Nos dice si tu plan debe ayudarte a mantener, ganar o estabilizar, sin adivinar.",
+          "uses": ["plan","asistente"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cu_fc_reposo",
+          "type": "number",
+          "prompt": "¿Cuál es tu frecuencia cardiaca en reposo?",
+          "hint": "Mídela al despertar, acostado, durante 60 segundos (o con tu reloj).",
+          "min": 35,
+          "max": 120,
+          "step": null,
+          "unit": "lpm",
+          "why": "Nos sirve para calcular tus zonas de esfuerzo y ver cómo mejora tu condición.",
+          "uses": ["plan","running","progreso"],
+          "priority": 3,
+          "refreshDays": 30,
+          "metric": "cu_fc_reposo",
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "cuerpo_movimiento",
+      "title": "Tu cuerpo en movimiento",
+      "subtitle": "3 minutos",
+      "minutes": 3,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "cu_escaleras",
+          "type": "options",
+          "prompt": "¿Cómo te sientes al subir 3 pisos por escaleras?",
+          "hint": null,
+          "options": [
+            {"id":"sin_problema","icon":"🟢","text":"Sin problema","sub":null},
+            {"id":"me_agito","icon":"🟡","text":"Llego agitado, pero bien","sub":null},
+            {"id":"con_pausas","icon":"🟠","text":"Necesito pausas","sub":null},
+            {"id":"evito","icon":"🔴","text":"Lo evito o no puedo","sub":null}
+          ],
+          "why": "Es un buen termómetro de tu condición: define desde qué intensidad empezamos.",
+          "uses": ["seguridad","plan"],
+          "priority": 4,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cu_silla",
+          "type": "options",
+          "prompt": "¿Puedes levantarte de una silla sin usar las manos?",
+          "hint": null,
+          "options": [
+            {"id":"facil","icon":null,"text":"Sí, fácilmente","sub":null},
+            {"id":"esfuerzo","icon":null,"text":"Sí, con esfuerzo","sub":null},
+            {"id":"manos","icon":null,"text":"Solo con apoyo de manos","sub":null},
+            {"id":"no","icon":null,"text":"No puedo","sub":null}
+          ],
+          "why": "Mide tu fuerza de piernas funcional y nos dice qué variante de sentadilla te conviene.",
+          "uses": ["seguridad","plan","health","calisthenics"],
+          "priority": 4,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cu_flexiones",
+          "type": "options",
+          "prompt": "¿Cuántas flexiones de pecho seguidas puedes hacer con buena técnica?",
+          "hint": "Cuentan las de rodillas si así las haces; lo importante es la técnica.",
+          "options": [
+            {"id":"0","icon":null,"text":"Ninguna todavía","sub":null},
+            {"id":"1_5","icon":null,"text":"1 a 5","sub":null},
+            {"id":"6_15","icon":null,"text":"6 a 15","sub":null},
+            {"id":"16_30","icon":null,"text":"16 a 30","sub":null},
+            {"id":"mas_30","icon":null,"text":"Más de 30","sub":null}
+          ],
+          "why": "Elige la progresión de empuje adecuada desde el primer día.",
+          "uses": ["plan","calisthenics","gym"],
+          "priority": 3,
+          "refreshDays": 60,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cu_equilibrio",
+          "type": "options",
+          "prompt": "¿Cuánto tiempo aguantas parado en un pie sin apoyarte?",
+          "hint": null,
+          "options": [
+            {"id":"mas_30","icon":null,"text":"Más de 30 segundos","sub":null},
+            {"id":"10_30","icon":null,"text":"Entre 10 y 30 segundos","sub":null},
+            {"id":"menos_10","icon":null,"text":"Menos de 10 segundos","sub":null},
+            {"id":"no_intento","icon":null,"text":"Prefiero no intentarlo","sub":null}
+          ],
+          "why": "El equilibrio protege de caídas y lesiones: si hace falta, lo incluimos en tu plan.",
+          "uses": ["seguridad","plan","health"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cu_flexibilidad",
+          "type": "options",
+          "prompt": "De pie y con las piernas estiradas, ¿hasta dónde llegas con las manos?",
+          "hint": null,
+          "options": [
+            {"id":"suelo","icon":null,"text":"Toco el suelo","sub":null},
+            {"id":"tobillos","icon":null,"text":"Hasta los tobillos","sub":null},
+            {"id":"espinillas","icon":null,"text":"Hasta las espinillas","sub":null},
+            {"id":"rodillas","icon":null,"text":"Hasta las rodillas o menos","sub":null}
+          ],
+          "why": "Nos dice cuánta movilidad incluir en calentamientos y sesiones.",
+          "uses": ["plan"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cu_lesiones_previas",
+          "type": "multi",
+          "prompt": "¿Has tenido lesiones importantes en el pasado, ya recuperadas?",
+          "hint": "Las lesiones activas se registran en el chequeo de salud.",
+          "options": [
+            {"id":"rodilla","icon":null,"text":"Rodilla","sub":null},
+            {"id":"tobillo","icon":null,"text":"Tobillo o pie","sub":null},
+            {"id":"hombro","icon":null,"text":"Hombro","sub":null},
+            {"id":"espalda","icon":null,"text":"Espalda","sub":null},
+            {"id":"cadera","icon":null,"text":"Cadera","sub":null},
+            {"id":"muneca","icon":null,"text":"Muñeca o mano","sub":null},
+            {"id":"cuello","icon":null,"text":"Cuello","sub":null},
+            {"id":"otra","icon":null,"text":"Otra","sub":null},
+            {"id":"ninguna","icon":"✅","text":"Ninguna","sub":null}
+          ],
+          "why": "Las zonas lesionadas antes merecen cuidado extra: reforzamos y evitamos repetir el mismo riesgo.",
+          "uses": ["seguridad","plan"],
+          "priority": 4,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cu_lado_dominante",
+          "type": "options",
+          "prompt": "¿Cuál es tu lado dominante?",
+          "hint": null,
+          "options": [
+            {"id":"diestro","icon":null,"text":"Diestro","sub":null},
+            {"id":"zurdo","icon":null,"text":"Zurdo","sub":null},
+            {"id":"ambos","icon":null,"text":"Uso los dos por igual","sub":null}
+          ],
+          "why": "Equilibramos el trabajo unilateral y ajustamos ejercicios técnicos de pateo y lanzamiento.",
+          "uses": ["plan","football"],
+          "priority": 1,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cu_articulaciones",
+          "type": "options",
+          "prompt": "Al moverte, ¿sientes rigidez o crujidos con molestia en las articulaciones?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"a_menudo","icon":null,"text":"A menudo","sub":null},
+            {"id":"siempre","icon":null,"text":"Casi siempre","sub":null}
+          ],
+          "why": "Si hay rigidez, añadimos movilidad y elegimos ejercicios de menor impacto.",
+          "uses": ["seguridad","plan"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ],
+  "metrics": [
+    {"key":"peso_kg","name":"Peso corporal","unit":"kg","valueType":"number","direction":"range","description":"Peso corporal registrado por el usuario en el Perfil 360."},
+    {"key":"cu_cintura_cm","name":"Perímetro de cintura","unit":"cm","valueType":"number","direction":"down","description":"Perímetro de cintura a la altura del ombligo."},
+    {"key":"cu_grasa_pct","name":"Grasa corporal","unit":"%","valueType":"number","direction":"range","description":"Porcentaje de grasa corporal medido (bioimpedancia, pliegues o DEXA)."},
+    {"key":"cu_fc_reposo","name":"Frecuencia cardiaca en reposo","unit":"lpm","valueType":"integer","direction":"down","description":"Pulsaciones por minuto al despertar, en reposo."}
+  ]
+}

@@ -29,11 +29,13 @@ import com.sportacus.backend.world.core.PlanView;
 import com.sportacus.backend.world.core.PlanView.BlockView;
 import com.sportacus.backend.world.core.PlanView.SessionView;
 import com.sportacus.backend.world.core.WorldContext;
+import com.sportacus.backend.world.core.WorldModule;
 import com.sportacus.backend.world.core.WorldRegistry;
 import com.sportacus.backend.world.metrics.MetricRepository;
 import com.sportacus.backend.world.plan.PlanRepository.BlockRow;
 import com.sportacus.backend.world.plan.PlanRepository.PlanRow;
 import com.sportacus.backend.world.plan.PlanRepository.SessionRow;
+import com.sportacus.backend.world.library.MovementService;
 import com.sportacus.backend.world.session.SessionLogRepository;
 
 /**
@@ -52,9 +54,19 @@ public class PlanService {
     private final CatalogRepository catalog;
     private final SafetyFilter safety;
     private final JdbcTemplate jdbc;
+    private final BlockExplainer explainer;
+    private final MovementService movements;
+    private final com.sportacus.backend.world.enrollment.UserWorldRepository userWorlds;
+    private final com.sportacus.backend.analytics.AnalyticsService analytics;
 
     public PlanService(WorldRegistry registry, PlanRepository plans, SessionLogRepository sessionLogs,
-            CatalogRepository catalog, SafetyFilter safety, JdbcTemplate jdbc) {
+            CatalogRepository catalog, SafetyFilter safety, JdbcTemplate jdbc, BlockExplainer explainer,
+            MovementService movements, com.sportacus.backend.world.enrollment.UserWorldRepository userWorlds,
+            com.sportacus.backend.analytics.AnalyticsService analytics) {
+        this.userWorlds = userWorlds;
+        this.analytics = analytics;
+        this.explainer = explainer;
+        this.movements = movements;
         this.registry = registry;
         this.plans = plans;
         this.sessionLogs = sessionLogs;
@@ -63,19 +75,68 @@ public class PlanService {
         this.jdbc = jdbc;
     }
 
-    /** Plan activo; si no existe, lo genera. */
+    /**
+     * Plan activo, siempre al día: si no existe se genera, y si cambió cualquier dato que lo afecta (salud, perfil,
+     * Perfil 360, respuestas o nivel del mundo, semana, contenido) se regenera solo y se explica por qué (docs/22).
+     */
+    @Transactional
     public PlanView ensurePlan(WorldContext ctx) {
-        return plans.active(ctx.world().id()).map(p -> view(ctx, p)).orElseGet(() -> regenerate(ctx));
+        Map<String, String> parts = inputs(ctx);
+        String hash = PlanInputs.total(parts);
+        PlanRow current = plans.active(ctx.world().id()).orElse(null);
+        if (current != null && hash.equals(current.inputHash())) return view(ctx, current);
+        plans.lockUserWorld(ctx.world().id()); // otra petición pudo regenerarlo mientras tanto
+        current = plans.active(ctx.world().id()).orElse(null);
+        if (current != null && hash.equals(current.inputHash())) return view(ctx, current);
+        String reason = current == null ? null : PlanInputs.reason(current.inputParts(), parts);
+        return regenerate(ctx, parts, reason);
     }
 
     @Transactional
     public PlanView regenerate(WorldContext ctx) {
-        GeneratedPlan generated = registry.require(ctx.world().worldKey()).generatePlan(ctx);
-        GeneratedPlan safe = sanitize(ctx, generated);
-        plans.replaceActive(ctx.world().id(), ctx.world().trackKey(), safe, ENGINE_VERSION);
+        return regenerate(ctx, inputs(ctx), null);
+    }
+
+    private PlanView regenerate(WorldContext ctx, Map<String, String> parts, String reason) {
+        WorldModule module = registry.require(ctx.world().worldKey());
+        GeneratedPlan generated = module.generatePlan(ctx);
+        GeneratedPlan safe = guard(ctx, sanitize(ctx, generated));
+        plans.replaceActive(ctx.world().id(), ctx.world().trackKey(), safe, ENGINE_VERSION, PlanInputs.total(parts),
+                parts, reason, LocalDate.now(MetricRepository.ZONE));
+        analytics.track(ctx.user().userId(), "plan_regenerated", Map.of("world", ctx.world().worldKey(),
+                "reason", reason == null ? "explicita" : "datos"));
         return view(ctx, plans.active(ctx.world().id()).orElseThrow());
     }
 
+    /** Huella de los datos que afectan al plan (ver {@link PlanInputs}). */
+    Map<String, String> inputs(WorldContext ctx) {
+        WorldModule module = registry.require(ctx.world().worldKey());
+        String week = module.planVariesByWeek()
+                ? LocalDate.now(MetricRepository.ZONE).get(java.time.temporal.IsoFields.WEEK_BASED_YEAR) + "-W"
+                        + LocalDate.now(MetricRepository.ZONE).get(java.time.temporal.IsoFields.WEEK_OF_WEEK_BASED_YEAR)
+                : null;
+        return PlanInputs.parts(ctx.user().profile(), ctx.user().health(), ctx.user().insights(),
+                ctx.world().trackKey(), ctx.world().level(), ctx.world().profile().asMap(),
+                userWorlds.progressionSteps(ctx.world().id()), week, contentHash(), ENGINE_VERSION);
+    }
+
+    private String contentHash() {
+        List<String> rows = jdbc.queryForList("SELECT sha256 FROM content_version WHERE file_name = 'content/**'",
+                String.class);
+        return rows.isEmpty() ? null : rows.get(0);
+    }
+
+    /** Reglas comunes del núcleo: guardia clínica, menores, días y minutos estrictos (ver {@link PlanGuard}). */
+    private GeneratedPlan guard(WorldContext ctx, GeneratedPlan plan) {
+        var p = ctx.user().profile();
+        var h = ctx.user().health();
+        Integer age = p.age();
+        return PlanGuard.apply(plan, new PlanGuard.Inputs(ctx.world().worldKey(), p.daysOr(3), p.minutesOr(45),
+                h.mustRefer(), h.vigorousAllowed(), age != null && age < 18,
+                key -> catalog.movement(key).map(MovementInfo::impact).orElse(null)));
+    }
+
+    @Transactional
     public SessionView session(WorldContext ctx, UUID sessionId) {
         PlanView plan = ensurePlan(ctx);
         return plan.sessions().stream().filter(s -> s.id().equals(sessionId)).findFirst()
@@ -119,7 +180,7 @@ public class PlanService {
         jdbc.update("INSERT INTO movement_feedback (user_id, world_key, movement_key, reaction) VALUES (?, ?, ?, 'swap')",
                 ctx.user().userId(), world, block.movementKey());
         BlockRow updated = plans.block(blockId).orElseThrow();
-        return toView(updated);
+        return toView(ctx, updated);
     }
 
     // ── Presentación ──────────────────────────────────────────
@@ -141,17 +202,54 @@ public class PlanService {
             LocalDate doneOn = done.get(s.weekIndex() + ":" + s.dayIndex());
             sessions.add(new SessionView(s.id(), s.weekIndex(), s.dayIndex(), s.weekday(), s.title(), s.focus(),
                     s.kind(), s.estMinutes(), s.notes(), isCurrent && doneOn != null, doneOn,
-                    blocks.getOrDefault(s.id(), List.of()).stream().map(this::toView).toList()));
+                    blocks.getOrDefault(s.id(), List.of()).stream().filter(b -> allowedNow(ctx, b))
+                            .map(b -> toView(ctx, b)).toList()));
         }
         return new PlanView(p.id(), p.title(), p.summary(), p.weeks(), currentWeek, p.startsOn(), weekStart, p.score(),
-                p.rationale(), sessions);
+                p.rationale(), sessions, p.updateReason(), p.createdAt());
     }
 
-    private BlockView toView(BlockRow b) {
+    /** Red de seguridad al mostrar: un ejercicio que hoy no es seguro para el usuario no se muestra. */
+    private boolean allowedNow(WorldContext ctx, BlockRow b) {
+        if (b.movementKey() == null) return true;
+        return catalog.movement(b.movementKey()).map(m -> safety.allowed(m, ctx.user())).orElse(true);
+    }
+
+    private BlockView toView(WorldContext ctx, BlockRow b) {
         MovementInfo m = catalog.movement(b.movementKey()).orElse(null);
+        String summary;
+        try {
+            summary = explainer.summary(ctx, b.blockType(), b.movementKey(), b.notes(), b.progressionKey(), b.stepIndex());
+        } catch (RuntimeException e) {
+            summary = null;
+        }
         return new BlockView(b.id(), b.orderIndex(), b.blockType(), b.movementKey(), m == null ? null : m.name(),
                 b.title(), b.prescription(), b.progressionKey(), b.stepIndex(), b.notes(),
-                m == null ? null : m.firstImage());
+                m == null ? null : m.firstImage(), summary);
+    }
+
+    /** Detalle completo de un bloque: ejercicio (cómo), razones (por qué), dosis y precauciones. */
+    public record BlockDetail(BlockView block, String sessionTitle, MovementService.MovementDetail movement,
+            List<BlockExplainer.Reason> why, List<String> dose, List<BlockExplainer.Reason> considerations,
+            BlockExplainer.ProgressionStatus progression) {
+    }
+
+    @Transactional
+    public BlockDetail blockDetail(WorldContext ctx, UUID blockId) {
+        UUID owner = plans.userWorldOfBlock(blockId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bloque no encontrado"));
+        if (!owner.equals(ctx.world().id())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Ese bloque no es de tu plan");
+        }
+        BlockRow row = plans.block(blockId).orElseThrow();
+        BlockView b = toView(ctx, row);
+        var session = plans.session(row.sessionId()).orElse(null);
+        String focus = session == null ? null : session.title();
+        MovementService.MovementDetail movement = row.movementKey() == null ? null
+                : movements.detail(ctx, row.movementKey());
+        BlockExplainer.Explanation e = explainer.explain(ctx, b, focus);
+        return new BlockDetail(b, session == null ? null : session.title(), movement, e.why(), e.dose(),
+                e.considerations(), e.progression());
     }
 
     private GeneratedPlan sanitize(WorldContext ctx, GeneratedPlan plan) {

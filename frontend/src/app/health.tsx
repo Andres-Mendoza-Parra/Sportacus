@@ -9,6 +9,7 @@ import GradientButton from "../components/ui/GradientButton";
 import ScreenHeader from "../components/ui/ScreenHeader";
 import { SkeletonBlock } from "../components/ui/Skeleton";
 import { ErrorState } from "../components/ui/States";
+import { useWorld } from "../context/WorldContext";
 import { useLoader, useReloadOnFocus } from "../hooks/useLoader";
 import { extractErrorMessage } from "../services/api";
 import { confirmClearance, fetchHealthSummary } from "../services/healthService";
@@ -21,12 +22,14 @@ export default function HealthScreen() {
   const toast = useToast();
   const summary = useLoader(fetchHealthSummary);
   const [confirming, setConfirming] = useState(false);
+  const { invalidate } = useWorld();
   useReloadOnFocus(summary.reload);
 
   async function clearance() {
     setConfirming(true);
     try {
       summary.setData(await confirmClearance());
+      invalidate();
       toast.success("Registramos el aval de tu profesional.");
     } catch (error) {
       toast.error(extractErrorMessage(error));

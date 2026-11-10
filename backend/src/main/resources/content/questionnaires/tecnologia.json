@@ -1,0 +1,293 @@
+{
+  "area": {
+    "key": "tecnologia",
+    "name": "Tecnología disponible",
+    "icon": "📱",
+    "sortOrder": 210,
+    "description": "Los dispositivos y apps que usas. Aprovechamos lo que tienes y nunca te exigimos más.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "tecnologia_dispositivos",
+      "title": "Tus dispositivos",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "te_dispositivos",
+          "type": "multi",
+          "prompt": "¿Qué usas para registrar tu actividad?",
+          "hint": null,
+          "options": [
+            {"id":"reloj_gps","icon":"⌚","text":"Reloj con GPS","sub":null},
+            {"id":"pulsometro","icon":"💓","text":"Banda de pecho o pulsómetro","sub":null},
+            {"id":"banda_actividad","icon":"📿","text":"Pulsera de actividad","sub":null},
+            {"id":"solo_celular","icon":"📱","text":"Solo mi celular","sub":null}
+          ],
+          "why": "Si tienes reloj o pulsómetro, usamos pulso y GPS; si no, te guiamos por sensaciones.",
+          "uses": ["plan","running","progreso"],
+          "priority": 4,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "te_marca",
+          "type": "options",
+          "prompt": "¿De qué marca es tu dispositivo?",
+          "hint": null,
+          "options": [
+            {"id":"garmin","icon":null,"text":"Garmin","sub":null},
+            {"id":"apple","icon":null,"text":"Apple","sub":null},
+            {"id":"samsung","icon":null,"text":"Samsung","sub":null},
+            {"id":"xiaomi","icon":null,"text":"Xiaomi o Amazfit","sub":null},
+            {"id":"huawei","icon":null,"text":"Huawei","sub":null},
+            {"id":"polar","icon":null,"text":"Polar","sub":null},
+            {"id":"coros","icon":null,"text":"Coros","sub":null},
+            {"id":"fitbit","icon":null,"text":"Fitbit o Google","sub":null},
+            {"id":"otra","icon":null,"text":"Otra","sub":null}
+          ],
+          "why": "Nos ayuda a prepararnos para conectar tus datos en el futuro.",
+          "uses": ["progreso"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"te_dispositivos","in":["reloj_gps","pulsometro","banda_actividad"]},
+          "cadence": null
+        },
+        {
+          "id": "te_mide",
+          "type": "multi",
+          "prompt": "¿Qué mide tu dispositivo?",
+          "hint": null,
+          "options": [
+            {"id":"fc","icon":null,"text":"Frecuencia cardiaca","sub":null},
+            {"id":"pasos","icon":null,"text":"Pasos","sub":null},
+            {"id":"sueno","icon":null,"text":"Sueño","sub":null},
+            {"id":"gps","icon":null,"text":"GPS","sub":null},
+            {"id":"spo2","icon":null,"text":"Oxígeno en sangre","sub":null},
+            {"id":"vfc","icon":null,"text":"Variabilidad cardiaca (VFC)","sub":null}
+          ],
+          "why": "Usamos solo las métricas que tienes para ajustar zonas y recuperación.",
+          "uses": ["plan","progreso"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"te_dispositivos","in":["reloj_gps","pulsometro","banda_actividad"]},
+          "cadence": null
+        },
+        {
+          "id": "te_celular",
+          "type": "options",
+          "prompt": "¿Qué celular usas?",
+          "hint": null,
+          "options": [
+            {"id":"android","icon":null,"text":"Android","sub":null},
+            {"id":"iphone","icon":null,"text":"iPhone","sub":null},
+            {"id":"otro","icon":null,"text":"Otro","sub":null}
+          ],
+          "why": "Ajustamos funciones de la app y futuras conexiones a tu sistema.",
+          "uses": ["asistente"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "te_apps",
+          "type": "multi",
+          "prompt": "¿Usas alguna de estas apps?",
+          "hint": null,
+          "options": [
+            {"id":"google_fit","icon":null,"text":"Google Fit o Health Connect","sub":null},
+            {"id":"apple_salud","icon":null,"text":"Salud de Apple","sub":null},
+            {"id":"strava","icon":null,"text":"Strava","sub":null},
+            {"id":"garmin","icon":null,"text":"Garmin Connect","sub":null},
+            {"id":"samsung","icon":null,"text":"Samsung Health","sub":null},
+            {"id":"otra","icon":null,"text":"Otra","sub":null},
+            {"id":"ninguna","icon":null,"text":"Ninguna","sub":null}
+          ],
+          "why": "Nos preparamos para integrar tus datos y evitar que registres dos veces.",
+          "uses": ["progreso"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "te_conectar",
+          "type": "options",
+          "prompt": "¿Te gustaría conectar esos datos con Sportacus en el futuro?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"quizas","icon":null,"text":"Quizás","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Solo lo haremos con tu permiso; nos dice qué integraciones priorizar.",
+          "uses": ["progreso"],
+          "priority": 1,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "te_bascula",
+          "type": "options",
+          "prompt": "¿Tienes báscula en casa?",
+          "hint": null,
+          "options": [
+            {"id":"inteligente","icon":null,"text":"Sí, inteligente","sub":null},
+            {"id":"normal","icon":null,"text":"Sí, normal","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Si la tienes, puedes registrar tu peso cuando quieras (o nunca, si lo prefieres).",
+          "uses": ["progreso"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "tecnologia_uso",
+      "title": "Cómo usas la tecnología",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "te_datos_moviles",
+          "type": "options",
+          "prompt": "¿Tienes datos móviles cuando entrenas fuera de casa?",
+          "hint": null,
+          "options": [
+            {"id":"ilimitado","icon":null,"text":"Sí, suficientes","sub":null},
+            {"id":"limitado","icon":null,"text":"Pocos","sub":null},
+            {"id":"solo_wifi","icon":null,"text":"Solo uso wifi","sub":null}
+          ],
+          "why": "Si no, priorizamos contenido liviano o descargable.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "te_pantalla",
+          "type": "multi",
+          "prompt": "¿En qué pantalla podrías seguir una rutina en casa?",
+          "hint": null,
+          "options": [
+            {"id":"celular","icon":null,"text":"Celular","sub":null},
+            {"id":"tablet","icon":null,"text":"Tablet","sub":null},
+            {"id":"computador","icon":null,"text":"Computador","sub":null},
+            {"id":"tv","icon":null,"text":"Televisor","sub":null}
+          ],
+          "why": "Ajustamos el formato de los videos y las instrucciones.",
+          "uses": ["asistente"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "te_audifonos",
+          "type": "options",
+          "prompt": "¿Usas audífonos al entrenar?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Si los usas, podemos guiarte por voz durante la sesión.",
+          "uses": ["asistente","running"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "te_notificaciones",
+          "type": "options",
+          "prompt": "¿Cuántos recordatorios quieres recibir?",
+          "hint": null,
+          "options": [
+            {"id":"diarios","icon":null,"text":"Uno al día","sub":null},
+            {"id":"sesiones","icon":null,"text":"Solo los días de sesión","sub":null},
+            {"id":"minimos","icon":null,"text":"Muy pocos","sub":null},
+            {"id":"ninguno","icon":null,"text":"Ninguno","sub":null}
+          ],
+          "why": "Respetamos tu espacio: solo te escribimos lo que tú quieras.",
+          "uses": ["asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "te_hora_recordatorio",
+          "type": "options",
+          "prompt": "¿A qué hora prefieres los recordatorios?",
+          "hint": null,
+          "options": [
+            {"id":"manana","icon":null,"text":"En la mañana","sub":null},
+            {"id":"mediodia","icon":null,"text":"Al mediodía","sub":null},
+            {"id":"tarde","icon":null,"text":"En la tarde","sub":null},
+            {"id":"noche","icon":null,"text":"En la noche","sub":null}
+          ],
+          "why": "Te escribimos cuando te sirve, no cuando interrumpe.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"te_notificaciones","in":["diarios","sesiones","minimos"]},
+          "cadence": null
+        },
+        {
+          "id": "te_comodidad",
+          "type": "range",
+          "prompt": "¿Qué tan cómodo te sientes usando apps y tecnología?",
+          "hint": "1 = me cuesta, 5 = me encanta.",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "unit": null,
+          "why": "Si prefieres lo simple, te mostramos menos datos y pantallas más sencillas.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

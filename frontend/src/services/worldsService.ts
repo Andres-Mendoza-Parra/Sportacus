@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { Answers, DiscoveryResult, EnrollResponse, FormSpec, MyWorld, WorldCard } from "./types";
+import { AchievementView, Answers, DiscoveryResult, EnrollResponse, FormSpec, MyWorld, WorldCard } from "./types";
 
 /** Catálogo de mundos, descubrimiento, inscripción y cambio de mundo activo (docs/16 §3–4). */
 export async function fetchWorlds(): Promise<WorldCard[]> {
@@ -35,5 +35,11 @@ export async function fetchMyWorlds(): Promise<MyWorld[]> {
 
 export async function activateWorld(key: string): Promise<MyWorld> {
   const { data } = await api.post<MyWorld>(`/me/worlds/${encodeURIComponent(key)}/activate`);
+  return data;
+}
+
+/** Logros de todos los mundos, más reciente primero. */
+export async function fetchAllAchievements(): Promise<AchievementView[]> {
+  const { data } = await api.get<AchievementView[]>("/me/achievements");
   return data;
 }

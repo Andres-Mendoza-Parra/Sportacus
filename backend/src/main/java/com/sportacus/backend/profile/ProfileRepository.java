@@ -43,40 +43,53 @@ public class ProfileRepository {
         return rows.isEmpty() ? UserProfileData.empty() : rows.get(0);
     }
 
-    /** Guarda las respuestas del formulario de perfil (upsert completo). */
+    /** Columnas editables del perfil común (id de pregunta → columna). */
+    public static final Map<String, String> FIELDS = Map.ofEntries(
+            Map.entry("p_birth_year", "birth_year"), Map.entry("p_sex", "sex"), Map.entry("p_weight", "weight_kg"),
+            Map.entry("p_height", "height_cm"), Map.entry("p_activity", "activity_level"),
+            Map.entry("p_days", "days_per_week"), Map.entry("p_minutes", "minutes_per_session"),
+            Map.entry("p_preferred_days", "preferred_days"), Map.entry("p_environments", "environments"),
+            Map.entry("p_equipment", "equipment"));
+
+    /**
+     * Guarda las respuestas del perfil común de forma PARCIAL: solo las columnas presentes en {@code a}; lo demás se
+     * conserva (principio de no presión: el usuario completa a su ritmo).
+     */
     public void save(UUID userId, Answers a) {
-        List<Integer> days = new ArrayList<>();
-        for (String d : a.list("p_preferred_days")) {
-            try {
-                days.add(Integer.parseInt(d));
-            } catch (NumberFormatException ignored) {
-                // opción desconocida: se ignora
+        for (Map.Entry<String, String> e : FIELDS.entrySet()) {
+            if (a.has(e.getKey()) || (e.getKey().equals("p_equipment") && a.values().containsKey("p_equipment"))) {
+                patchField(userId, e.getValue(), a, e.getKey());
             }
         }
-        List<String> equipment = a.listWithoutNone("p_equipment");
+        jdbc.update("UPDATE user_profile SET completed_at = COALESCE(completed_at, now()) WHERE user_id = ?", userId);
+    }
+
+    /** Actualiza una sola columna del perfil común a partir de la respuesta {@code questionId}. */
+    public void patchField(UUID userId, String column, Answers a, String questionId) {
+        if (!FIELDS.containsValue(column)) throw new IllegalArgumentException("Columna no editable: " + column);
+        jdbc.update("INSERT INTO user_profile (user_id) VALUES (?) ON CONFLICT (user_id) DO NOTHING", userId);
         jdbc.update(con -> {
-            var ps = con.prepareStatement("""
-                    INSERT INTO user_profile (user_id, birth_year, sex, weight_kg, height_cm, activity_level,
-                        days_per_week, minutes_per_session, preferred_days, environments, equipment, completed_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now())
-                    ON CONFLICT (user_id) DO UPDATE SET
-                        birth_year = EXCLUDED.birth_year, sex = EXCLUDED.sex, weight_kg = EXCLUDED.weight_kg,
-                        height_cm = EXCLUDED.height_cm, activity_level = EXCLUDED.activity_level,
-                        days_per_week = EXCLUDED.days_per_week, minutes_per_session = EXCLUDED.minutes_per_session,
-                        preferred_days = EXCLUDED.preferred_days, environments = EXCLUDED.environments,
-                        equipment = EXCLUDED.equipment, completed_at = now()
-                    """);
-            ps.setObject(1, userId);
-            ps.setObject(2, a.integer("p_birth_year"));
-            ps.setString(3, a.string("p_sex"));
-            ps.setObject(4, a.number("p_weight"));
-            ps.setObject(5, a.number("p_height"));
-            ps.setObject(6, a.integer("p_activity"));
-            ps.setObject(7, a.integer("p_days"));
-            ps.setObject(8, a.integer("p_minutes"));
-            ps.setArray(9, JdbcArrays.smallintArray(con, days));
-            ps.setArray(10, JdbcArrays.textArray(con, a.list("p_environments")));
-            ps.setArray(11, JdbcArrays.textArray(con, equipment));
+            var ps = con.prepareStatement("UPDATE user_profile SET " + column + " = ? WHERE user_id = ?");
+            switch (column) {
+                case "birth_year", "activity_level", "days_per_week", "minutes_per_session" ->
+                    ps.setObject(1, a.integer(questionId));
+                case "weight_kg", "height_cm" -> ps.setObject(1, a.number(questionId));
+                case "sex" -> ps.setString(1, a.string(questionId));
+                case "preferred_days" -> {
+                    List<Integer> days = new ArrayList<>();
+                    for (String d : a.list(questionId)) {
+                        try {
+                            days.add(Integer.parseInt(d));
+                        } catch (NumberFormatException ignored) {
+                            // opción desconocida: se ignora
+                        }
+                    }
+                    ps.setArray(1, JdbcArrays.smallintArray(con, days));
+                }
+                case "equipment" -> ps.setArray(1, JdbcArrays.textArray(con, a.listWithoutNone(questionId)));
+                default -> ps.setArray(1, JdbcArrays.textArray(con, a.list(questionId)));
+            }
+            ps.setObject(2, userId);
             return ps;
         });
     }
@@ -94,7 +107,7 @@ public class ProfileRepository {
         if (p.minutesPerSession() != null) m.put("p_minutes", String.valueOf(p.minutesPerSession()));
         if (!p.preferredDays().isEmpty()) m.put("p_preferred_days", p.preferredDays().stream().map(String::valueOf).toList());
         if (!p.environments().isEmpty()) m.put("p_environments", p.environments());
-        if (p.completed()) m.put("p_equipment", p.equipment().isEmpty() ? List.of("ninguno") : p.equipment());
+        if (!p.equipment().isEmpty()) m.put("p_equipment", p.equipment());
         return m;
     }
 

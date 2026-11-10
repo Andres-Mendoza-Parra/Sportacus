@@ -33,7 +33,7 @@ export default function GalleryScreen() {
     if (world.enrolled) {
       const ok = await confirm({
         title: `¿Cambiar a ${world.name}?`,
-        message: "Ya estás inscrito: tu plan y tu progreso siguen ahí. Toda la app se adaptará a este mundo.",
+        message: "Ya está en tus mundos: tu plan y tu progreso siguen ahí. Toda la app se adaptará a este mundo.",
         confirmText: "Activar",
       });
       if (!ok || busy) return;
@@ -53,11 +53,12 @@ export default function GalleryScreen() {
     router.push({ pathname: "/onboarding/world/[key]", params: { key: world.key } });
   }
 
-  const sorted = [...(worlds.data ?? [])].sort((a, b) => Number(isSelectable(b)) - Number(isSelectable(a)));
+  // Mi Base no se muestra en la galería (se vuelve a ella desde el selector de mundos).
+  const sorted = [...(worlds.data ?? [])].filter((w) => w.key !== "base").sort((a, b) => Number(isSelectable(b)) - Number(isSelectable(a)));
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <ScreenHeader title="Elige tu mundo" subtitle="Cada uno tiene su plan, su sesión y sus métricas." fallback="/onboarding/choose" />
+      <ScreenHeader title="Explorar mundos" subtitle="Cada uno tiene su plan, su sesión y sus métricas." fallback="/onboarding/choose" />
       <ScrollView
         contentContainerStyle={{ padding: 16, gap: 14, paddingBottom: insets.bottom + 24 }}
         refreshControl={<RefreshControl refreshing={worlds.refreshing} onRefresh={worlds.reload} tintColor={colors.primary} />}

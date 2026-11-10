@@ -62,10 +62,21 @@ public class EngagementService {
         return new Streak(current, longest, prev);
     }
 
+    /** Racha guardada, caducada al leerla: si pasaron más de 3 días sin actividad, la actual vuelve a 0. */
     public Streak streak(UUID userId) {
-        return jdbc.query("SELECT current_days, longest_days, last_active_date FROM user_streak WHERE user_id = ?",
+        Streak stored = jdbc.query("SELECT current_days, longest_days, last_active_date FROM user_streak WHERE user_id = ?",
                 (rs, i) -> new Streak(rs.getInt(1), rs.getInt(2), rs.getObject(3, LocalDate.class)), userId)
                 .stream().findFirst().orElse(new Streak(0, 0, null));
+        return decay(stored, LocalDate.now(MetricRepository.ZONE));
+    }
+
+    /** Regla pura de caducidad de la racha. */
+    public static Streak decay(Streak s, LocalDate today) {
+        if (s == null) return new Streak(0, 0, null);
+        if (s.lastActiveDate() == null) return new Streak(0, s.longestDays(), null);
+        long gap = today.toEpochDay() - s.lastActiveDate().toEpochDay();
+        if (gap > STREAK_MAX_GAP_DAYS) return new Streak(0, s.longestDays(), s.lastActiveDate());
+        return s;
     }
 
     /** Otorga un logro si no lo tenía. @return true si es nuevo */
@@ -84,6 +95,15 @@ public class EngagementService {
                 rs.getObject(5, OffsetDateTime.class)), userId, worldKey);
     }
 
+    /** Todos los logros del usuario, de todos los mundos, más reciente primero. */
+    public List<Achievement> allAchievements(UUID userId) {
+        return jdbc.query("""
+                SELECT key, world_key, title, icon, achieved_at FROM achievement
+                WHERE user_id = ? ORDER BY achieved_at DESC
+                """, (rs, i) -> new Achievement(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                rs.getObject(5, OffsetDateTime.class)), userId);
+    }
+
     /** Logros genéricos tras una sesión. Devuelve los nuevos. */
     public List<Achievement> genericAfterSession(UUID userId, UUID userWorldId, String worldKey, String worldName,
             Streak streak) {
@@ -94,8 +114,8 @@ public class EngagementService {
         tryGrant(fresh, userId, worldKey, "sesiones_10:" + worldKey, "10 sesiones en " + worldName, "🔟", inWorld >= 10);
         tryGrant(fresh, userId, worldKey, "sesiones_25:" + worldKey, "25 sesiones en " + worldName, "🏅", inWorld >= 25);
         tryGrant(fresh, userId, null, "sesiones_50", "50 sesiones en Sportacus", "🏆", total >= 50);
-        tryGrant(fresh, userId, null, "racha_7", "Racha de 7 sesiones", "🔥", streak.currentDays() >= 7);
-        tryGrant(fresh, userId, null, "racha_30", "Racha de 30 sesiones", "🌋", streak.currentDays() >= 30);
+        tryGrant(fresh, userId, null, "racha_7", "Racha de 7 días", "🔥", streak.currentDays() >= 7);
+        tryGrant(fresh, userId, null, "racha_30", "Racha de 30 días", "🌋", streak.currentDays() >= 30);
         return fresh;
     }
 

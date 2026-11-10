@@ -21,6 +21,16 @@ const VALIDATORS: { [T in WidgetType]: (d: Data) => boolean } = {
   insights: (d) => isArray(d, "items"),
   phase_track: (d) => isArray(d, "phases"),
   notice: (d) => isStr(d, "body"),
+  profile_ring: (d) => isNum(d, "pct") && isArray(d, "areas"),
+  question: (d) => {
+    const item = d.item as Data | null | undefined;
+    if (!item || typeof item !== "object" || typeof item.id !== "string" || typeof item.kind !== "string") return false;
+    // Una pregunta en línea necesita su definición; las tarjetas especiales no.
+    return item.kind !== "question" || (typeof item.question === "object" && item.question !== null);
+  },
+  checkin: (d) => typeof d.done === "boolean",
+  world_suggestions: (d) => isArray(d, "items"),
+  readiness: (d) => isNum(d, "factor") && isStr(d, "label") && isArray(d, "reasons"),
 };
 
 export function isKnownType(type: string): type is WidgetType {

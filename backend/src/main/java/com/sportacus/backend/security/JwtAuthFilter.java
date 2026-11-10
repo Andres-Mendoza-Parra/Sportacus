@@ -7,10 +7,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.sportacus.backend.user.User;
+
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,21 +48,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token = authHeader.substring(PREFIX.length());
 
         try {
-            String username = jwtService.extractUsername(token);
+            Claims claims = jwtService.parse(token);
+            String username = claims.getSubject();
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                if (jwtService.isTokenValid(token, userDetails)) {
+                if (userDetails instanceof User user && jwtService.isTokenValid(claims, user)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-        } catch (JwtException | IllegalArgumentException ex) {
-            // Token inválido, expirado o malformado: se continúa sin autenticar
-            // para que Spring Security responda 401/403 en vez de un 500.
+        } catch (JwtException | IllegalArgumentException | UsernameNotFoundException ex) {
+            // Token inválido, expirado, revocado o de una cuenta borrada: se continúa sin autenticar
+            // para que Spring Security responda 401 en vez de un 500.
         }
 
         filterChain.doFilter(request, response);

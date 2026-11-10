@@ -529,6 +529,12 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "images": [
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/0.jpg",
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/1.jpg"
+        ]
+      },
       "source": "nia_exercise",
       "license": null,
       "author": null,
@@ -1102,6 +1108,10 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "wger": true,
+        "wgerName": "Subida a peldaño"
+      },
       "source": "otago",
       "license": null,
       "author": null,
@@ -1286,6 +1296,12 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "images": [
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Leg_Raises/0.jpg",
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Leg_Raises/1.jpg"
+        ]
+      },
       "source": "otago",
       "license": null,
       "author": null,
@@ -1419,6 +1435,12 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "images": [
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Lift_Bridge/0.jpg",
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Lift_Bridge/1.jpg"
+        ]
+      },
       "source": "oms_pir",
       "license": null,
       "author": null,
@@ -1536,6 +1558,12 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "images": [
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Hip_Flexors/0.jpg",
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Hip_Flexors/1.jpg"
+        ]
+      },
       "source": "oms_pir",
       "license": null,
       "author": null,
@@ -1642,6 +1670,12 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "images": [
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One_Knee_To_Chest/0.jpg",
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One_Knee_To_Chest/1.jpg"
+        ]
+      },
       "source": "oms_pir",
       "license": null,
       "author": null,
@@ -1755,6 +1789,12 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "images": [
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cat_Stretch/0.jpg",
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cat_Stretch/1.jpg"
+        ]
+      },
       "source": "oms_pir",
       "license": null,
       "author": null,
@@ -1820,6 +1860,10 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "wger": true,
+        "wgerName": "Bird Dog"
+      },
       "source": "oms_pir",
       "license": null,
       "author": null,
@@ -1882,6 +1926,12 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "images": [
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dead_Bug/0.jpg",
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dead_Bug/1.jpg"
+        ]
+      },
       "source": "oms_pir",
       "license": null,
       "author": null,
@@ -2272,6 +2322,12 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "images": [
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation/0.jpg",
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation/1.jpg"
+        ]
+      },
       "source": "oms_pir",
       "license": null,
       "author": null,
@@ -2327,6 +2383,12 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "images": [
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation_with_Band/0.jpg",
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation_with_Band/1.jpg"
+        ]
+      },
       "source": "oms_pir",
       "license": null,
       "author": null,
@@ -2520,6 +2582,12 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "images": [
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Front_Two-Dumbbell_Raise/0.jpg",
+          "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Front_Two-Dumbbell_Raise/1.jpg"
+        ]
+      },
       "source": "nia_exercise",
       "license": null,
       "author": null,
@@ -2802,6 +2870,10 @@
         "gimnasio"
       ],
       "impact": "bajo",
+      "media": {
+        "wger": true,
+        "wgerName": "Elevación de talones a dos piernas"
+      },
       "source": "otago",
       "license": null,
       "author": null,

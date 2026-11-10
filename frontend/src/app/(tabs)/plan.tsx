@@ -1,9 +1,11 @@
 import { router } from "expo-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 
 import FactorList from "../../components/plan/FactorList";
 import PlanSessionCard from "../../components/plan/PlanSessionCard";
+import PlanUpdateNotice, { planUpdatedRecently } from "../../components/plan/PlanUpdateNotice";
+import { ScrollRef, TourTarget, useTourScroll } from "../../components/tour/TourContext";
 import { Card } from "../../components/ui/Card";
 import Chip from "../../components/ui/Chip";
 import { useConfirm, useToast } from "../../components/ui/Feedback";
@@ -27,6 +29,15 @@ export default function PlanScreen() {
   const plan = useLoader(fetchPlan, [version]);
   const [week, setWeek] = useState<number | null>(null);
   const [regenerating, setRegenerating] = useState(false);
+  const scrollRef = useRef<ScrollRef>(null);
+  const onTourScroll = useTourScroll("plan", scrollRef);
+  // La semana elegida pertenece al mundo: al cambiar de mundo se vuelve a la semana actual.
+  const activeKey = active?.key ?? null;
+  const [weekWorld, setWeekWorld] = useState(activeKey);
+  if (weekWorld !== activeKey) {
+    setWeekWorld(activeKey);
+    setWeek(null);
+  }
 
   useReloadOnFocus(plan.reload);
 
@@ -69,12 +80,16 @@ export default function PlanScreen() {
   return (
     <View style={styles.bg}>
       <ScrollView
+        ref={scrollRef}
+        onScroll={onTourScroll}
+        scrollEventThrottle={32}
         contentContainerStyle={{ paddingBottom: 32 }}
         refreshControl={<RefreshControl refreshing={plan.refreshing} onRefresh={plan.reload} tintColor={colors.primary} />}
       >
+        <TourTarget id="plan-header">
         <GradientHeader rounded>
           <Text style={styles.kicker}>
-            {active ? `${active.icon} ${active.name} · ${active.trackName}` : "Tu plan"}
+            {active ? `${active.icon} ${[active.name, active.trackName].filter(Boolean).join(" · ")}` : "Tu plan"}
           </Text>
           <Text style={styles.title}>{data.title}</Text>
           {data.summary ? <Text style={styles.summary}>{data.summary}</Text> : null}
@@ -85,6 +100,11 @@ export default function PlanScreen() {
             </Text>
           </View>
         </GradientHeader>
+        </TourTarget>
+
+        {data.updateReason && planUpdatedRecently(data, 7 * 24 * 60 * 60 * 1000) ? (
+          <PlanUpdateNotice reason={data.updateReason} style={{ marginHorizontal: 16, marginTop: 14 }} />
+        ) : null}
 
         {data.weeks > 1 ? (
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.weeks}>
@@ -99,21 +119,30 @@ export default function PlanScreen() {
           </ScrollView>
         ) : null}
 
-        <View style={styles.list}>
+        <TourTarget id="plan-sessions" style={styles.list}>
           {sessions.length === 0 ? (
             <EmptyState icon="🗓️" title="Sin sesiones esta semana" body="Regenera el plan para armar una semana nueva." />
           ) : (
-            sessions.map((s, i) => (
-              <PlanSessionCard
-                key={s.id}
-                session={s}
-                index={i}
-                isCurrentWeek={shownWeek === currentWeek}
-                onPress={() => router.push({ pathname: "/session/[id]", params: { id: s.id } })}
-              />
-            ))
+            sessions.map((s, i) => {
+              const card = (
+                <PlanSessionCard
+                  key={s.id}
+                  session={s}
+                  index={i}
+                  isCurrentWeek={shownWeek === currentWeek}
+                  onPress={() => router.push({ pathname: "/session/[id]", params: { id: s.id } })}
+                />
+              );
+              return i === 0 ? (
+                <TourTarget key={s.id} id="plan-first-session">
+                  {card}
+                </TourTarget>
+              ) : (
+                card
+              );
+            })
           )}
-        </View>
+        </TourTarget>
 
         {data.rationale.length > 0 ? (
           <Card style={styles.card} delay={120}>
@@ -122,8 +151,12 @@ export default function PlanScreen() {
         ) : null}
 
         <View style={{ paddingHorizontal: 16, marginTop: 18, gap: 10 }}>
+          <GradientButton title="➕ Registrar actividad libre" variant="ghost" onPress={() => router.push("/log-activity")} />
           <GradientButton title="🔄 Regenerar plan" variant="ghost" onPress={handleRegenerate} loading={regenerating} />
-          <Text style={styles.hint}>El plan se ajusta solo a medida que registras sesiones; regenéralo si cambió tu disponibilidad o tu objetivo.</Text>
+          <Text style={styles.hint}>
+            El plan se ajusta solo cuando registras sesiones o cambian tus datos (salud, perfil, días y minutos). Regenéralo si quieres empezar
+            una semana nueva.
+          </Text>
         </View>
       </ScrollView>
     </View>

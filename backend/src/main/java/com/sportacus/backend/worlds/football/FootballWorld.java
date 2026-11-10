@@ -109,6 +109,7 @@ public class FootballWorld implements WorldModule {
         String injuryHint = zones.isEmpty() ? "Nos ayuda a reforzar las zonas que más se lesionan en el fútbol."
                 : "En tu chequeo de salud marcaste molestias en: " + String.join(", ", zones) + ".";
         int defaultExtra = Math.max(1, Math.min(4, user.profile().daysOr(3) - 1));
+        // Obligatorias solo nivel, contexto, partidos y objetivo; el resto tiene valores por defecto explicados.
         FormSpec form = Forms.form("football", "Tu fútbol", "Así organizamos tu semana alrededor del partido.",
                 single("f_level", "¿Cuál es tu nivel de fútbol?", null,
                         opt("1", "🌱", "Empiezo o vuelvo tras mucho tiempo"),
@@ -121,37 +122,40 @@ public class FootballWorld implements WorldModule {
                         opt("barrio", "🏘️", "Torneos de barrio o de empresa"),
                         opt("liga", "📋", "Liga con equipo y calendario"),
                         opt("competitivo", "🚀", "Competitivo: categorías, selección o semiprofesional")),
-                single("f_position", "¿En qué posición juegas?", "Ajustamos los ejercicios a lo que te pide tu puesto.",
-                        opt("portero", "🧤", "Portero"), opt("defensa", "🛡️", "Defensa central"),
-                        opt("lateral", "↔️", "Lateral"), opt("mediocampista", "🔄", "Mediocampista"),
-                        opt("extremo", "⚡", "Extremo"), opt("delantero", "🎯", "Delantero")),
                 single("f_matches", "¿Cuántos partidos juegas por semana?", null,
                         opt("0", "➖", "Ninguno ahora mismo"), opt("1", "⚽", "Uno"), opt("2", "⚽", "Dos")),
-                showIf(single("f_match_day", "¿Qué día es tu partido principal?", "Organizamos la semana a su alrededor.",
-                        opt("1", null, "Lunes"), opt("2", null, "Martes"), opt("3", null, "Miércoles"),
-                        opt("4", null, "Jueves"), opt("5", null, "Viernes"), opt("6", null, "Sábado"),
-                        opt("7", null, "Domingo"), opt("ninguno", "🔀", "No tengo partido fijo")),
-                        "f_matches", "1", "2"),
-                single("f_team_trainings", "¿Cuántas veces entrenas con tu equipo por semana?", null,
-                        opt("0", "➖", "Ninguna"), opt("1", null, "Una"), opt("2", null, "Dos"),
-                        opt("3", null, "Tres"), opt("4", null, "Cuatro o más")),
-                range("f_extra", "¿Cuántas sesiones por tu cuenta puedes hacer a la semana?",
-                        "Además de partidos y entrenamientos de equipo.", 1, 4, 1, "sesiones"),
                 multi("f_goals", "¿Qué quieres mejorar?", "Elige hasta 3; la primera es la prioridad.", 3,
                         opt("resistencia", "🫁", "Resistencia"), opt("velocidad", "⚡", "Velocidad"),
                         opt("tecnica", "🎯", "Técnica con balón"), opt("fuerza", "💪", "Fuerza"),
                         opt("prevencion", "🛡️", "Prevenir lesiones")),
-                single("f_surface", "¿Dónde sueles jugar o entrenar?", null,
-                        opt("sintetica", "🟩", "Cancha sintética"), opt("natural", "🌱", "Césped natural"),
-                        opt("calle", "🏙️", "Calle, parque o cancha de cemento")),
-                optional(multi("f_equipment", "¿Qué material tienes para entrenar por tu cuenta?", null,
-                        opt("balon", "⚽", "Balón"), opt("conos", "🔺", "Conos o marcas"),
-                        opt("ninguno", "➖", "Nada de esto"))),
-                single("f_injury", "¿Has tenido alguna lesión jugando en el último año?", injuryHint,
+                optional(showIf(single("f_match_day", "¿Qué día es tu partido principal?",
+                        "Organizamos la semana a su alrededor. Si lo omites, repartimos la semana de forma genérica.",
+                        opt("1", null, "Lunes"), opt("2", null, "Martes"), opt("3", null, "Miércoles"),
+                        opt("4", null, "Jueves"), opt("5", null, "Viernes"), opt("6", null, "Sábado"),
+                        opt("7", null, "Domingo"), opt("ninguno", "🔀", "No tengo partido fijo")),
+                        "f_matches", "1", "2")),
+                optional(single("f_position", "¿En qué posición juegas?",
+                        "Ajustamos los ejercicios a tu puesto. Si lo omites, trabajo general de jugador de campo.",
+                        opt("portero", "🧤", "Portero"), opt("defensa", "🛡️", "Defensa central"),
+                        opt("lateral", "↔️", "Lateral"), opt("mediocampista", "🔄", "Mediocampista"),
+                        opt("extremo", "⚡", "Extremo"), opt("delantero", "🎯", "Delantero"))),
+                optional(single("f_injury", "¿Has tenido alguna lesión jugando en el último año?", injuryHint,
                         opt("no", "✅", "No"), opt("isquios", "🦵", "Parte de atrás del muslo (isquiotibiales)"),
                         opt("aductor", "🦵", "Ingle o aductores"), opt("tobillo", "🦶", "Tobillo"),
-                        opt("rodilla", "🦵", "Rodilla"), opt("otra", "🩹", "Otra")));
-        return form.withAnswers(Map.of("f_extra", defaultExtra));
+                        opt("rodilla", "🦵", "Rodilla"), opt("otra", "🩹", "Otra"))),
+                optional(single("f_team_trainings", "¿Cuántas veces entrenas con tu equipo por semana?", null,
+                        opt("0", "➖", "Ninguna"), opt("1", null, "Una"), opt("2", null, "Dos"),
+                        opt("3", null, "Tres"), opt("4", null, "Cuatro o más"))),
+                optional(range("f_extra", "¿Cuántas sesiones por tu cuenta puedes hacer a la semana?",
+                        "Además de partidos y entrenamientos de equipo.", 1, 4, 1, "sesiones")),
+                optional(single("f_surface", "¿Dónde sueles jugar o entrenar?", null,
+                        opt("sintetica", "🟩", "Cancha sintética"), opt("natural", "🌱", "Césped natural"),
+                        opt("calle", "🏙️", "Calle, parque o cancha de cemento"))),
+                optional(multi("f_equipment", "¿Qué material tienes para entrenar por tu cuenta?",
+                        "Lo precargamos con el equipo de tu perfil.",
+                        opt("balon", "⚽", "Balón"), opt("conos", "🔺", "Conos o marcas"),
+                        opt("ninguno", "➖", "Nada de esto"))));
+        return form.withAnswers(FootballAdaptations.prefill(user.profile(), defaultExtra));
     }
 
     @Override
@@ -179,8 +183,8 @@ public class FootballWorld implements WorldModule {
         int level = clamp(a.integer("f_level", 2), 1, 5);
         String context = a.string("f_context", "amigos");
         List<String> goals = a.list("f_goals");
-        String injury = a.string("f_injury", "no");
-        String position = a.string("f_position", "mediocampista");
+        String injury = a.string("f_injury", "no"); // sin respuesta: lo que diga el chequeo de salud
+        String position = a.string("f_position", FootballAdaptations.GENERIC_POSITION);
         int matches = clamp(a.integer("f_matches", 1), 0, 2);
         Integer matchDay = matches == 0 || "ninguno".equals(a.string("f_match_day")) ? null : a.integer("f_match_day");
         if (matchDay != null && (matchDay < 1 || matchDay > 7)) matchDay = null;
@@ -205,14 +209,13 @@ public class FootballWorld implements WorldModule {
             track = "recreativo";
             why.add(Factor.of("ruta", 0, "Ruta Recreativa: juegas por diversión; mejoramos tu condición sin sobrecargarte"));
         }
-        List<String> notices = new ArrayList<>();
-        if (!h.vigorousAllowed() && level > 2) {
-            level = 2;
-            notices.add("Mantendremos intensidad moderada (sin sprints repetidos) hasta que confirmes el aval de un profesional.");
-        }
+        List<String> notices = new ArrayList<>(FootballAdaptations.intensityNotices(h, kit.safety().highImpactRestricted(user)));
+        if (!h.vigorousAllowed() && level > 2) level = 2;
         if (user.profile().ageOr(30) >= 60 && level > 3) level = 3;
         why.add(Factor.of("nivel", 0, "Nivel " + level + " de 5 según tu experiencia"));
-        why.add(Factor.of("posicion", 0, "Posición: " + positionName(position)));
+        if (a.has("f_position")) why.add(Factor.of("posicion", 0, "Posición: " + positionName(position)));
+        why.addAll(FootballAdaptations.missingDefaults(a, user.profile()));
+        notices.addAll(FootballAdaptations.profileNotices(user.insights()));
 
         Map<String, Object> state = new LinkedHashMap<>();
         state.put("matchDay", matchDay);
@@ -220,9 +223,9 @@ public class FootballWorld implements WorldModule {
         state.put("team", team);
         state.put("own", own);
         state.put("position", position);
-        state.put("surface", a.string("f_surface", "sintetica"));
-        state.put("equipment", a.listWithoutNone("f_equipment"));
-        state.put("injury", injury);
+        state.put("surface", a.string("f_surface")); // sin respuesta: la portería solo si tu perfil incluye cancha
+        state.put("equipment", FootballAdaptations.equipment(a, user.profile()));
+        state.put("injury", a.string("f_injury")); // null = no lo contó: prevención primero
         state.put("goals", goals);
 
         List<GoalSpec> g = new ArrayList<>();
@@ -233,9 +236,6 @@ public class FootballWorld implements WorldModule {
                     Map.of("metric", "fut_sprint_30m_s", "improvePct", 3), LocalDate.now().plusWeeks(8)));
             default -> g.add(new GoalSpec("fut_carga_optima", "Mantener tu carga en zona óptima (ACWR 0,8–1,3) 4 semanas",
                     Map.of("metric", "fut_acwr", "min", 0.8, "max", 1.3, "weeks", 4), LocalDate.now().plusWeeks(7)));
-        }
-        if (kit.safety().highImpactRestricted(user)) {
-            notices.add("Por tu salud cambiamos sprints, saltos e intervalos de alto impacto por bicicleta, técnica y desplazamientos controlados.");
         }
         if (matchDay == null && matches > 0) {
             notices.add("Sin partido fijo repartimos la semana de forma genérica; registra tus partidos desde el plan para contar su carga.");
@@ -252,8 +252,13 @@ public class FootballWorld implements WorldModule {
     // ───────────────────────── Plan ─────────────────────────
 
     /** Parámetros del usuario que afectan a la composición de las sesiones. */
+    /**
+     * @param injuryUnknown no contó si tuvo lesiones: prevención primero
+     * @param rpeOnly       betabloqueadores: intensidad por RPE, nunca por % de frecuencia cardiaca
+     * @param avoidContact  anticoagulantes: sin duelos, saltos ni caídas
+     */
     record Params(int level, String track, String position, boolean restricted, boolean vigorous, int minutes,
-            Set<String> goals, boolean ankleOrHamstring) {
+            Set<String> goals, boolean ankleOrHamstring, boolean injuryUnknown, boolean rpeOnly, boolean avoidContact) {
         boolean attacker() {
             return "delantero".equals(position) || "extremo".equals(position);
         }
@@ -263,7 +268,7 @@ public class FootballWorld implements WorldModule {
         }
 
         boolean prevention() {
-            return "prevencion".equals(track) || goals.contains("prevencion") || ankleOrHamstring;
+            return "prevencion".equals(track) || goals.contains("prevencion") || ankleOrHamstring || injuryUnknown;
         }
     }
 
@@ -276,18 +281,23 @@ public class FootballWorld implements WorldModule {
         int matches = intState(ctx, "matches", 1);
         int team = intState(ctx, "team", 0);
         int own = intState(ctx, "own", Math.max(1, Math.min(4, user.profile().daysOr(3) - 1)));
-        String position = w.stateString("position") == null ? "mediocampista" : w.stateString("position");
+        String position = w.stateString("position") == null ? FootballAdaptations.GENERIC_POSITION : w.stateString("position");
         String injury = w.stateString("injury");
         Set<String> goals = new HashSet<>(w.profile().list("f_goals"));
         boolean restricted = kit.safety().highImpactRestricted(user);
+        var insights = user.insights();
         Params p = new Params(w.level(), track, position, restricted, user.health().vigorousAllowed(),
                 user.profile().minutesOr(60), goals,
-                "tobillo".equals(injury) || "isquios".equals(injury) || "aductor".equals(injury));
+                "tobillo".equals(injury) || "isquios".equals(injury) || "aductor".equals(injury),
+                injury == null, insights.heartRateUnreliable(), insights.avoidContact());
 
         Set<String> equipment = equipmentFor(ctx);
         // Evita el computeIfAbsent anidado de CatalogRepository ("Recursive update"): primero el índice global.
         kit.catalog().movement(PREVENTION_KEYS.get(0));
         List<WorldMovement> usable = kit.usableMovements(KEY, user, equipment);
+        if (p.avoidContact()) {
+            usable = usable.stream().filter(m -> !FootballAdaptations.contactOrFallRisk(m.pattern())).toList();
+        }
         Pool pool = new Pool(usable, p.level(), kit.liked(user.userId(), KEY), kit.disliked(user.userId(), KEY),
                 WorldToolkit.stableRandom(user.userId(), KEY + track + position), kit.safety(), user);
 
@@ -332,8 +342,11 @@ public class FootballWorld implements WorldModule {
             default -> "Ruta Recreativa: volumen moderado para llegar entero al partido";
         }));
         if (restricted) {
-            why.add(Factor.of("seguridad", 0, "Por tu salud evitamos sprints, saltos e intervalos de alto impacto: los sustituimos por bicicleta, técnica y desplazamientos controlados"));
+            why.add(Factor.of("seguridad", 0, FootballAdaptations.restrictionRationale(user.health())));
+        } else if (!p.vigorous()) {
+            why.add(Factor.of("seguridad", 0, user.health().moderateReason()));
         }
+        why.addAll(FootballAdaptations.planFactors(insights));
         if (!equipment.contains("balon")) {
             why.add(Factor.of("material", 0, "Sin balón no podemos incluir técnica: si consigues uno, regenera el plan"));
         }
@@ -538,13 +551,15 @@ public class FootballWorld implements WorldModule {
                     Math.min(24, 8 + 3 * l) + ("mediocampista".equals(p.position()) ? 4 : 0), 15, 15, hard)
                     .withCue("Divide en 2 bloques con 3 minutos suaves entre ellos");
             case "fut_intervalos_4x4" -> Prescription.interval(l >= 3 ? 4 : 3, 240, 180,
-                    p.vigorous() ? "fuerte: frases cortas (≈ 90 % FC máx.)" : hard);
+                    !p.vigorous() ? hard : p.rpeOnly() ? "fuerte: RPE 8, solo frases cortas" : "fuerte: frases cortas (≈ 90 % FC máx.)");
             case "fut_carrera_continua" -> Prescription.time((15 + 5 * Math.min(l, 3)
                     + ("mediocampista".equals(p.position()) ? 5 : 0)) * 60, "suave, conversacional");
             case "fut_intervalos_bici" -> Prescription.interval(Math.min(16, 6 + 2 * l), 30, 30, hard);
             case "fut_rsa_sprints_repetidos" -> Prescription.interval(6 + (l >= 4 ? 2 : 0), 4, 20, "máxima")
                     .withCue("Una serie (dos si te sientes fresco) con 4 minutos suaves entre series");
-            case "fut_posesion_simulada", "fut_pases_continuos" -> Prescription.interval(4, 180, 60, "cambios de ritmo");
+            case "fut_posesion_simulada", "fut_pases_continuos" -> p.avoidContact()
+                    ? Prescription.interval(4, 180, 60, "cambios de ritmo").withCue("Solo o con pases: sin disputar el balón")
+                    : Prescription.interval(4, 180, 60, "cambios de ritmo");
             case "fut_sprint_10m" -> Prescription.interval(5 + (l >= 3 ? 1 : 0) + (p.attacker() ? 2 : 0)
                     + ("rendimiento".equals(p.track()) ? 1 : 0), 2, 60, "máxima")
                     .withCue("Recuperación completa: vuelve caminando");
@@ -846,6 +861,10 @@ public class FootballWorld implements WorldModule {
             }
         }
         out.add(Insight.of("🧭", "Consejo para tu posición", positionTip(ctx.world().stateString("position")), "info"));
+        if (h.prudentMode()) {
+            out.add(new Insight("🩺", "Modo prudente", h.moderateReason() + ".", "info", "Hacer chequeo", "/health"));
+        }
+        out.addAll(FootballAdaptations.profileTips(ctx.user().insights()));
         return out;
     }
 
@@ -933,8 +952,12 @@ public class FootballWorld implements WorldModule {
                 programa FIFA 11+), de carga interna (RPE × minutos) y de la relación aguda:crónica (zona óptima 0,8–1,3;
                 por encima de 1,5 recomienda bajar la intensidad). El usuario juega de %s, %s, sigue la ruta "%s" en nivel
                 %d de 5; %s. Adapta los consejos a su posición. Ante dolor agudo, chasquido o inflamación, recomienda parar
-                y consultar a un profesional; no diagnostiques lesiones.
-                """.formatted(position.toLowerCase(), match, ctx.world().trackKey(), ctx.world().level(), acwr);
+                y consultar a un profesional; no diagnostiques lesiones.%s%s
+                """.formatted(position.toLowerCase(), match, ctx.world().trackKey(), ctx.world().level(), acwr,
+                ctx.user().insights().avoidContact()
+                        ? " Toma anticoagulantes: nada de choques, cabezazos ni caídas; sugiere formatos sin contacto." : "",
+                ctx.user().insights().heartRateUnreliable()
+                        ? " Toma betabloqueadores: habla de intensidad por RPE y prueba del habla, nunca por pulsaciones." : "");
     }
 
     // ───────────────────────── Utilidades ─────────────────────────
@@ -962,7 +985,8 @@ public class FootballWorld implements WorldModule {
             case "lateral" -> "Lateral";
             case "extremo" -> "Extremo";
             case "delantero" -> "Delantero";
-            default -> "Mediocampista";
+            case "mediocampista" -> "Mediocampista";
+            default -> "Jugador de campo";
         };
     }
 
@@ -972,7 +996,8 @@ public class FootballWorld implements WorldModule {
             case "defensa" -> "Defensa central: más fuerza a una pierna y juego aéreo (saltos de cabeceo)";
             case "lateral" -> "Lateral: equilibrio entre sprints largos y resistencia para subir y bajar la banda";
             case "extremo", "delantero" -> "Ataque: más sprints cortos y largos y tiro a portería";
-            default -> "Mediocampista: más capacidad aeróbica (4 × 4 min y más intervalos)";
+            case "mediocampista" -> "Mediocampista: más capacidad aeróbica (4 × 4 min y más intervalos)";
+            default -> "Jugador de campo (sin posición indicada): resistencia, velocidad y técnica equilibradas";
         };
     }
 
@@ -983,7 +1008,8 @@ public class FootballWorld implements WorldModule {
             case "lateral" -> "Tu puesto exige repetir sprints largos: cuida la recuperación entre sesiones.";
             case "extremo" -> "Gana el primer metro: practica salidas con cambio de ritmo y conducción a velocidad.";
             case "delantero" -> "Sprints cortos explosivos y remates con ambas piernas marcan la diferencia.";
-            default -> "Cubres más distancia que nadie: tu base aeróbica (4 × 4 min) es tu mejor arma.";
+            case "campo" -> "Cuéntanos tu posición y ajustamos los ejercicios a lo que te pide tu puesto.";
+            default ->"Cubres más distancia que nadie: tu base aeróbica (4 × 4 min) es tu mejor arma.";
         };
     }
 

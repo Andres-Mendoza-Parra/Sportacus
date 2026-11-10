@@ -1,0 +1,283 @@
+{
+  "area": {
+    "key": "trabajo",
+    "name": "Trabajo y carga diaria",
+    "icon": "💼",
+    "sortOrder": 60,
+    "description": "Tu ocupación, cuánto te mueves en ella y cómo te desplazas.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "trabajo_dia",
+      "title": "Tu día de trabajo o estudio",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "tr_ocupacion",
+          "type": "options",
+          "prompt": "¿Cuál es tu ocupación principal?",
+          "hint": null,
+          "options": [
+            {"id":"empleado","icon":null,"text":"Empleado","sub":null},
+            {"id":"independiente","icon":null,"text":"Independiente","sub":null},
+            {"id":"estudiante","icon":null,"text":"Estudiante","sub":null},
+            {"id":"hogar","icon":null,"text":"Labores del hogar","sub":null},
+            {"id":"buscando","icon":null,"text":"Buscando trabajo","sub":null},
+            {"id":"pensionado","icon":null,"text":"Pensionado","sub":null},
+            {"id":"otro","icon":null,"text":"Otro","sub":null}
+          ],
+          "why": "Nos da contexto de tus horarios y de la carga física y mental de tu día.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "tr_carga",
+          "type": "options",
+          "prompt": "¿Cómo es físicamente tu trabajo o tu actividad principal?",
+          "hint": null,
+          "options": [
+            {"id":"sentado","icon":"💺","text":"Casi todo sentado","sub":null},
+            {"id":"de_pie","icon":"🧍","text":"De pie la mayor parte","sub":null},
+            {"id":"movimiento","icon":"🚶","text":"En movimiento constante","sub":null},
+            {"id":"pesado","icon":"🏗️","text":"Físicamente pesado","sub":null}
+          ],
+          "why": "Si tu trabajo ya es físico, ajustamos volumen y compensamos lo que más cargas.",
+          "uses": ["plan","seguridad"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "tr_carga_detalle",
+          "type": "multi",
+          "prompt": "¿Qué hace tu cuerpo en el trabajo?",
+          "hint": null,
+          "options": [
+            {"id":"levantar","icon":null,"text":"Levantar o cargar peso","sub":null},
+            {"id":"agacharse","icon":null,"text":"Agacharme seguido","sub":null},
+            {"id":"brazos_arriba","icon":null,"text":"Trabajar con brazos arriba","sub":null},
+            {"id":"caminar","icon":null,"text":"Caminar mucho","sub":null},
+            {"id":"repetitivo","icon":null,"text":"Movimientos repetitivos","sub":null},
+            {"id":"vibracion","icon":null,"text":"Herramientas o vehículos que vibran","sub":null}
+          ],
+          "why": "Compensamos esos esfuerzos con movilidad y fuerza para prevenir molestias.",
+          "uses": ["plan","seguridad"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"tr_carga","in":["de_pie","movimiento","pesado"]},
+          "cadence": null
+        },
+        {
+          "id": "tr_horas",
+          "type": "number",
+          "prompt": "¿Cuántas horas trabajas o estudias en un día normal?",
+          "hint": null,
+          "min": 0,
+          "max": 16,
+          "step": null,
+          "unit": "h",
+          "why": "Con jornadas largas proponemos sesiones más cortas y eficientes.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "tr_turnos",
+          "type": "options",
+          "prompt": "¿Trabajas por turnos o de noche?",
+          "hint": null,
+          "options": [
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"rotativos","icon":null,"text":"Turnos rotativos","sub":null},
+            {"id":"nocturnos","icon":null,"text":"Turnos nocturnos","sub":null}
+          ],
+          "why": "Los turnos cambian tu energía y tu sueño: los tenemos en cuenta al planear.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "tr_estres",
+          "type": "range",
+          "prompt": "¿Qué tan exigente mentalmente es tu trabajo o estudio?",
+          "hint": "1 = muy tranquilo, 5 = muy exigente.",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "unit": null,
+          "why": "En épocas exigentes bajamos la intensidad y sumamos sesiones que ayudan a descargar.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": 60,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "tr_pausas",
+          "type": "options",
+          "prompt": "¿Puedes hacer pausas activas de unos minutos en tu jornada?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Si puedes, te enviamos micro-rutinas de 3 a 5 minutos para cortar el sedentarismo.",
+          "uses": ["plan","asistente","base"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "tr_ducha",
+          "type": "options",
+          "prompt": "¿Hay ducha o vestier donde trabajas o estudias?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Si la hay, entrenar antes o ir en bici al trabajo es mucho más viable.",
+          "uses": ["plan","descubrimiento"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "tr_viajes",
+          "type": "options",
+          "prompt": "¿Viajas por trabajo?",
+          "hint": null,
+          "options": [
+            {"id":"casi_nunca","icon":null,"text":"Casi nunca","sub":null},
+            {"id":"mensual","icon":null,"text":"Una o dos veces al mes","sub":null},
+            {"id":"semanal","icon":null,"text":"Cada semana","sub":null}
+          ],
+          "why": "Si viajas seguido, te damos rutinas de hotel sin equipo.",
+          "uses": ["plan"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "trabajo_transporte",
+      "title": "Cómo te mueves",
+      "subtitle": "1 minuto",
+      "minutes": 1,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "tr_transporte",
+          "type": "options",
+          "prompt": "¿Cómo te desplazas normalmente al trabajo o estudio?",
+          "hint": null,
+          "options": [
+            {"id":"caminando","icon":"🚶","text":"Caminando","sub":null},
+            {"id":"bici","icon":"🚲","text":"Bicicleta","sub":null},
+            {"id":"publico","icon":"🚌","text":"Transporte público","sub":null},
+            {"id":"carro","icon":"🚗","text":"Carro","sub":null},
+            {"id":"moto","icon":"🛵","text":"Moto","sub":null},
+            {"id":"teletrabajo","icon":"🏠","text":"No me desplazo","sub":null}
+          ],
+          "why": "Si caminas o pedaleas, lo sumamos a tu actividad semanal.",
+          "uses": ["plan","base"],
+          "priority": 4,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "tr_transporte_min",
+          "type": "number",
+          "prompt": "¿Cuántos minutos dura cada trayecto?",
+          "hint": null,
+          "min": 0,
+          "max": 180,
+          "step": null,
+          "unit": "min",
+          "why": "Los trayectos largos restan tiempo y energía: ajustamos el plan a eso.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"tr_transporte","in":["caminando","bici","publico","carro","moto"]},
+          "cadence": null
+        },
+        {
+          "id": "tr_activo_posible",
+          "type": "options",
+          "prompt": "¿Podrías hacer parte del trayecto caminando o en bici?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"parcial","icon":null,"text":"Una parte","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Moverte al ir y volver suma minutos de actividad sin sacar tiempo extra.",
+          "uses": ["plan","base"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"tr_transporte","in":["publico","carro","moto"]},
+          "cadence": null
+        },
+        {
+          "id": "tr_presencial",
+          "type": "range",
+          "prompt": "¿Cuántos días por semana vas de forma presencial?",
+          "hint": null,
+          "min": 0,
+          "max": 7,
+          "step": 1,
+          "unit": "días",
+          "why": "Nos ayuda a saber qué días tienes trayecto y cuáles más tiempo en casa.",
+          "uses": ["plan"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"tr_transporte","in":["caminando","bici","publico","carro","moto"]},
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

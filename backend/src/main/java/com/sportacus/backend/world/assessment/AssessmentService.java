@@ -35,10 +35,16 @@ public class AssessmentService {
     private final EngagementService engagement;
     private final PlanService planService;
     private final com.sportacus.backend.world.enrollment.WorldContextService contexts;
+    private final com.sportacus.backend.world.goals.GoalService goals;
+    private final com.sportacus.backend.analytics.AnalyticsService analytics;
 
     public AssessmentService(CatalogRepository catalog, MetricRepository metrics, WorldRegistry registry,
             SessionService sessions, EngagementService engagement, PlanService planService,
-            com.sportacus.backend.world.enrollment.WorldContextService contexts) {
+            com.sportacus.backend.world.enrollment.WorldContextService contexts,
+            com.sportacus.backend.world.goals.GoalService goals,
+            com.sportacus.backend.analytics.AnalyticsService analytics) {
+        this.goals = goals;
+        this.analytics = analytics;
         this.contexts = contexts;
         this.catalog = catalog;
         this.metrics = metrics;
@@ -101,6 +107,13 @@ public class AssessmentService {
         if (outcome.effects() != null && (outcome.effects().regeneratePlan() || !unlocks.isEmpty())) {
             planService.regenerate(contexts.reload(ctx)); // con el estado recién fusionado
         }
+        for (var goal : goals.check(ctx.world().id())) {
+            highlights.add(com.sportacus.backend.world.goals.GoalService.ICON + " ¡Meta lograda! " + goal.label());
+        }
+        java.util.UUID uid = ctx.user().userId();
+        String world = ctx.world().worldKey();
+        com.sportacus.backend.world.goals.AfterCommit.run(
+                () -> analytics.track(uid, "assessment_recorded", Map.of("world", world)));
         return new AssessmentResult(key, value, a.unit(),
                 outcome.classification() != null ? outcome.classification() : classification, highlights, unlocks, first);
     }

@@ -51,6 +51,22 @@ public interface WorldModule {
         return true;
     }
 
+    /**
+     * Razones de nicho para el detalle de un bloque ("¿por qué este ejercicio?"), además de las que arma el núcleo
+     * (papel en la sesión, progresión, músculos, equipo, salud). Frases cortas en segunda persona.
+     */
+    default List<String> explainBlock(WorldContext ctx, PlanView.BlockView block) {
+        return List.of();
+    }
+
+    /**
+     * ¿El plan depende de la semana del calendario (p. ej. una rampa que crece cada semana)? Si es así, el núcleo lo
+     * regenera solo al empezar cada semana.
+     */
+    default boolean planVariesByWeek() {
+        return false;
+    }
+
     /** Widgets del inicio del mundo. */
     List<Widget> dashboard(WorldContext ctx, PlanView plan);
 

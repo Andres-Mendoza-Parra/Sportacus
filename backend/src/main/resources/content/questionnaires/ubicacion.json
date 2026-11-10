@@ -1,0 +1,312 @@
+{
+  "area": {
+    "key": "ubicacion",
+    "name": "Ubicación, clima y entorno",
+    "icon": "📍",
+    "sortOrder": 70,
+    "description": "Dónde vives y cómo es tu entorno: altura, clima, aire y seguridad.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "ubicacion_lugar",
+      "title": "Dónde vives",
+      "subtitle": "1 minuto",
+      "minutes": 1,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "ub_pais",
+          "type": "text",
+          "prompt": "¿En qué país vives?",
+          "hint": null,
+          "why": "Adaptamos fechas, unidades, eventos y recomendaciones a tu país.",
+          "uses": ["descubrimiento","asistente"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": "country",
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_ciudad",
+          "type": "text",
+          "prompt": "¿En qué ciudad o municipio?",
+          "hint": null,
+          "why": "Nos permite sugerirte espacios, eventos y ajustes por clima y altura.",
+          "uses": ["descubrimiento","asistente"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": "city",
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_altitud",
+          "type": "options",
+          "prompt": "¿A qué altura sobre el nivel del mar vives?",
+          "hint": "Ej.: Barranquilla ~0 m, Medellín ~1.500 m, Bogotá ~2.600 m, Quito ~2.850 m.",
+          "options": [
+            {"id":"bajo_1000","icon":"🏖️","text":"Menos de 1.000 m","sub":null},
+            {"id":"1000_2000","icon":"🏞️","text":"1.000 a 2.000 m","sub":null},
+            {"id":"2000_3000","icon":"⛰️","text":"2.000 a 3.000 m","sub":null},
+            {"id":"mas_3000","icon":"🏔️","text":"Más de 3.000 m","sub":null}
+          ],
+          "why": "En altura el esfuerzo se siente más: ajustamos ritmos, zonas y adaptación.",
+          "uses": ["seguridad","plan","running"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_clima",
+          "type": "options",
+          "prompt": "¿Cómo es el clima donde vives?",
+          "hint": null,
+          "options": [
+            {"id":"calido_humedo","icon":"🌴","text":"Cálido y húmedo","sub":null},
+            {"id":"calido_seco","icon":"🌵","text":"Cálido y seco","sub":null},
+            {"id":"templado","icon":"🌤️","text":"Templado","sub":null},
+            {"id":"frio","icon":"🧥","text":"Frío","sub":null},
+            {"id":"variable","icon":"🌦️","text":"Muy variable","sub":null}
+          ],
+          "why": "Cambia la hidratación, la hora recomendada y la intensidad en exteriores.",
+          "uses": ["seguridad","plan","asistente"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_zona",
+          "type": "options",
+          "prompt": "¿Vives en zona urbana o rural?",
+          "hint": null,
+          "options": [
+            {"id":"urbana","icon":null,"text":"Urbana","sub":null},
+            {"id":"periurbana","icon":null,"text":"Afueras de la ciudad","sub":null},
+            {"id":"rural","icon":null,"text":"Rural","sub":null}
+          ],
+          "why": "Ajusta las ideas de rutas, espacios y actividades disponibles.",
+          "uses": ["descubrimiento","plan"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_cambio_altura",
+          "type": "options",
+          "prompt": "¿Vas a viajar o mudarte pronto a un lugar con altura muy distinta?",
+          "hint": null,
+          "options": [
+            {"id":"mas_alto","icon":null,"text":"Sí, a un lugar más alto","sub":null},
+            {"id":"mas_bajo","icon":null,"text":"Sí, a uno más bajo","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Te preparamos con días de adaptación y ritmos más suaves al llegar.",
+          "uses": ["seguridad","running","asistente"],
+          "priority": 2,
+          "refreshDays": 60,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "ubicacion_entorno",
+      "title": "Tu entorno",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "ub_seguridad_noche",
+          "type": "options",
+          "prompt": "¿Qué tan seguro es salir a moverte de noche cerca de casa?",
+          "hint": null,
+          "options": [
+            {"id":"seguro","icon":"🟢","text":"Seguro","sub":null},
+            {"id":"regular","icon":"🟡","text":"Regular","sub":null},
+            {"id":"inseguro","icon":"🔴","text":"Inseguro","sub":null}
+          ],
+          "why": "Si no es seguro, no te proponemos sesiones al aire libre de noche.",
+          "uses": ["seguridad","plan","running"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_seguridad_dia",
+          "type": "options",
+          "prompt": "¿Y de día?",
+          "hint": null,
+          "options": [
+            {"id":"seguro","icon":"🟢","text":"Seguro","sub":null},
+            {"id":"regular","icon":"🟡","text":"Regular","sub":null},
+            {"id":"inseguro","icon":"🔴","text":"Inseguro","sub":null}
+          ],
+          "why": "Nos ayuda a decidir si recomendarte rutas al aire libre o espacios cerrados.",
+          "uses": ["seguridad","plan","running"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_aire",
+          "type": "options",
+          "prompt": "¿Cómo suele ser la calidad del aire donde vives?",
+          "hint": null,
+          "options": [
+            {"id":"buena","icon":null,"text":"Buena","sub":null},
+            {"id":"regular","icon":null,"text":"Regular","sub":null},
+            {"id":"mala","icon":null,"text":"Mala con frecuencia","sub":null},
+            {"id":"no_se","icon":null,"text":"No lo sé","sub":null}
+          ],
+          "why": "En días de mal aire te sugerimos entrenar bajo techo o bajar la intensidad.",
+          "uses": ["seguridad","plan"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_lluvia",
+          "type": "options",
+          "prompt": "¿Qué tanto llueve donde vives?",
+          "hint": null,
+          "options": [
+            {"id":"poco","icon":null,"text":"Poco","sub":null},
+            {"id":"temporadas","icon":null,"text":"Por temporadas","sub":null},
+            {"id":"frecuente","icon":null,"text":"Muy seguido","sub":null}
+          ],
+          "why": "Con lluvia frecuente siempre tendrás un plan B bajo techo.",
+          "uses": ["plan"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_calor",
+          "type": "options",
+          "prompt": "¿Hace mucho calor a las horas en que puedes entrenar?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Casi nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"frecuente","icon":null,"text":"Con frecuencia","sub":null}
+          ],
+          "why": "Con calor ajustamos hidratación, pausas e intensidad para cuidarte.",
+          "uses": ["seguridad","plan"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_terreno",
+          "type": "options",
+          "prompt": "¿Cómo es el terreno cerca de ti?",
+          "hint": null,
+          "options": [
+            {"id":"plano","icon":null,"text":"Plano","sub":null},
+            {"id":"lomas","icon":null,"text":"Con lomas","sub":null},
+            {"id":"montanoso","icon":null,"text":"Montañoso","sub":null}
+          ],
+          "why": "Las lomas cambian el ritmo y la carga: las tenemos en cuenta en caminatas y carreras.",
+          "uses": ["running","plan"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_aceras",
+          "type": "options",
+          "prompt": "¿Cómo están los andenes y las vías para caminar?",
+          "hint": null,
+          "options": [
+            {"id":"buenas","icon":null,"text":"En buen estado","sub":null},
+            {"id":"regulares","icon":null,"text":"Regulares","sub":null},
+            {"id":"malas","icon":null,"text":"Malas o no hay","sub":null}
+          ],
+          "why": "Si no hay buenos andenes, priorizamos parques, pistas o sesiones en casa.",
+          "uses": ["seguridad","plan"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_naturaleza",
+          "type": "multi",
+          "prompt": "¿Qué tienes cerca?",
+          "hint": null,
+          "options": [
+            {"id":"parque","icon":null,"text":"Parque grande","sub":null},
+            {"id":"montana","icon":null,"text":"Montaña o cerros","sub":null},
+            {"id":"playa","icon":null,"text":"Playa","sub":null},
+            {"id":"agua","icon":null,"text":"Río o lago","sub":null},
+            {"id":"sendero","icon":null,"text":"Senderos","sub":null},
+            {"id":"ninguno","icon":null,"text":"Nada de esto","sub":null}
+          ],
+          "why": "Te sugerimos actividades que aprovechen tu entorno natural.",
+          "uses": ["descubrimiento"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ub_ciclovia",
+          "type": "options",
+          "prompt": "¿Hay ciclovía o vías recreativas cerca de ti?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"no_se","icon":null,"text":"No lo sé","sub":null}
+          ],
+          "why": "Son espacios seguros y gratuitos para caminar, trotar o pedalear.",
+          "uses": ["descubrimiento","running"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

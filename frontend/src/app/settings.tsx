@@ -1,9 +1,12 @@
 import Constants from "expo-constants";
+import { router } from "expo-router";
 import { ScrollView, Text, View } from "react-native";
 
+import AccentPicker from "../components/settings/AccentPicker";
 import AccountSection from "../components/settings/AccountSection";
 import RemindersSection from "../components/settings/RemindersSection";
 import { Segment, SettingsSection, createStyles } from "../components/settings/SettingsSection";
+import { useTour } from "../components/tour/TourContext";
 import GradientButton from "../components/ui/GradientButton";
 import ScreenHeader from "../components/ui/ScreenHeader";
 import { useWorld } from "../context/WorldContext";
@@ -24,12 +27,13 @@ const HEIGHT_OPTIONS: { value: HeightUnit; label: string }[] = [
   { value: "ft", label: "Pies y pulgadas" },
 ];
 
-/** Ajustes: tema, unidades, recordatorios, cuenta y datos. El color lo pone el mundo activo. */
+/** Ajustes: tema y color, unidades, recordatorios, cuenta y datos. */
 export default function SettingsScreen() {
   const s = useThemedStyles(createStyles);
   const theme = useTheme();
   const { active } = useWorld();
   const actions = useAccountActions();
+  const tour = useTour();
   const version = Constants.expoConfig?.version ?? "1.0.0";
 
   return (
@@ -39,10 +43,14 @@ export default function SettingsScreen() {
         <SettingsSection title="Apariencia" delay={0}>
           <Text style={s.label}>Tema</Text>
           <Segment options={THEME_OPTIONS} value={theme.preference} onChange={theme.setPreference} />
+          <Text style={[s.label, { marginTop: 16 }]}>Color</Text>
+          <AccentPicker />
           <Text style={[s.rowSub, { marginTop: 10 }]}>
-            {active
-              ? `El color de la app lo pone tu mundo activo (${active.icon} ${active.name}). Cambia de mundo en Cuenta → Mis mundos.`
-              : "El color de la app lo pone tu mundo activo."}
+            {theme.accent === "mundo"
+              ? active
+                ? `Ahora el color lo pone tu mundo activo (${active.icon} ${active.name}) y cambia contigo al cambiar de mundo.`
+                : "Ahora el color lo pone tu mundo activo y cambia contigo al cambiar de mundo."
+              : "Elegiste un color fijo: se mantiene aunque cambies de mundo. Elige «Color de mi mundo» para volver al de cada mundo."}
           </Text>
         </SettingsSection>
 
@@ -62,6 +70,8 @@ export default function SettingsScreen() {
           <Text style={s.rowSub}>
             Tus datos de salud se guardan cifrados, se usan solo para personalizar tu plan y no se comparten con terceros.
           </Text>
+          <GradientButton title="🔐 Política de tratamiento de datos" variant="ghost" onPress={() => router.push("/legal/politica")} style={{ marginTop: 12 }} />
+          <GradientButton title="📄 Términos y condiciones" variant="ghost" onPress={() => router.push("/legal/terminos")} style={{ marginTop: 10 }} />
           <GradientButton title="📥 Exportar mis datos" variant="ghost" onPress={actions.exportData} loading={actions.exporting} style={{ marginTop: 12 }} />
           <GradientButton title="Eliminar mi cuenta" variant="danger" onPress={actions.removeAccount} loading={actions.deleting} style={{ marginTop: 10 }} />
         </SettingsSection>
@@ -71,6 +81,15 @@ export default function SettingsScreen() {
           <Text style={[s.rowSub, { marginTop: 6 }]}>
             Las recomendaciones son orientativas y no sustituyen la valoración de un profesional de la salud.
           </Text>
+          <GradientButton
+            title="🧭 Ver recorrido"
+            variant="ghost"
+            onPress={() => {
+              tour.start();
+              router.dismissTo("/home");
+            }}
+            style={{ marginTop: 12 }}
+          />
         </SettingsSection>
       </ScrollView>
     </View>

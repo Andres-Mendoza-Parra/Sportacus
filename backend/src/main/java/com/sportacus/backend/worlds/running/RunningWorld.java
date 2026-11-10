@@ -76,6 +76,9 @@ public class RunningWorld implements WorldModule {
     static final int[] DEFAULT_EASY_PACE = { 480, 465, 435, 400, 365 };
     static final Set<String> CONTINUOUS_KINDS = Set.of("rodaje", "tirada_larga", "tempo", "prueba");
     static final List<String> PACED_MOVEMENTS = List.of("trote_suave", "tirada_larga", "carrera_tempo", "intervalos_carrera");
+    /** Origen del 5K de referencia: declarado en el onboarding (se corrige por altitud) o medido donde entrena (no). */
+    static final String T5K_DECLARED = "declarado";
+    static final String T5K_MEASURED = "medido";
 
     private final WorldToolkit kit;
     private final MetricRepository metrics;
@@ -96,6 +99,13 @@ public class RunningWorld implements WorldModule {
 
     @Override
     public FormSpec onboardingForm(UserContext user) {
+        FormSpec form = baseForm();
+        // Lo que ya contó en el Perfil 360 y corresponde 1:1 no se vuelve a preguntar: se precarga.
+        String watch = RunningAdvice.watchFromDevices(user.insights().facts().list("te_dispositivos"));
+        return watch == null ? form : form.withAnswers(Map.of("r_watch", watch));
+    }
+
+    private static FormSpec baseForm() {
         return Forms.form("running", "Tu plan de running", "Con esto calculamos tu volumen, tus ritmos y tu progresión.",
                 single("r_ability", "¿Cómo corres hoy?", "Sé honesto: empezar por debajo es más seguro que por encima.",
                         opt("no_corro", "🚶", "No corro", "Camino, pero correr me cuesta"),
@@ -119,8 +129,8 @@ public class RunningWorld implements WorldModule {
                         opt("base_aerobica", "🫀", "Correr por salud", "Sin carrera objetivo")),
                 optional(showIf(text("r_race_date", "¿Tienes fecha de carrera?", "Formato AAAA-MM-DD. Ajustamos el plan para llegar afinado."),
                         "r_goal", "primer_5k", "mejorar_5k", "10k", "media_maraton")),
-                single("r_long_day", "¿Qué día prefieres para la tirada larga?", "Es la sesión más larga de la semana.",
-                        opt("6", "📅", "Sábado"), opt("7", "☀️", "Domingo"), opt("0", "🤷", "Me da igual")),
+                optional(single("r_long_day", "¿Qué día prefieres para la tirada larga?", "Es la sesión más larga de la semana. Si no eliges, va en tu último día de entrenamiento.",
+                        opt("6", "📅", "Sábado"), opt("7", "☀️", "Domingo"), opt("0", "🤷", "Me da igual"))),
                 optional(multi("r_surface", "¿Dónde vas a correr?", "Elige las que quieras.",
                         opt("asfalto", "🛣️", "Calle o asfalto"), opt("parque", "🌳", "Parque o tierra"),
                         opt("pista", "🏟️", "Pista de atletismo"), opt("cinta", "🏃", "Cinta de correr"),
@@ -194,12 +204,12 @@ public class RunningWorld implements WorldModule {
         if (severeLeg) {
             notices.add("Por tus molestias en " + String.join(", ", legZones(h)) + " empezamos con caminata (sin impacto de carrera). "
                     + "Cuando el dolor ceda, vuelve a hacer el onboarding para pasar a caminar-correr.");
+        } else if (!h.vigorousAllowed()) {
+            notices.add(h.moderateReason() + ". Mientras tanto, intensidad moderada: sin intervalos, cuestas ni tests máximos.");
         } else if (kit.safety().highImpactRestricted(user)) {
             notices.add("Excluimos intervalos, cuestas y aceleraciones (alto impacto); los días de calidad serán rodajes con cambios suaves.");
         }
-        if (!h.vigorousAllowed()) {
-            notices.add("Mantendremos intensidad moderada (sin intervalos ni tests máximos) hasta que confirmes el aval de un profesional.");
-        }
+        if (severeLeg && !h.vigorousAllowed()) notices.add(h.moderateReason() + ".");
 
         int level = Math.min(5, new int[] { 1, 1, 2, 3, 4 }[rank] + (km >= 40 ? 1 : 0));
         why.add(Factor.of("nivel", 0, "Nivel " + level + " de 5 según cómo corres hoy" + (declaredKm != null ? " y tus " + km(km) + " km semanales" : "")));
@@ -208,6 +218,7 @@ public class RunningWorld implements WorldModule {
             why.add(Factor.of("ritmos", 0, "5K de referencia " + RunningMath.time(t5k) + (a.number("r_5k_time") == null ? " (estimado desde tu 10K con Riegel)" : "")
                     + ": suave " + p.easyRange()));
         }
+        why.addAll(missingDataDefaults(rank, declaredKm, t5k));
 
         // Duración del programa y fecha de carrera.
         TrackInfo info = kit.catalog().track(KEY, track).orElseThrow();
@@ -239,7 +250,10 @@ public class RunningWorld implements WorldModule {
         Map<String, Object> state = new LinkedHashMap<>();
         state.put("planStart", today.toString());
         state.put("planWeeks", planWeeks);
-        if (t5k != null) state.put("t5kS", t5k);
+        if (t5k != null) {
+            state.put("t5kS", t5k);
+            state.put("t5kSource", T5K_DECLARED); // marca declarada: se corrige por la altitud donde entrena
+        }
         state.put("weeklyKm0", km);
         state.put("easyPaceDefault", DEFAULT_EASY_PACE[rank]);
         state.put("ability", ability);
@@ -266,6 +280,24 @@ public class RunningWorld implements WorldModule {
         }
         if (a.contains("r_surface", "cinta")) notices.add("En cinta, pon un 1 % de inclinación para que el esfuerzo se parezca al de la calle.");
         return new EnrollmentResult(track, level, a.asMap(), state, goals, Map.of(), why, notices);
+    }
+
+    /**
+     * Valores por defecto (prudentes y explicados) cuando faltan datos opcionales del onboarding. Solo aplica a quien
+     * ya corre seguido (rank ≥ 2): la progresión caminar-correr no usa ritmos ni km.
+     */
+    static List<Factor> missingDataDefaults(int rank, Double declaredKm, Integer t5k) {
+        List<Factor> out = new ArrayList<>();
+        if (rank < 2) return out;
+        if (t5k == null) {
+            out.add(Factor.of("ritmos", 0, "Aún no sabemos tus ritmos: por ahora la intensidad va por esfuerzo percibido (RPE) "
+                    + "y la prueba del habla. Haz el 5K contrarreloj o el test de Cooper, o cuéntanos tu marca, para calcularlos"));
+        }
+        if (declaredKm == null) {
+            out.add(Factor.of("volumen_inicial", 0, "Sin tus km semanales, partimos de ~" + DEFAULT_KM[rank]
+                    + " km/semana (lo habitual a tu nivel) y subimos como máximo un 10 % por semana. Cuéntanoslos para ajustarlo"));
+        }
+        return out;
     }
 
     static Integer fiveKFromAnswers(Answers a) {
@@ -306,7 +338,18 @@ public class RunningWorld implements WorldModule {
 
     /** Parámetros derivados del contexto que comparten el plan, el dashboard y el asistente. */
     record Setup(TrackInfo track, Mode mode, int totalWeeks, LocalDate planStart, Paces paces, int defaultEasy,
-            Set<String> allowed, boolean quality, boolean easyChanges, String restriction) {
+            Set<String> allowed, boolean quality, boolean easyChanges, String restriction, boolean pacesScaled,
+            boolean measuredHere) {
+    }
+
+    /** ¿El 5K de referencia se midió donde entrena (test o salida registrada)? Entonces ya incluye la altitud. */
+    static boolean measuredHere(WorldContext ctx) {
+        return T5K_MEASURED.equals(ctx.world().stateString("t5kSource"));
+    }
+
+    /** Factor de altitud que se aplica a los ritmos: 1 si la referencia ya se midió allí. */
+    static double paceFactor(WorldContext ctx) {
+        return measuredHere(ctx) ? 1.0 : ctx.user().insights().altitudePaceFactor();
     }
 
     Setup setup(WorldContext ctx) {
@@ -334,7 +377,7 @@ public class RunningWorld implements WorldModule {
         boolean quality = mode == Mode.RUN && h.vigorousAllowed() && allowed.contains("intervalos_carrera");
         boolean easyChanges = mode == Mode.RUN && !quality && h.vigorousAllowed();
         if (mode != Mode.WALK && restriction == null) {
-            if (!h.vigorousAllowed()) restriction = "Intensidad moderada hasta que confirmes el aval médico: sin intervalos ni cuestas";
+            if (!h.vigorousAllowed()) restriction = h.moderateReason() + ". Sin intervalos ni cuestas por ahora";
             else if (kit.safety().highImpactRestricted(user)) restriction = "Sin intervalos, cuestas ni aceleraciones (alto impacto) por "
                     + impactReason(user) + "; caminar-correr y el rodaje suave (impacto medio) sí";
         }
@@ -344,10 +387,11 @@ public class RunningWorld implements WorldModule {
         LocalDate start = parseDate(ctx.world().stateString("planStart"));
         if (start == null) start = LocalDate.now(MetricRepository.ZONE);
         Double t5k = ctx.world().stateNumber("t5kS");
-        Paces paces = t5k == null ? null : RunningMath.paces(t5k);
-        Double de = ctx.world().stateNumber("easyPaceDefault");
-        int defaultEasy = paces != null ? paces.easy() : de != null ? de.intValue() : 435;
-        return new Setup(track, mode, total, start, paces, defaultEasy, allowed, quality, easyChanges, restriction);
+        double factor = paceFactor(ctx);
+        Paces paces = t5k == null ? null : RunningMath.paces(t5k).scaled(factor);
+        int defaultEasy = setupEasy(ctx);
+        return new Setup(track, mode, total, start, paces, defaultEasy, allowed, quality, easyChanges, restriction,
+                paces != null && factor > 1.0, measuredHere(ctx));
     }
 
     private static String impactReason(UserContext u) {
@@ -388,14 +432,18 @@ public class RunningWorld implements WorldModule {
         Integer longDay = "6".equals(longPref) ? Integer.valueOf(6) : "7".equals(longPref) ? Integer.valueOf(7) : null;
         List<Integer> days = RunningPlanBuilder.withLongDay(kit.weekdays(user.profile(), n), s.mode() == Mode.RUN ? longDay : null);
         Double km0 = ctx.world().stateNumber("weeklyKm0");
-        String watch = ctx.world().profile().string("r_watch", "nada");
+        String watch = RunningAdvice.watch(ctx.world().profile().string("r_watch"), user.insights().facts());
         Object targetKm = s.track().config("targetKm");
         int startWeek = programWeek(s.planStart(), LocalDate.now(MetricRepository.ZONE));
         RunningPlanBuilder.Input in = new RunningPlanBuilder.Input(trackKey, s.track().name(), s.mode(), s.totalWeeks(),
                 startWeek, n, days, longDay, Math.max(6, km0 == null ? 10 : km0), s.paces(), s.defaultEasy(), s.quality(),
                 s.easyChanges(), !"nada".equals(watch), s.allowed(),
                 targetKm instanceof Number num ? num.doubleValue() : null, user.profile().minutesOr(45), s.restriction());
-        return RunningPlanBuilder.build(in);
+        RunningPlanBuilder.Output out = RunningPlanBuilder.build(in);
+        // Perfil 360: altitud, pulso poco fiable, calor, seguridad nocturna y glucosa (explicado en razones y notas).
+        GeneratedPlan adapted = RunningAdvice.apply(out.plan(), user.insights(), startWeek, s.pacesScaled(),
+                s.measuredHere(), s.paces() != null);
+        return new RunningPlanBuilder.Output(adapted, out.weekKm());
     }
 
     // ───────────────────────── Evaluación ─────────────────────────
@@ -455,7 +503,7 @@ public class RunningWorld implements WorldModule {
                 out.metric("run_5k_estimado", Math.round(est));
                 if (t5kState == null || est < t5kState * 0.98) {
                     Paces p = RunningMath.paces(est);
-                    out.state("t5kS", (int) Math.round(est));
+                    out.state("t5kS", (int) Math.round(est)).state("t5kSource", T5K_MEASURED);
                     applyPaces(ctx, p);
                     out.highlight("5K estimado: " + RunningMath.time(est) + ". Nuevos ritmos: suave " + p.easyRange()
                             + ", tempo " + pace(p.tempo()) + " /km");
@@ -498,11 +546,13 @@ public class RunningWorld implements WorldModule {
         return Math.round(sum * 10) / 10.0;
     }
 
+    /** Ritmo suave (s/km) para estimar km: desde el 5K (corregido por altitud) o el supuesto de su nivel. */
     private static int setupEasy(WorldContext ctx) {
         Double t5k = ctx.world().stateNumber("t5kS");
-        if (t5k != null) return RunningMath.paces(t5k).easy();
+        if (t5k != null) return RunningMath.paces(t5k).scaled(paceFactor(ctx)).easy();
         Double de = ctx.world().stateNumber("easyPaceDefault");
-        return de == null ? 435 : de.intValue();
+        int base = de == null ? 435 : de.intValue();
+        return (int) Math.round(base * ctx.user().insights().altitudePaceFactor());
     }
 
     static double plannedKm(List<SessionView> sessions, int easy) {
@@ -566,7 +616,7 @@ public class RunningWorld implements WorldModule {
             return AssessmentOutcome.none();
         }
         Paces p = RunningMath.paces(fiveK);
-        fx.metric("run_5k_estimado", Math.round(fiveK)).state("t5kS", (int) Math.round(fiveK));
+        fx.metric("run_5k_estimado", Math.round(fiveK)).state("t5kS", (int) Math.round(fiveK)).state("t5kSource", T5K_MEASURED);
         applyPaces(ctx, p);
         hl.add("Tus ritmos se actualizaron en el plan: suave " + p.easyRange() + ", tempo " + pace(p.tempo())
                 + ", intervalos " + pace(p.interval()) + " /km");
@@ -653,7 +703,12 @@ public class RunningWorld implements WorldModule {
     private List<Insight> insights(WorldContext ctx, Setup s, PlanView plan, int pw, List<Widget.Bar> bars) {
         List<Insight> out = new ArrayList<>();
         HealthSummary h = ctx.user().health();
-        if (s.restriction() != null) out.add(Insight.of("🩹", "Plan adaptado a tu salud", s.restriction() + ".", "info"));
+        if (s.restriction() != null) {
+            out.add(h.prudentMode() && s.mode() != Mode.WALK
+                    ? new Insight("🛡️", "Modo prudente", s.restriction() + ".", "info", "Hacer chequeo", "/health")
+                    : Insight.of("🩹", "Plan adaptado a tu salud", s.restriction() + ".", "info"));
+        }
+        out.addAll(RunningAdvice.insights(ctx.user().insights()));
         double thisWeek = bars.get(bars.size() - 1).value();
         double recentMax = bars.subList(Math.max(0, bars.size() - 4), bars.size() - 1).stream().mapToDouble(Widget.Bar::value)
                 .max().orElse(0);
@@ -677,8 +732,10 @@ public class RunningWorld implements WorldModule {
             out.add(Insight.of("⏱️", "Tus ritmos", "Suave " + s.paces().easyRange() + " · tempo " + pace(s.paces().tempo())
                     + " · intervalos " + pace(s.paces().interval()) + " /km (5K de " + RunningMath.time(s.paces().fiveKS()) + ").", "info"));
         } else if (s.mode() == Mode.RUN && h.vigorousAllowed()) {
-            out.add(new Insight("📏", "Calcula tus ritmos", "Haz el 5K contrarreloj o el test de Cooper y ajustaremos los ritmos de todo el plan.",
+            out.add(new Insight("📏", "Calcula tus ritmos", "Aún no sabemos tus ritmos: vas por sensaciones (prueba del habla). Haz el 5K contrarreloj o el test de Cooper y ajustaremos los ritmos de todo el plan.",
                     "info", "Ir a tests", "/tests"));
+        } else if (s.mode() == Mode.RUN) {
+            out.add(Insight.of("🗣️", "Por sensaciones", "Aún no sabemos tus ritmos: corre a un ritmo en el que puedas decir frases completas (RPE 3–4).", "info"));
         }
         if (s.mode() == Mode.WALK_RUN && pw < s.totalWeeks()) {
             out.add(Insight.of("🐢", "Trota más lento de lo que crees", "En los tramos de trote debes poder hablar. Si una semana se te hace muy dura, repítela antes de avanzar.", "info"));
@@ -756,6 +813,7 @@ public class RunningWorld implements WorldModule {
                 Ritmos: %s.%s Nunca subas el volumen ni la intensidad por encima del plan; ante dolor que altera la zancada,
                 recomienda parar, caminar y consultar. Ritmos y predicciones solo a partir de sus datos (Riegel, Cooper).
                 """.formatted(s.track().name(), mode, pw, s.totalWeeks(), paces,
-                s.restriction() == null ? "" : " Restricción: " + s.restriction() + ".");
+                s.restriction() == null ? "" : " Restricción: " + s.restriction() + ".")
+                + RunningAdvice.persona(ctx.user().insights()).trim();
     }
 }

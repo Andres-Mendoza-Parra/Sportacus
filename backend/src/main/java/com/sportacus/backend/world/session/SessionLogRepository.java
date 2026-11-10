@@ -32,12 +32,18 @@ public class SessionLogRepository {
     }
 
     public UUID insert(UUID userId, UUID userWorldId, String title, LoggedSession s) {
+        return insert(userId, userWorldId, title, s, null);
+    }
+
+    /** @param clientId identificador que genera la app para no registrar dos veces la misma sesión */
+    public UUID insert(UUID userId, UUID userWorldId, String title, LoggedSession s, UUID clientId) {
         UUID id = jdbc.queryForObject("""
                 INSERT INTO session_log (user_id, user_world_id, plan_session_id, title, performed_on, duration_min,
-                    rpe, pain_before, pain_after, mood_before, mood_after, distance_m, notes)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id
+                    rpe, pain_before, pain_after, mood_before, mood_after, distance_m, notes, client_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id
                 """, UUID.class, userId, userWorldId, s.planSessionId(), title, s.performedOn(), s.durationMin(),
-                s.rpe(), s.painBefore(), s.painAfter(), s.moodBefore(), s.moodAfter(), s.distanceM(), s.notes());
+                s.rpe(), s.painBefore(), s.painAfter(), s.moodBefore(), s.moodAfter(), s.distanceM(), s.notes(),
+                clientId);
         for (LoggedBlock b : s.blocks()) {
             jdbc.update("""
                     INSERT INTO block_log (session_log_id, plan_block_id, movement_key, set_index, reps, load_kg, rir,
@@ -115,8 +121,66 @@ public class SessionLogRepository {
                 sessionLogId).stream().findFirst();
     }
 
-    public void setNextDayPain(UUID sessionLogId, int pain) {
-        jdbc.update("UPDATE session_log SET pain_next_day = ? WHERE id = ?", pain, sessionLogId);
+    /** @return true si se guardó (false si ya tenía el dolor del día siguiente) */
+    public boolean setNextDayPain(UUID sessionLogId, int pain) {
+        return jdbc.update("UPDATE session_log SET pain_next_day = ? WHERE id = ? AND pain_next_day IS NULL", pain,
+                sessionLogId) > 0;
+    }
+
+    public record PainTarget(UUID userId, UUID userWorldId, LocalDate performedOn, Integer painNextDay) {
+    }
+
+    /** Bloquea el registro hasta el final de la transacción (dos envíos simultáneos no duplican efectos). */
+    public Optional<PainTarget> lockForPain(UUID sessionLogId) {
+        return jdbc.query("""
+                SELECT user_id, user_world_id, performed_on, pain_next_day FROM session_log WHERE id = ? FOR UPDATE
+                """, (rs, i) -> new PainTarget((UUID) rs.getObject(1), (UUID) rs.getObject(2),
+                rs.getObject(3, LocalDate.class), intOrNull(rs, 4)), sessionLogId).stream().findFirst();
+    }
+
+    // ── Idempotencia (clientId) ───────────────────────────────
+
+    public record Previous(UUID id, String result) {
+    }
+
+    /** Serializa los envíos con el mismo clientId del mismo usuario dentro de la transacción en curso. */
+    public void lockClient(UUID userId, UUID clientId) {
+        jdbc.queryForList("SELECT 1 FROM pg_advisory_xact_lock(hashtext(?))", Integer.class,
+                "session_log:" + userId + ":" + clientId);
+    }
+
+    public Optional<Previous> byClient(UUID userId, UUID clientId) {
+        return jdbc.query("SELECT id, result::text FROM session_log WHERE user_id = ? AND client_id = ?",
+                (rs, i) -> new Previous((UUID) rs.getObject(1), rs.getString(2)), userId, clientId).stream().findFirst();
+    }
+
+    public void saveResult(UUID sessionLogId, String resultJson) {
+        jdbc.update("UPDATE session_log SET result = ?::jsonb WHERE id = ?", resultJson, sessionLogId);
+    }
+
+    // ── Plan dueño de una sesión (aunque ya no sea el activo) ──
+
+    public record PlanSessionRef(UUID userWorldId, UUID planId, String kind, String title) {
+    }
+
+    public Optional<PlanSessionRef> planSession(UUID planSessionId) {
+        return jdbc.query("""
+                SELECT p.user_world_id, p.id, s.kind, s.title FROM plan_session s JOIN plan p ON p.id = s.plan_id
+                WHERE s.id = ?
+                """, (rs, i) -> new PlanSessionRef((UUID) rs.getObject(1), (UUID) rs.getObject(2), rs.getString(3),
+                rs.getString(4)), planSessionId).stream().findFirst();
+    }
+
+    /** Bloques de una sesión del plan, tal como se prescribieron (del plan que la contiene, activo o archivado). */
+    public List<com.sportacus.backend.world.plan.PlanRepository.BlockRow> plannedBlocks(UUID planSessionId) {
+        return jdbc.query("""
+                SELECT id, plan_session_id, order_index, block_type, movement_key, title, prescription::text,
+                       progression_key, step_index, notes
+                FROM plan_block WHERE plan_session_id = ? ORDER BY order_index
+                """, (rs, i) -> new com.sportacus.backend.world.plan.PlanRepository.BlockRow((UUID) rs.getObject(1),
+                (UUID) rs.getObject(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6),
+                json.read(rs.getString(7), com.sportacus.backend.world.core.Prescription.class), rs.getString(8),
+                intOrNull(rs, 9), rs.getString(10)), planSessionId);
     }
 
     /** Sesión anterior a hoy sin dolor de 24 h registrado (para el chequeo del día siguiente en Salud). */

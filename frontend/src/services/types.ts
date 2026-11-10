@@ -27,13 +27,20 @@ export interface Achievement {
   achievedAt?: string | null;
 }
 
+/** Logro de cualquier mundo (GET /me/achievements), más reciente primero. */
+export interface AchievementView extends Achievement {
+  worldName?: string | null;
+  worldIcon?: string | null;
+}
+
 export type Tone = "good" | "warn" | "bad";
 export type NoticeTone = "info" | "warn" | "danger" | "success";
 export type StepStatus = "done" | "current" | "locked";
 
 // ───────────────────────── Formularios ─────────────────────────
 
-export type QuestionType = "options" | "multi" | "range" | "number" | "text";
+/** `date` = AAAA-MM-DD. */
+export type QuestionType = "options" | "multi" | "range" | "number" | "text" | "date";
 
 export interface QuestionOption {
   id: string;
@@ -84,10 +91,57 @@ export interface AuthResponse {
   onboardingCompleted: boolean;
 }
 
-export interface OnboardingStatus {
-  profileDone: boolean;
-  healthDone: boolean;
-  worldDone: boolean;
+/** Cuerpo de POST /auth/register. */
+export interface RegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+  birthYear: number;
+  acceptPolicy: true;
+  acceptHealthData?: boolean;
+  guardianConsent?: boolean;
+}
+
+/** Cuerpo de error común del backend (ApiError). */
+export interface ApiErrorBody {
+  status?: number;
+  message?: string;
+  messages?: string[];
+  /** Solo en 429 (bloqueo de inicio de sesión): segundos hasta poder reintentar. */
+  retryAfterSeconds?: number | null;
+}
+
+// ───────────────────────── Legal ─────────────────────────
+
+export type LegalDocumentKey = "politica_datos" | "terminos";
+/** La versión puede llegar como texto ("1.0") o número; se compara siempre como texto. */
+export type LegalVersion = string | number;
+
+export interface LegalSection {
+  title: string;
+  body: string;
+}
+
+export interface LegalDocument {
+  key: LegalDocumentKey | (string & {});
+  version: LegalVersion;
+  title: string;
+  updatedAt?: string | null;
+  /** Resumen corto en lenguaje claro. */
+  summary?: string | null;
+  sections: LegalSection[];
+}
+
+/** Estado legal de la cuenta (GET /profile → `legal`). */
+export interface LegalStatus {
+  policyVersion: LegalVersion;
+  acceptedPolicyVersion?: LegalVersion | null;
+  termsVersion: LegalVersion;
+  acceptedTermsVersion?: LegalVersion | null;
+  healthDataConsent: boolean;
+  minor: boolean;
+  /** false = hay que (re)aceptar la Política y los Términos vigentes. */
+  upToDate?: boolean | null;
 }
 
 export interface UserProfileData {
@@ -147,13 +201,143 @@ export interface AccountView {
   bmi?: number | null;
   health: HealthSummary;
   worlds: MyWorld[];
-  onboarding: OnboardingStatus;
+  /** Avance global del Perfil 360 (igual que en GET /profile/overview). */
+  completeness?: Completeness | null;
+  /** Clave del mundo activo ("base" por defecto). */
+  activeWorld?: string | null;
+  /** Política, términos y consentimiento de datos de salud. */
+  legal?: LegalStatus | null;
+  /** null = aún no vio el recorrido inicial. */
+  tutorialCompletedAt?: string | null;
 }
 
 export interface ProfilePatch {
   name?: string;
   weightKg?: number;
   heightCm?: number;
+}
+
+// ───────────────────────── Perfil 360 ─────────────────────────
+
+export type CompletenessLevel = "inicial" | "basico" | "bueno" | "completo";
+
+export interface Completeness {
+  pct: number;
+  level: CompletenessLevel | (string & {});
+  label: string;
+}
+
+export interface QuestionnaireSummary {
+  key: string;
+  title: string;
+  subtitle?: string | null;
+  minutes?: number | null;
+  answered: number;
+  total: number;
+  pct: number;
+}
+
+export interface AreaView {
+  key: string;
+  name: string;
+  icon: string;
+  description: string;
+  sensitive: boolean;
+  consented: boolean;
+  pct: number;
+  answered: number;
+  total: number;
+  /** "health" = el área la atiende el chequeo de salud (/health), no el banco de preguntas. */
+  handler?: "health" | (string & {}) | null;
+  questionnaires: QuestionnaireSummary[];
+}
+
+export interface ProfileOverview {
+  completeness: Completeness;
+  areas: AreaView[];
+}
+
+export type AnswerStatus = "respondida" | "omitida" | "pospuesta" | "no_decir";
+
+export interface QuestionMeta {
+  why?: string | null;
+  uses?: string[] | null;
+  status?: AnswerStatus | (string & {}) | null;
+  answeredAt?: string | null;
+}
+
+export interface QuestionnaireView {
+  key: string;
+  areaKey: string;
+  areaName: string;
+  sensitive: boolean;
+  consented: boolean;
+  form: FormSpec;
+  meta: Record<string, QuestionMeta>;
+}
+
+export type NextKind = "question" | "consent" | "health" | "refine_world";
+
+export interface NextItem {
+  /** Id para omitir/posponer: el de la pregunta, o "health" · "consent:<área>" · "refine:<mundo>". */
+  id: string;
+  kind: NextKind | (string & {});
+  areaKey: string;
+  areaName: string;
+  areaIcon?: string | null;
+  questionnaireKey?: string | null;
+  question?: Question | null;
+  why?: string | null;
+  title?: string | null;
+  body?: string | null;
+  route?: string | null;
+}
+
+export interface SaveResult {
+  saved: number;
+  completeness: Completeness;
+  highlights: string[];
+  next: NextItem[];
+}
+
+/** omitir = 30 días sin sugerirla · posponer = 3 días · no_decir = nunca (cuenta como respondida). */
+export type SkipMode = "omitir" | "posponer" | "no_decir";
+
+export type NextContext = "home" | "post_session" | "world";
+
+export interface Readiness {
+  /** 0,6–1,0: fracción del volumen planeado que conviene hacer hoy. */
+  factor: number;
+  label: string;
+  reasons: string[];
+}
+
+export interface CheckinView {
+  done: boolean;
+  form: FormSpec;
+  readiness?: Readiness | null;
+}
+
+export interface CheckinResult {
+  readiness?: Readiness | null;
+  highlights: string[];
+}
+
+export interface RingArea {
+  key: string;
+  name: string;
+  icon: string;
+  pct: number;
+}
+
+export interface WorldSuggestion {
+  key: string;
+  name: string;
+  icon: string;
+  color: string;
+  tagline: string;
+  score: number;
+  reasons: string[];
 }
 
 // ───────────────────────── Catálogo de mundos ─────────────────────────
@@ -259,6 +443,8 @@ export interface BlockView {
   stepIndex?: number | null;
   notes?: string | null;
   imageUrl?: string | null;
+  /** Razón principal del bloque en una línea ("por qué está en tu plan"). */
+  summary?: string | null;
 }
 
 export interface SessionView {
@@ -288,6 +474,9 @@ export interface PlanView {
   score?: number | null;
   rationale: Factor[];
   sessions: SessionView[];
+  /** Por qué se actualizó el plan solo ("Actualizamos tu plan: hiciste tu chequeo de salud"). */
+  updateReason?: string | null;
+  updatedAt?: string | null;
 }
 
 export type PreCheck = "pain" | "mood";
@@ -305,6 +494,8 @@ export interface SessionUi {
 export interface SessionDetail {
   session: SessionView;
   ui: SessionUi;
+  /** Cómo estás hoy según el check-in (null si no se hizo). */
+  today?: Readiness | null;
 }
 
 export interface BlockLog {
@@ -322,7 +513,10 @@ export interface BlockLog {
 }
 
 export interface SessionLogRequest {
-  planSessionId?: string;
+  /** UUID generado por la app al iniciar la sesión: el mismo clientId nunca se registra dos veces. */
+  clientId?: string;
+  /** null = actividad libre (registro en Mi Base, sin sesión del plan). */
+  planSessionId?: string | null;
   title?: string;
   performedOn?: string;
   durationMin?: number;
@@ -351,6 +545,8 @@ export interface SessionResult {
   streak: Streak;
   unlocks: Unlock[];
   planRegenerated: boolean;
+  /** true = ese clientId ya estaba registrado (se trata como éxito, sin efectos dobles). */
+  duplicate?: boolean;
 }
 
 export interface SessionSummary {
@@ -442,6 +638,11 @@ export interface WidgetDataMap {
   insights: { items: InsightItem[] };
   phase_track: { phases: Phase[] };
   notice: { tone: NoticeTone; body: string };
+  profile_ring: { pct: number; level: CompletenessLevel | (string & {}); label: string; areas: RingArea[] };
+  question: { item: NextItem };
+  checkin: { done: boolean; readiness?: Readiness | null };
+  world_suggestions: { items: WorldSuggestion[] };
+  readiness: Readiness;
 }
 
 export type WidgetType = keyof WidgetDataMap;
@@ -567,6 +768,61 @@ export interface MovementDetail {
   sourceUrl?: string | null;
   license?: string | null;
   author?: string | null;
+}
+
+// ───────────────────────── Detalle de bloque ─────────────────────────
+
+export type ReasonTone = "info" | "success" | "warn" | "danger";
+
+export interface Reason {
+  icon: string;
+  title: string;
+  text: string;
+  tone: ReasonTone | (string & {});
+}
+
+export interface ProgressionInfo {
+  key: string;
+  name: string;
+  /** Escalón actual (1 = primero). */
+  step: number;
+  total: number;
+  stepName: string;
+  nextStepName?: string | null;
+  /** Criterio para avanzar, en texto. */
+  unlock?: string | null;
+}
+
+/** GET /world/blocks/{id}: el bloque, su movimiento y por qué / cómo hacerlo. */
+export interface BlockDetail {
+  block: BlockView;
+  sessionTitle: string;
+  movement?: MovementDetail | null;
+  /** Por qué está en tu plan (la 1ª es la principal). */
+  why: Reason[];
+  /** La prescripción explicada en lenguaje claro. */
+  dose: string[];
+  considerations: Reason[];
+  progression?: ProgressionInfo | null;
+}
+
+// ───────────────────────── Metas ─────────────────────────
+
+export type GoalStatus = "activa" | "lograda" | "abandonada";
+
+export interface GoalView {
+  id: string;
+  worldKey?: string | null;
+  goalKey: string;
+  label: string;
+  target?: string | number | null;
+  targetDate?: string | null;
+  status: GoalStatus | (string & {});
+  achievedAt?: string | null;
+  progressPct?: number | null;
+  progressText?: string | null;
+  auto: boolean;
+  achievedBy?: "auto" | "manual" | null;
 }
 
 // ───────────────────────── Asistente ─────────────────────────

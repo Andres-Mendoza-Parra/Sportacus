@@ -1,0 +1,302 @@
+{
+  "area": {
+    "key": "motivacion",
+    "name": "Motivación y preferencias",
+    "icon": "🔥",
+    "sortOrder": 90,
+    "description": "Por qué quieres moverte y qué disfrutas. Diseñamos sesiones que te den ganas de volver.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "motivacion_porque",
+      "title": "Tu porqué",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "mo_razon",
+          "type": "options",
+          "prompt": "¿Cuál es tu razón principal para moverte?",
+          "hint": null,
+          "options": [
+            {"id":"salud","icon":"❤️","text":"Cuidar mi salud","sub":null},
+            {"id":"verse_bien","icon":"✨","text":"Verme mejor","sub":null},
+            {"id":"energia","icon":"⚡","text":"Tener más energía","sub":null},
+            {"id":"estres","icon":"🧘","text":"Manejar el estrés","sub":null},
+            {"id":"rendimiento","icon":"🏆","text":"Rendir en un deporte","sub":null},
+            {"id":"social","icon":"👥","text":"Conocer gente","sub":null},
+            {"id":"disfrutar","icon":"😄","text":"Pasarla bien","sub":null},
+            {"id":"medico","icon":"🩺","text":"Me lo recomendó un profesional","sub":null},
+            {"id":"longevidad","icon":"🌳","text":"Envejecer bien","sub":null},
+            {"id":"autoestima","icon":"💪","text":"Sentirme capaz","sub":null}
+          ],
+          "why": "Tu porqué guía el enfoque del plan y cómo te hablamos de tus avances.",
+          "uses": ["plan","asistente","descubrimiento"],
+          "priority": 5,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "mo_razones",
+          "type": "multi",
+          "prompt": "¿Y qué otras razones tienes?",
+          "hint": null,
+          "options": [
+            {"id":"salud","icon":"❤️","text":"Cuidar mi salud","sub":null},
+            {"id":"verse_bien","icon":"✨","text":"Verme mejor","sub":null},
+            {"id":"energia","icon":"⚡","text":"Tener más energía","sub":null},
+            {"id":"estres","icon":"🧘","text":"Manejar el estrés","sub":null},
+            {"id":"rendimiento","icon":"🏆","text":"Rendir en un deporte","sub":null},
+            {"id":"social","icon":"👥","text":"Conocer gente","sub":null},
+            {"id":"disfrutar","icon":"😄","text":"Pasarla bien","sub":null},
+            {"id":"medico","icon":"🩺","text":"Me lo recomendó un profesional","sub":null},
+            {"id":"longevidad","icon":"🌳","text":"Envejecer bien","sub":null},
+            {"id":"autoestima","icon":"💪","text":"Sentirme capaz","sub":null}
+          ],
+          "maxChoices": 3,
+          "why": "Sumamos objetivos secundarios sin perder de vista el principal.",
+          "uses": ["plan","asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "mo_importancia",
+          "type": "range",
+          "prompt": "¿Qué tan importante es para ti ser más activo ahora mismo?",
+          "hint": "1 = poco importante, 10 = lo más importante.",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "unit": null,
+          "why": "Ajusta cuánto te proponemos: si hoy no es prioridad, empezamos con poco.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": 60,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "mo_disfruta",
+          "type": "multi",
+          "prompt": "¿Qué disfrutas (o crees que disfrutarías) al moverte?",
+          "hint": null,
+          "options": [
+            {"id":"sudar","icon":null,"text":"Sudar y descargar","sub":null},
+            {"id":"fuerza","icon":null,"text":"Sentirme fuerte","sub":null},
+            {"id":"aire_libre","icon":null,"text":"Estar al aire libre","sub":null},
+            {"id":"musica","icon":null,"text":"Moverme con música","sub":null},
+            {"id":"tecnica","icon":null,"text":"Aprender técnica","sub":null},
+            {"id":"juego","icon":null,"text":"Jugar","sub":null},
+            {"id":"competir","icon":null,"text":"Competir","sub":null},
+            {"id":"calma","icon":null,"text":"La calma","sub":null},
+            {"id":"retos","icon":null,"text":"Superar retos","sub":null},
+            {"id":"rutina","icon":null,"text":"Tener una rutina","sub":null}
+          ],
+          "maxChoices": 4,
+          "why": "Llenamos tus sesiones de lo que te gusta para que quieras repetir.",
+          "uses": ["plan","descubrimiento"],
+          "priority": 4,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "motivacion_estilo",
+      "title": "Tu estilo",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "mo_social",
+          "type": "options",
+          "prompt": "¿Prefieres entrenar solo o con otras personas?",
+          "hint": null,
+          "options": [
+            {"id":"solo","icon":"🧍","text":"Solo","sub":null},
+            {"id":"acompanado","icon":"👫","text":"Con una persona","sub":null},
+            {"id":"grupo","icon":"👥","text":"En grupo","sub":null},
+            {"id":"indiferente","icon":"🤷","text":"Me da igual","sub":null}
+          ],
+          "why": "Te sugerimos actividades, grupos o retos según cómo te sientes más cómodo.",
+          "uses": ["plan","descubrimiento"],
+          "priority": 4,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "mo_competir",
+          "type": "options",
+          "prompt": "¿Te gusta competir?",
+          "hint": null,
+          "options": [
+            {"id":"me_encanta","icon":"🏆","text":"Me encanta","sub":null},
+            {"id":"a_veces","icon":"🙂","text":"A veces","sub":null},
+            {"id":"no","icon":"🌿","text":"No es lo mío","sub":null}
+          ],
+          "why": "Decidimos si incluir retos, marcas y comparativas o un enfoque más personal.",
+          "uses": ["plan","descubrimiento","asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "mo_variedad",
+          "type": "options",
+          "prompt": "¿Prefieres repetir una rutina o variar?",
+          "hint": null,
+          "options": [
+            {"id":"fija","icon":null,"text":"Repetir: me da seguridad","sub":null},
+            {"id":"algo","icon":null,"text":"Variar un poco","sub":null},
+            {"id":"mucho","icon":null,"text":"Que cada sesión sea distinta","sub":null}
+          ],
+          "why": "Definimos cuánto cambian tus sesiones de una semana a otra.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "mo_intensidad",
+          "type": "options",
+          "prompt": "¿Qué intensidad disfrutas más?",
+          "hint": null,
+          "options": [
+            {"id":"suave","icon":null,"text":"Suave y constante","sub":null},
+            {"id":"moderada","icon":null,"text":"Moderada","sub":null},
+            {"id":"intensa","icon":null,"text":"Intensa, terminar exhausto","sub":null},
+            {"id":"mezcla","icon":null,"text":"Una mezcla","sub":null}
+          ],
+          "why": "Ajustamos la sensación de esfuerzo de tus sesiones a tu gusto, dentro de lo seguro.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "mo_estructura",
+          "type": "options",
+          "prompt": "¿Cómo te gusta que sea tu plan?",
+          "hint": null,
+          "options": [
+            {"id":"detallado","icon":null,"text":"Detallado: series, reps, tiempos","sub":null},
+            {"id":"flexible","icon":null,"text":"Una guía flexible","sub":null},
+            {"id":"libre","icon":null,"text":"Libre, con ideas","sub":null}
+          ],
+          "why": "Decidimos si darte cada detalle o una guía flexible.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "mo_feedback",
+          "type": "options",
+          "prompt": "¿Cómo prefieres medir tu progreso?",
+          "hint": null,
+          "options": [
+            {"id":"datos","icon":null,"text":"Con números y gráficas","sub":null},
+            {"id":"sensaciones","icon":null,"text":"Con cómo me siento","sub":null},
+            {"id":"ambos","icon":null,"text":"Ambos","sub":null}
+          ],
+          "why": "Mostramos tus avances con los datos o sensaciones que te motivan.",
+          "uses": ["progreso","asistente"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "mo_gamificacion",
+          "type": "options",
+          "prompt": "¿Te motivan las rachas, medallas y logros?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí, mucho","sub":null},
+            {"id":"algo","icon":null,"text":"Un poco","sub":null},
+            {"id":"no","icon":null,"text":"No, me presionan","sub":null}
+          ],
+          "why": "Si no te gustan, los ocultamos; si sí, los usamos para mantenerte en marcha.",
+          "uses": ["progreso","asistente"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "mo_lugar",
+          "type": "options",
+          "prompt": "¿Prefieres moverte bajo techo o al aire libre?",
+          "hint": null,
+          "options": [
+            {"id":"fuera","icon":null,"text":"Al aire libre","sub":null},
+            {"id":"dentro","icon":null,"text":"Bajo techo","sub":null},
+            {"id":"igual","icon":null,"text":"Me da igual","sub":null}
+          ],
+          "why": "Equilibramos sesiones dentro y fuera según tu preferencia.",
+          "uses": ["plan","descubrimiento"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "mo_musica",
+          "type": "options",
+          "prompt": "¿Qué te acompaña mientras entrenas?",
+          "hint": null,
+          "options": [
+            {"id":"musica","icon":null,"text":"Música","sub":null},
+            {"id":"podcast","icon":null,"text":"Podcasts o audiolibros","sub":null},
+            {"id":"silencio","icon":null,"text":"Silencio","sub":null},
+            {"id":"varia","icon":null,"text":"Depende","sub":null}
+          ],
+          "why": "Ajustamos las indicaciones de audio y la duración de los bloques.",
+          "uses": ["asistente"],
+          "priority": 1,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

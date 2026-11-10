@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { ImageStyle, StyleSheet, TextStyle, ViewStyle, useColorScheme } from "react-native";
 
-import { ACCENTS, Colors, ResolvedMode, ThemePreference, buildColors, cardShadow, deriveAccent } from "./tokens";
+import { ACCENTS, AccentChoice, AccentDef, Colors, ResolvedMode, ThemePreference, buildColors, cardShadow, deriveAccent, isAccentChoice } from "./tokens";
 
 export type WeightUnit = "kg" | "lb";
 export type HeightUnit = "cm" | "ft";
@@ -11,9 +11,11 @@ interface Prefs {
   preference: ThemePreference;
   weightUnit: WeightUnit;
   heightUnit: HeightUnit;
+  /** "mundo" = el color del mundo activo; si no, una paleta fija elegida en Ajustes. */
+  accent: AccentChoice;
 }
 
-const DEFAULT_PREFS: Prefs = { preference: "system", weightUnit: "kg", heightUnit: "cm" };
+const DEFAULT_PREFS: Prefs = { preference: "system", weightUnit: "kg", heightUnit: "cm", accent: "mundo" };
 const PREFS_KEY = "sportacus_prefs";
 /** Último color de mundo aplicado: evita el destello del color por defecto al abrir la app. */
 const WORLD_COLOR_KEY = "sportacus_world_color";
@@ -23,8 +25,11 @@ export interface Theme extends Prefs {
   isDark: boolean;
   colors: Colors;
   shadow: { boxShadow: string };
-  /** Color (hex) del mundo activo que tiñe la app; null = acento por defecto. */
+  /** Color (hex) del mundo activo; solo tiñe la app cuando accent === "mundo". */
   worldColor: string | null;
+  /** Acento aplicado ahora mismo (paleta elegida o derivado del mundo). */
+  accentDef: AccentDef;
+  setAccent: (accent: AccentChoice) => void;
   setPreference: (p: ThemePreference) => void;
   setWeightUnit: (u: WeightUnit) => void;
   setHeightUnit: (u: HeightUnit) => void;
@@ -41,7 +46,8 @@ function round(n: number): string {
 
 /**
  * Proveedor de tema y preferencias de visualización (tema claro/oscuro y unidades).
- * El color principal lo pone el mundo activo (WorldContext → setWorldColor); la preferencia
+ * El color principal lo pone el mundo activo (WorldContext → setWorldColor) salvo que el usuario elija una
+ * paleta fija en Ajustes (accent ≠ "mundo"); la preferencia
  * claro/oscuro del usuario se respeta siempre. Todo vive solo en el dispositivo (AsyncStorage).
  */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
@@ -59,6 +65,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
             preference: parsed.preference ?? DEFAULT_PREFS.preference,
             weightUnit: parsed.weightUnit ?? DEFAULT_PREFS.weightUnit,
             heightUnit: parsed.heightUnit ?? DEFAULT_PREFS.heightUnit,
+            accent: isAccentChoice(parsed.accent) ? parsed.accent : DEFAULT_PREFS.accent,
           });
         }
         if (color) setWorldColorState((current) => current ?? color);
@@ -85,7 +92,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo<Theme>(() => {
     const mode: ResolvedMode =
       prefs.preference === "system" ? (system === "dark" ? "dark" : "light") : prefs.preference;
-    const accent = worldColor ? deriveAccent(worldColor) : ACCENTS.verde;
+    const accent = prefs.accent !== "mundo" ? ACCENTS[prefs.accent] : worldColor ? deriveAccent(worldColor) : ACCENTS.verde;
     return {
       ...prefs,
       mode,
@@ -93,6 +100,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       colors: buildColors(mode, accent),
       shadow: cardShadow(mode),
       worldColor,
+      accentDef: accent,
+      setAccent: (accent) => update({ accent }),
       setPreference: (preference) => update({ preference }),
       setWeightUnit: (weightUnit) => update({ weightUnit }),
       setHeightUnit: (heightUnit) => update({ heightUnit }),

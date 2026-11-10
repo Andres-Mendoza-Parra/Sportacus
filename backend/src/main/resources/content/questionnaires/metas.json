@@ -1,0 +1,287 @@
+{
+  "area": {
+    "key": "metas",
+    "name": "Metas con fecha",
+    "icon": "🎯",
+    "sortOrder": 110,
+    "description": "Qué quieres lograr y para cuándo. Periodizamos tu plan hacia tu fecha.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "metas_principales",
+      "title": "Tus metas",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "me_principal",
+          "type": "options",
+          "prompt": "¿Cuál es tu meta principal ahora?",
+          "hint": null,
+          "options": [
+            {"id":"salud","icon":"❤️","text":"Mejorar mi salud","sub":null},
+            {"id":"grasa","icon":"🔥","text":"Reducir grasa corporal","sub":null},
+            {"id":"musculo","icon":"💪","text":"Ganar músculo","sub":null},
+            {"id":"fuerza","icon":"🏋️","text":"Ser más fuerte","sub":null},
+            {"id":"resistencia","icon":"🫁","text":"Tener más resistencia","sub":null},
+            {"id":"correr","icon":"🏃","text":"Correr una distancia","sub":null},
+            {"id":"movilidad","icon":"🤸","text":"Moverme mejor","sub":null},
+            {"id":"deporte","icon":"🏆","text":"Rendir en mi deporte","sub":null},
+            {"id":"energia","icon":"⚡","text":"Más energía y mejor ánimo","sub":null},
+            {"id":"habito","icon":"🌱","text":"Crear el hábito","sub":null}
+          ],
+          "why": "Tu meta define el tipo de sesiones, el volumen y cómo medimos tu progreso.",
+          "uses": ["plan","progreso","descubrimiento"],
+          "priority": 5,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "me_secundarias",
+          "type": "multi",
+          "prompt": "¿Tienes otras metas?",
+          "hint": null,
+          "options": [
+            {"id":"salud","icon":"❤️","text":"Mejorar mi salud","sub":null},
+            {"id":"grasa","icon":"🔥","text":"Reducir grasa corporal","sub":null},
+            {"id":"musculo","icon":"💪","text":"Ganar músculo","sub":null},
+            {"id":"fuerza","icon":"🏋️","text":"Ser más fuerte","sub":null},
+            {"id":"resistencia","icon":"🫁","text":"Tener más resistencia","sub":null},
+            {"id":"correr","icon":"🏃","text":"Correr una distancia","sub":null},
+            {"id":"movilidad","icon":"🤸","text":"Moverme mejor","sub":null},
+            {"id":"deporte","icon":"🏆","text":"Rendir en mi deporte","sub":null},
+            {"id":"energia","icon":"⚡","text":"Más energía y mejor ánimo","sub":null},
+            {"id":"habito","icon":"🌱","text":"Crear el hábito","sub":null}
+          ],
+          "maxChoices": 3,
+          "why": "Las sumamos al plan sin que compitan con la principal.",
+          "uses": ["plan"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "me_con_palabras",
+          "type": "text",
+          "prompt": "Describe tu meta con tus palabras",
+          "hint": "Ej.: \"Subir a Monserrate sin parar\" o \"Jugar con mis hijos sin cansarme\".",
+          "why": "Usamos tus propias palabras para recordarte tu porqué.",
+          "uses": ["asistente","progreso"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "me_plazo",
+          "type": "options",
+          "prompt": "¿En cuánto tiempo te gustaría notar cambios?",
+          "hint": null,
+          "options": [
+            {"id":"1m","icon":null,"text":"1 mes","sub":null},
+            {"id":"3m","icon":null,"text":"3 meses","sub":null},
+            {"id":"6m","icon":null,"text":"6 meses","sub":null},
+            {"id":"1a","icon":null,"text":"1 año","sub":null},
+            {"id":"sin_prisa","icon":null,"text":"Sin prisa","sub":null}
+          ],
+          "why": "Ponemos expectativas realistas y metas intermedias para ese plazo.",
+          "uses": ["plan","progreso"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "me_medir",
+          "type": "multi",
+          "prompt": "¿Cómo quieres medir tu éxito?",
+          "hint": null,
+          "options": [
+            {"id":"marcas","icon":null,"text":"Marcas y tests","sub":null},
+            {"id":"constancia","icon":null,"text":"Constancia","sub":null},
+            {"id":"sensaciones","icon":null,"text":"Cómo me siento","sub":null},
+            {"id":"medidas","icon":null,"text":"Medidas corporales","sub":null},
+            {"id":"peso","icon":null,"text":"Peso","sub":null},
+            {"id":"fotos","icon":null,"text":"Fotos","sub":null},
+            {"id":"ropa","icon":null,"text":"Cómo me queda la ropa","sub":null},
+            {"id":"examenes","icon":null,"text":"Exámenes médicos","sub":null}
+          ],
+          "why": "Te mostramos los indicadores que te importan.",
+          "uses": ["progreso"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "me_confianza",
+          "type": "range",
+          "prompt": "¿Qué tan seguro estás de lograr tu meta?",
+          "hint": "1 = nada seguro, 10 = totalmente seguro.",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "unit": null,
+          "why": "Si dudas, la dividimos en pasos más pequeños y alcanzables.",
+          "uses": ["asistente","plan"],
+          "priority": 3,
+          "refreshDays": 30,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "metas_evento",
+      "title": "Un evento en el horizonte",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "me_evento",
+          "type": "options",
+          "prompt": "¿Te estás preparando para algún evento?",
+          "hint": null,
+          "options": [
+            {"id":"ninguno","icon":"➖","text":"Ninguno por ahora","sub":null},
+            {"id":"carrera","icon":"🏃","text":"Una carrera","sub":null},
+            {"id":"boda","icon":"💍","text":"Una boda o celebración","sub":null},
+            {"id":"viaje","icon":"✈️","text":"Un viaje","sub":null},
+            {"id":"prueba_fisica","icon":"📋","text":"Una prueba física","sub":null},
+            {"id":"temporada","icon":"🏆","text":"Una temporada deportiva","sub":null},
+            {"id":"otro","icon":"🎯","text":"Otro","sub":null}
+          ],
+          "why": "Con una fecha, organizamos tu plan por fases para que llegues en tu mejor momento.",
+          "uses": ["plan","progreso"],
+          "priority": 4,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "me_fecha",
+          "type": "date",
+          "prompt": "¿Cuándo es?",
+          "hint": null,
+          "why": "Contamos las semanas hacia atrás para planear carga, puesta a punto y descanso.",
+          "uses": ["plan","progreso"],
+          "priority": 5,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"me_evento","in":["carrera","boda","viaje","prueba_fisica","temporada","otro"]},
+          "cadence": null
+        },
+        {
+          "id": "me_evento_detalle",
+          "type": "text",
+          "prompt": "Cuéntanos un poco del evento",
+          "hint": null,
+          "why": "Afinamos el tipo de preparación (ej.: caminata de montaña, prueba de policía).",
+          "uses": ["plan","asistente"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"me_evento","in":["carrera","boda","viaje","prueba_fisica","temporada","otro"]},
+          "cadence": null
+        },
+        {
+          "id": "me_carrera_distancia",
+          "type": "options",
+          "prompt": "¿Qué distancia vas a correr?",
+          "hint": null,
+          "options": [
+            {"id":"5k","icon":null,"text":"5 km","sub":null},
+            {"id":"10k","icon":null,"text":"10 km","sub":null},
+            {"id":"21k","icon":null,"text":"Media maratón","sub":null},
+            {"id":"42k","icon":null,"text":"Maratón","sub":null},
+            {"id":"trail","icon":null,"text":"Trail o montaña","sub":null},
+            {"id":"otra","icon":null,"text":"Otra","sub":null}
+          ],
+          "why": "Ajustamos el volumen semanal y las tiradas largas a esa distancia.",
+          "uses": ["running","plan"],
+          "priority": 4,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"me_evento","in":["carrera"]},
+          "cadence": null
+        },
+        {
+          "id": "me_carrera_objetivo",
+          "type": "options",
+          "prompt": "¿Qué quieres lograr en la carrera?",
+          "hint": null,
+          "options": [
+            {"id":"terminar","icon":null,"text":"Terminarla","sub":null},
+            {"id":"disfrutar","icon":null,"text":"Disfrutarla sin sufrir","sub":null},
+            {"id":"tiempo","icon":null,"text":"Hacer un tiempo","sub":null}
+          ],
+          "why": "Define si entrenamos para terminar cómodo o para un tiempo.",
+          "uses": ["running","plan"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"me_evento","in":["carrera"]},
+          "cadence": null
+        },
+        {
+          "id": "me_carrera_tiempo",
+          "type": "text",
+          "prompt": "¿Qué tiempo quieres hacer?",
+          "hint": "Formato hh:mm:ss, ej.: 00:55:00.",
+          "why": "Calculamos tus ritmos de entrenamiento a partir de ese objetivo.",
+          "uses": ["running","plan"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"me_carrera_objetivo","in":["tiempo"]},
+          "cadence": null
+        },
+        {
+          "id": "me_prueba_tipo",
+          "type": "options",
+          "prompt": "¿Qué tipo de prueba física es?",
+          "hint": null,
+          "options": [
+            {"id":"fuerza_publica","icon":null,"text":"Policía o fuerzas militares","sub":null},
+            {"id":"bomberos","icon":null,"text":"Bomberos o rescate","sub":null},
+            {"id":"deportiva","icon":null,"text":"Selección deportiva","sub":null},
+            {"id":"academica","icon":null,"text":"Prueba académica o laboral","sub":null},
+            {"id":"otra","icon":null,"text":"Otra","sub":null}
+          ],
+          "why": "Entrenamos las pruebas específicas que te van a evaluar.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"me_evento","in":["prueba_fisica"]},
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

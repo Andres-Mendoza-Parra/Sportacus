@@ -1,0 +1,367 @@
+{
+  "area": {
+    "key": "espacios",
+    "name": "Espacios y equipo",
+    "icon": "🏠",
+    "sortOrder": 30,
+    "description": "Dónde entrenas y con qué cuentas. Elegimos ejercicios que puedas hacer de verdad.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "espacios_donde",
+      "title": "Dónde y con qué",
+      "subtitle": "1 minuto",
+      "minutes": 1,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "p_environments",
+          "type": "multi",
+          "prompt": "¿Dónde puedes entrenar?",
+          "hint": "Elige todos los que tengas a mano.",
+          "options": [
+            {"id":"gimnasio","icon":"🏋️","text":"Gimnasio","sub":null},
+            {"id":"casa","icon":"🏠","text":"Casa","sub":null},
+            {"id":"parque","icon":"🌳","text":"Parque con barras","sub":null},
+            {"id":"exterior","icon":"🛣️","text":"Calle o pista","sub":null},
+            {"id":"cancha","icon":"⚽","text":"Cancha","sub":null}
+          ],
+          "why": "Solo te proponemos ejercicios que puedas hacer en los lugares que tienes a mano.",
+          "uses": ["plan","descubrimiento"],
+          "priority": 5,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": "environments",
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "p_equipment",
+          "type": "multi",
+          "prompt": "¿Qué equipamiento tienes?",
+          "hint": "Fuera del gimnasio.",
+          "options": [
+            {"id":"ninguno","icon":"🙌","text":"Nada, solo mi cuerpo","sub":null},
+            {"id":"mancuernas","icon":"🏋️","text":"Mancuernas","sub":null},
+            {"id":"kettlebell","icon":"🔔","text":"Kettlebell","sub":null},
+            {"id":"bandas","icon":"🎗️","text":"Bandas elásticas","sub":null},
+            {"id":"barra_dominadas","icon":"🪜","text":"Barra de dominadas","sub":null},
+            {"id":"paralelas","icon":"🤸","text":"Paralelas","sub":null},
+            {"id":"anillas","icon":"⭕","text":"Anillas","sub":null},
+            {"id":"banco","icon":"🪑","text":"Banco","sub":null},
+            {"id":"colchoneta","icon":"🧘","text":"Colchoneta","sub":null},
+            {"id":"balon","icon":"⚽","text":"Balón","sub":null},
+            {"id":"conos","icon":"🔺","text":"Conos","sub":null},
+            {"id":"cuerda","icon":"➰","text":"Cuerda para saltar","sub":null},
+            {"id":"foam_roller","icon":"🧻","text":"Foam roller","sub":null},
+            {"id":"silla","icon":"💺","text":"Silla firme","sub":null},
+            {"id":"escalon","icon":"🪜","text":"Escalón o step","sub":null}
+          ],
+          "why": "Elegimos ejercicios y progresiones con lo que tienes, sin pedirte comprar nada.",
+          "uses": ["plan","calisthenics","gym"],
+          "priority": 5,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": "equipment",
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "es_saltar_casa",
+          "type": "options",
+          "prompt": "¿Puedes saltar en casa sin molestar a nadie?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":"👍","text":"Sí","sub":null},
+            {"id":"no","icon":"🤫","text":"No","sub":null}
+          ],
+          "why": "Si no, cambiamos saltos por alternativas de bajo impacto igual de efectivas.",
+          "uses": ["plan"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "espacios_casa",
+      "title": "Tu espacio en casa",
+      "subtitle": "1 minuto",
+      "minutes": 1,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "es_espacio_casa",
+          "type": "options",
+          "prompt": "¿Cuánto espacio libre tienes para entrenar en casa?",
+          "hint": null,
+          "options": [
+            {"id":"muy_poco","icon":null,"text":"El de una colchoneta","sub":null},
+            {"id":"medio","icon":null,"text":"Unos 2 x 2 metros","sub":null},
+            {"id":"amplio","icon":null,"text":"Más de 2 x 2 metros","sub":null},
+            {"id":"patio","icon":null,"text":"Patio, terraza o zona común","sub":null}
+          ],
+          "why": "Evitamos ejercicios que no quepan (desplazamientos, burpees amplios, saltos laterales).",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"p_environments","in":["casa"]},
+          "cadence": null
+        },
+        {
+          "id": "es_piso",
+          "type": "options",
+          "prompt": "¿Qué tipo de piso tienes donde entrenas en casa?",
+          "hint": null,
+          "options": [
+            {"id":"baldosa","icon":null,"text":"Baldosa o cerámica","sub":null},
+            {"id":"madera","icon":null,"text":"Madera o laminado","sub":null},
+            {"id":"alfombra","icon":null,"text":"Alfombra","sub":null},
+            {"id":"cemento","icon":null,"text":"Cemento","sub":null},
+            {"id":"mixto","icon":null,"text":"Varía","sub":null}
+          ],
+          "why": "En pisos duros recomendamos colchoneta y menos impacto para cuidar tus articulaciones.",
+          "uses": ["plan"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"p_environments","in":["casa"]},
+          "cadence": null
+        },
+        {
+          "id": "es_privado",
+          "type": "options",
+          "prompt": "¿Tienes un lugar donde entrenar sin que te vean?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Si te incomoda que te miren, priorizamos sesiones en casa o en horarios tranquilos.",
+          "uses": ["plan","asistente"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "es_anclaje",
+          "type": "options",
+          "prompt": "¿Tienes dónde anclar bandas o colgarte con seguridad (marco firme, viga, barra)?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"no_se","icon":null,"text":"No estoy seguro","sub":null}
+          ],
+          "why": "Abre ejercicios de tracción y remo en casa sin necesidad de gimnasio.",
+          "uses": ["plan","calisthenics"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"p_environments","in":["casa"]},
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "espacios_fuera",
+      "title": "Gimnasio y exteriores",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "es_gym_tipo",
+          "type": "options",
+          "prompt": "¿Qué tipo de gimnasio tienes?",
+          "hint": null,
+          "options": [
+            {"id":"completo","icon":null,"text":"Gimnasio grande y completo","sub":null},
+            {"id":"barrio","icon":null,"text":"Gimnasio de barrio, básico","sub":null},
+            {"id":"institucional","icon":null,"text":"De empresa, conjunto o universidad","sub":null},
+            {"id":"box","icon":null,"text":"Box de entrenamiento funcional","sub":null},
+            {"id":"otro","icon":null,"text":"Otro","sub":null}
+          ],
+          "why": "Ajustamos los ejercicios al equipo que suele haber en ese tipo de gimnasio.",
+          "uses": ["gym","plan"],
+          "priority": 4,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"p_environments","in":["gimnasio"]},
+          "cadence": null
+        },
+        {
+          "id": "es_gym_equipo",
+          "type": "multi",
+          "prompt": "¿Con qué cuenta tu gimnasio?",
+          "hint": null,
+          "options": [
+            {"id":"rack","icon":null,"text":"Rack o jaula para sentadillas","sub":null},
+            {"id":"barras_discos","icon":null,"text":"Barras y discos","sub":null},
+            {"id":"mancuernas","icon":null,"text":"Mancuernas variadas","sub":null},
+            {"id":"poleas","icon":null,"text":"Poleas","sub":null},
+            {"id":"maquinas","icon":null,"text":"Máquinas guiadas","sub":null},
+            {"id":"cardio","icon":null,"text":"Máquinas de cardio","sub":null},
+            {"id":"funcional","icon":null,"text":"Zona funcional","sub":null}
+          ],
+          "why": "Usamos solo máquinas y zonas que existen en tu gimnasio, sin sorpresas.",
+          "uses": ["gym","plan"],
+          "priority": 4,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"p_environments","in":["gimnasio"]},
+          "cadence": null
+        },
+        {
+          "id": "es_gym_lleno",
+          "type": "options",
+          "prompt": "¿Suele estar lleno cuando vas?",
+          "hint": null,
+          "options": [
+            {"id":"no","icon":null,"text":"Casi nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"si","icon":null,"text":"Casi siempre","sub":null}
+          ],
+          "why": "Si hay mucha gente, te damos alternativas para no esperar por una máquina.",
+          "uses": ["gym","plan"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"p_environments","in":["gimnasio"]},
+          "cadence": null
+        },
+        {
+          "id": "es_parque_distancia",
+          "type": "options",
+          "prompt": "¿A qué distancia tienes un parque o espacio al aire libre?",
+          "hint": null,
+          "options": [
+            {"id":"menos_5","icon":null,"text":"Menos de 5 minutos","sub":null},
+            {"id":"5_15","icon":null,"text":"5 a 15 minutos","sub":null},
+            {"id":"15_30","icon":null,"text":"15 a 30 minutos","sub":null},
+            {"id":"mas_30","icon":null,"text":"Más de 30 minutos","sub":null}
+          ],
+          "why": "Nos ayuda a proponerte sesiones al aire libre que sean realistas.",
+          "uses": ["plan","descubrimiento","calisthenics","running"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "es_superficie",
+          "type": "multi",
+          "prompt": "¿En qué superficies puedes correr o caminar?",
+          "hint": null,
+          "options": [
+            {"id":"asfalto","icon":null,"text":"Asfalto o andén","sub":null},
+            {"id":"pista","icon":null,"text":"Pista atlética","sub":null},
+            {"id":"tierra","icon":null,"text":"Tierra o sendero","sub":null},
+            {"id":"cesped","icon":null,"text":"Césped","sub":null},
+            {"id":"caminadora","icon":null,"text":"Caminadora","sub":null}
+          ],
+          "why": "Alternar superficies reduce impacto; las usamos según el tipo de sesión.",
+          "uses": ["running","plan"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"p_environments","in":["exterior","gimnasio"]},
+          "cadence": null
+        },
+        {
+          "id": "es_cancha_tipo",
+          "type": "options",
+          "prompt": "¿Cómo es la cancha que usas?",
+          "hint": null,
+          "options": [
+            {"id":"sintetica","icon":null,"text":"Sintética","sub":null},
+            {"id":"natural","icon":null,"text":"Grama natural","sub":null},
+            {"id":"micro","icon":null,"text":"Microfútbol o cemento","sub":null},
+            {"id":"tierra","icon":null,"text":"Tierra","sub":null}
+          ],
+          "why": "El tipo de superficie cambia el calzado recomendado y la carga de impacto.",
+          "uses": ["football","plan"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"p_environments","in":["cancha"]},
+          "cadence": null
+        },
+        {
+          "id": "es_piscina",
+          "type": "options",
+          "prompt": "¿Tienes acceso a una piscina?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí, cuando quiero","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "La natación y el trabajo en agua son grandes opciones de bajo impacto.",
+          "uses": ["descubrimiento","plan"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "es_bici",
+          "type": "options",
+          "prompt": "¿Tienes bicicleta (o acceso a una)?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":"🚲","text":"Sí","sub":null},
+            {"id":"compartida","icon":null,"text":"Uso bicis compartidas","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Abre opciones de cardio, transporte activo y descubrimiento de nuevos mundos.",
+          "uses": ["descubrimiento","plan"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "es_escaleras_loma",
+          "type": "options",
+          "prompt": "¿Tienes escaleras largas o una loma cerca?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Son un gimnasio gratis: las usamos para fuerza de piernas y cardio.",
+          "uses": ["plan","running"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

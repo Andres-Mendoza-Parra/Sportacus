@@ -44,6 +44,20 @@ public final class RunningMath {
         public String easyRange() {
             return pace(easyMin) + "–" + pace(easyMax) + " /km";
         }
+
+        /**
+         * Ritmos de entrenamiento multiplicados por {@code factor} (p. ej. 1,04 = un 4 % más lentos por la altitud).
+         * El 5K de referencia ({@code fiveKS}) no cambia: es la marca declarada.
+         */
+        public Paces scaled(double factor) {
+            if (factor == 1.0) return this;
+            return new Paces(fiveKS, s(race, factor), s(easyMin, factor), s(easyMax, factor), s(tempo, factor),
+                    s(interval, factor), s(longRun, factor), s(tenK, factor), s(half, factor));
+        }
+
+        private static int s(int pace, double factor) {
+            return (int) Math.round(pace * factor);
+        }
     }
 
     public static Paces paces(double fiveKSeconds) {

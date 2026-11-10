@@ -1,0 +1,268 @@
+{
+  "area": {
+    "key": "cultura",
+    "name": "Cultura y creencias",
+    "icon": "🕊️",
+    "sortOrder": 230,
+    "description": "Ayunos, vestimenta, espacios y días especiales. Tu plan respeta lo que es importante para ti.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "cultura_practicas",
+      "title": "Lo que es importante para ti",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "cl_ayuno",
+          "type": "options",
+          "prompt": "¿Haces ayunos?",
+          "hint": null,
+          "options": [
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"religioso","icon":null,"text":"Sí, por motivos religiosos o espirituales","sub":null},
+            {"id":"intermitente","icon":null,"text":"Sí, ayuno intermitente","sub":null},
+            {"id":"otro","icon":null,"text":"Sí, por otro motivo","sub":null}
+          ],
+          "why": "En días de ayuno ajustamos la intensidad, la hora y la hidratación.",
+          "uses": ["seguridad","plan","asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cl_ayuno_tipo",
+          "type": "multi",
+          "prompt": "¿Qué ayunos practicas?",
+          "hint": null,
+          "options": [
+            {"id":"ramadan","icon":null,"text":"Ramadán","sub":null},
+            {"id":"cuaresma","icon":null,"text":"Cuaresma o Semana Santa","sub":null},
+            {"id":"yom_kipur","icon":null,"text":"Yom Kipur","sub":null},
+            {"id":"semanal","icon":null,"text":"Un día a la semana","sub":null},
+            {"id":"otro","icon":null,"text":"Otro","sub":null}
+          ],
+          "why": "Anticipamos esas fechas y adaptamos tu plan.",
+          "uses": ["plan"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"cl_ayuno","in":["religioso"]},
+          "cadence": null
+        },
+        {
+          "id": "cl_ayuno_plan",
+          "type": "options",
+          "prompt": "En días de ayuno, ¿qué prefieres?",
+          "hint": null,
+          "options": [
+            {"id":"suave","icon":null,"text":"Sesiones suaves","sub":null},
+            {"id":"hora","icon":null,"text":"Entrenar después de comer","sub":null},
+            {"id":"descanso","icon":null,"text":"Descansar","sub":null},
+            {"id":"normal","icon":null,"text":"Seguir igual","sub":null}
+          ],
+          "why": "Respetamos tu práctica: sesión suave, a otra hora o descanso.",
+          "uses": ["plan","seguridad"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"cl_ayuno","in":["religioso","intermitente","otro"]},
+          "cadence": null
+        },
+        {
+          "id": "cl_dia_reservado",
+          "type": "options",
+          "prompt": "¿Hay un día de la semana que reservas por creencias o familia?",
+          "hint": null,
+          "options": [
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"viernes","icon":null,"text":"Viernes","sub":null},
+            {"id":"sabado","icon":null,"text":"Sábado","sub":null},
+            {"id":"domingo","icon":null,"text":"Domingo","sub":null},
+            {"id":"otro","icon":null,"text":"Otro","sub":null}
+          ],
+          "why": "No programamos sesiones ese día.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cl_vestimenta",
+          "type": "options",
+          "prompt": "¿Tu vestimenta para entrenar tiene alguna consideración?",
+          "hint": null,
+          "options": [
+            {"id":"ninguna","icon":null,"text":"Ninguna","sub":null},
+            {"id":"cubrir_cuerpo","icon":null,"text":"Prefiero cubrir brazos o piernas","sub":null},
+            {"id":"cubrir_cabeza","icon":null,"text":"Uso velo o cubro la cabeza","sub":null},
+            {"id":"falda","icon":null,"text":"Uso falda","sub":null},
+            {"id":"otra","icon":null,"text":"Otra","sub":null}
+          ],
+          "why": "Elegimos ejercicios y espacios cómodos con tu forma de vestir.",
+          "uses": ["plan","descubrimiento"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cl_restricciones",
+          "type": "multi",
+          "prompt": "¿Evitas algunos alimentos o bebidas por creencias?",
+          "hint": null,
+          "options": [
+            {"id":"cerdo","icon":null,"text":"Cerdo","sub":null},
+            {"id":"res","icon":null,"text":"Res","sub":null},
+            {"id":"alcohol","icon":null,"text":"Alcohol","sub":null},
+            {"id":"cafeina","icon":null,"text":"Cafeína","sub":null},
+            {"id":"halal","icon":null,"text":"Solo halal","sub":null},
+            {"id":"kosher","icon":null,"text":"Solo kosher","sub":null},
+            {"id":"otra","icon":null,"text":"Otra","sub":null},
+            {"id":"ninguna","icon":null,"text":"Ninguna","sub":null}
+          ],
+          "why": "Las ideas de alimentación respetarán siempre tus creencias.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "cultura_espacios",
+      "title": "Espacios y costumbres",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "cl_espacios_mixtos",
+          "type": "options",
+          "prompt": "¿Cómo te sientes en espacios o clases mixtas?",
+          "hint": null,
+          "options": [
+            {"id":"comodo","icon":null,"text":"Cómodo","sub":null},
+            {"id":"separado","icon":null,"text":"Prefiero espacios solo para mi género","sub":null},
+            {"id":"indiferente","icon":null,"text":"Me da igual","sub":null}
+          ],
+          "why": "Si prefieres espacios separados, lo tenemos en cuenta al sugerir lugares y grupos.",
+          "uses": ["descubrimiento"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cl_entrenador",
+          "type": "options",
+          "prompt": "Si te recomendamos un entrenador o clase, ¿tienes alguna preferencia?",
+          "hint": null,
+          "options": [
+            {"id":"indiferente","icon":null,"text":"Ninguna","sub":null},
+            {"id":"mujer","icon":null,"text":"Prefiero una mujer","sub":null},
+            {"id":"hombre","icon":null,"text":"Prefiero un hombre","sub":null}
+          ],
+          "why": "Respetamos tus preferencias al sugerirte profesionales o grupos.",
+          "uses": ["descubrimiento"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cl_contacto",
+          "type": "options",
+          "prompt": "¿Te sientes cómodo con ejercicios de contacto o en pareja?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"conocidos","icon":null,"text":"Solo con personas conocidas","sub":null},
+            {"id":"no","icon":null,"text":"Prefiero evitarlos","sub":null}
+          ],
+          "why": "Si no, evitamos ejercicios con contacto físico.",
+          "uses": ["plan","descubrimiento","football"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cl_tradiciones",
+          "type": "multi",
+          "prompt": "¿Te gustan actividades tradicionales de tu región?",
+          "hint": null,
+          "options": [
+            {"id":"baile","icon":null,"text":"Bailes tradicionales","sub":null},
+            {"id":"tejo_juegos","icon":null,"text":"Juegos tradicionales","sub":null},
+            {"id":"caminatas","icon":null,"text":"Caminatas y peregrinaciones","sub":null},
+            {"id":"deporte_local","icon":null,"text":"Deportes locales","sub":null},
+            {"id":"ninguna","icon":null,"text":"Ninguna en especial","sub":null}
+          ],
+          "why": "Te sugerimos actividades culturales que también te ponen en movimiento.",
+          "uses": ["descubrimiento"],
+          "priority": 1,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cl_fiestas",
+          "type": "options",
+          "prompt": "¿Hay fiestas o celebraciones que cambian mucho tu rutina durante el año?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí, varias","sub":null},
+            {"id":"pocas","icon":null,"text":"Pocas","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Planeamos esas semanas con anticipación y sin culpa.",
+          "uses": ["plan"],
+          "priority": 1,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "cl_nota",
+          "type": "text",
+          "prompt": "¿Hay algo más de tus creencias o costumbres que debamos respetar?",
+          "hint": null,
+          "why": "Lo tendremos en cuenta en tu plan y en cada recomendación.",
+          "uses": ["plan","asistente"],
+          "priority": 1,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

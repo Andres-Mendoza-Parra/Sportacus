@@ -5,7 +5,7 @@ import { AnswerValue, Question } from "../../services/types";
 import { useTheme } from "../../theme";
 import { MultiInput, OptionsInput } from "./ChoiceInputs";
 import { rangeDefault } from "./formLogic";
-import { NumberInput, RangeInput, TextAnswer } from "./ValueInputs";
+import { DateInput, NumberInput, RangeInput, TextAnswer } from "./ValueInputs";
 
 interface Props {
   question: Question;
@@ -52,6 +52,8 @@ export default function QuestionInput({ question, value, onChange, onToggle }: P
       );
     case "text":
       return <TextAnswer value={typeof value === "string" ? value : ""} maxLength={question.max ?? 500} onChange={onChange} />;
+    case "date":
+      return <DateInput value={typeof value === "string" ? value : ""} onChange={onChange} />;
     default:
       return (
         <Text style={{ fontSize: 13, color: colors.textMuted, lineHeight: 19 }}>

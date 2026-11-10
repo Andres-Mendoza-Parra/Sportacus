@@ -1,6 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import React, { useEffect } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from "react-native";
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from "react-native";
 import Animated, {
   FadeInDown,
   FadeInUp,
@@ -67,11 +68,21 @@ export default function AuthShell({ subtitle, children }: { subtitle: string; ch
           </Animated.View>
 
           <View style={{ height: 8 }} />
-          <Text style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, marginTop: 16, textAlign: "center" }}>
-            Al continuar aceptas los términos y política de privacidad
-          </Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginTop: 8 }}>
+            <FooterLink label="Política de tratamiento de datos" onPress={() => router.push("/legal/politica")} />
+            <Text style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, alignSelf: "center" }}>·</Text>
+            <FooterLink label="Términos y condiciones" onPress={() => router.push("/legal/terminos")} />
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </LinearGradient>
+  );
+}
+
+function FooterLink({ label, onPress }: { label: string; onPress: () => void }) {
+  return (
+    <Pressable onPress={onPress} accessibilityRole="link" style={{ minHeight: 44, justifyContent: "center", paddingHorizontal: 8 }}>
+      <Text style={{ color: "#fff", fontSize: 12, fontWeight: "600", textDecorationLine: "underline" }}>{label}</Text>
+    </Pressable>
   );
 }

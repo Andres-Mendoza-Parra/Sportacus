@@ -8,7 +8,7 @@ import { useToast } from "../../components/ui/Feedback";
 import GradientButton from "../../components/ui/GradientButton";
 import ScreenHeader from "../../components/ui/ScreenHeader";
 import { useWorld } from "../../context/WorldContext";
-import { extractErrorMessage } from "../../services/api";
+import { errorStatus, extractErrorMessage } from "../../services/api";
 import { reportNextDayPain } from "../../services/worldService";
 import { useTheme } from "../../theme";
 
@@ -35,6 +35,13 @@ export default function PainCheckScreen() {
       if (router.canGoBack()) router.back();
       else router.replace("/home");
     } catch (error) {
+      if (errorStatus(error) === 409) {
+        // Ya registrado o fuera de plazo (72 h): es un caso normal, no un error.
+        toast.info(extractErrorMessage(error));
+        if (router.canGoBack()) router.back();
+        else router.replace("/home");
+        return;
+      }
       toast.error(extractErrorMessage(error));
     } finally {
       setSaving(false);

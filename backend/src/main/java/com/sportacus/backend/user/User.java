@@ -71,6 +71,21 @@ public class User implements UserDetails {
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
+    /**
+     * Versión de los tokens (claim "tv"). Solo se cambia por SQL ({@code token_version = token_version + 1}) para que
+     * un {@code save()} de la entidad nunca la devuelva a un valor anterior.
+     */
+    @Column(name = "token_version", insertable = false, updatable = false)
+    private Integer tokenVersion;
+
+    /** Recorrido inicial terminado o saltado. Se escribe por SQL (POST /api/profile/tutorial). */
+    @Column(name = "tutorial_completed_at", insertable = false, updatable = false)
+    private OffsetDateTime tutorialCompletedAt;
+
+    public int tokenVersionOrZero() {
+        return tokenVersion == null ? 0 : tokenVersion;
+    }
+
     /** Nombre a mostrar: el guardado o, si no hay, la parte local del correo. */
     public String visibleName() {
         if (displayName != null && !displayName.isBlank()) {

@@ -39,11 +39,39 @@ export function useActionRoute(): (route: string) => void {
 
   return useCallback(
     (route: string) => {
-      const [path] = route.split("?");
+      const [path, query = ""] = route.split("?");
       const parts = path.split("/").filter(Boolean);
-      const [head, arg] = parts;
+      const [head, arg, third] = parts;
       const id = arg ? decodeURIComponent(arg) : undefined;
+      const params: Record<string, string> = {};
+      for (const pair of query.split("&").filter(Boolean)) {
+        const [k, v = ""] = pair.split("=");
+        params[decodeURIComponent(k)] = decodeURIComponent(v);
+      }
       switch (head) {
+        case "profile360":
+          if (id) router.push({ pathname: "/profile360/[key]", params: { key: id } });
+          else router.push({ pathname: "/profile360", params });
+          return;
+        case "checkin":
+          router.push("/checkin");
+          return;
+        case "log-activity":
+          router.push("/log-activity");
+          return;
+        case "explore":
+          router.push("/onboarding/choose");
+          return;
+        case "onboarding": {
+          const key = third ? decodeURIComponent(third) : undefined;
+          if (id === "setup" && key) router.push({ pathname: "/onboarding/setup/[key]", params: { ...params, key } });
+          else if (id === "world" && key) router.push({ pathname: "/onboarding/world/[key]", params: { key } });
+          else if (id === "gallery") router.push("/onboarding/gallery");
+          else if (id === "discovery") router.push("/onboarding/discovery");
+          else if (id === "health") router.push({ pathname: "/onboarding/health", params: { mode: "edit" } });
+          else router.push("/onboarding/choose");
+          return;
+        }
         case "session":
           if (id) router.push({ pathname: "/session/[id]", params: { id } });
           else openNextSession();
@@ -57,6 +85,18 @@ export function useActionRoute(): (route: string) => void {
           return;
         case "movement":
           if (id) router.push({ pathname: "/movement/[key]", params: { key: id } });
+          return;
+        case "block":
+          if (id) router.push({ pathname: "/block/[id]", params: params.world ? { id, world: params.world } : { id } });
+          return;
+        case "achievements":
+          router.push("/achievements");
+          return;
+        case "goals":
+          router.push("/goals");
+          return;
+        case "settings":
+          router.push("/settings");
           return;
         case "library":
           router.push("/library");
@@ -72,6 +112,12 @@ export function useActionRoute(): (route: string) => void {
           return;
         case "chat":
           router.push("/chat");
+          return;
+        case "home":
+          router.navigate("/home");
+          return;
+        case "account":
+          router.navigate("/account");
           return;
         default:
           if (__DEV__) console.warn(`[useActionRoute] Ruta de acción desconocida: ${route}`);

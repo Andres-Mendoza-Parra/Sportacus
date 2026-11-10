@@ -28,6 +28,20 @@ export function blockTypeLabel(type: string): string {
   return BLOCK_TYPES[type] ?? humanize(type);
 }
 
+const BLOCK_ICONS: Record<string, string> = {
+  calentamiento: "🔥",
+  principal: "💪",
+  tecnica: "🎯",
+  intervalo: "⏱️",
+  accesorio: "🧩",
+  vuelta_calma: "🧘",
+};
+
+/** Ícono del tipo de bloque (miniaturas sin imagen). */
+export function blockTypeIcon(type: string): string {
+  return BLOCK_ICONS[type] ?? "🏋️";
+}
+
 const SIDES: Record<string, string> = {
   ambos: "Ambos lados",
   cada_lado: "Cada lado",

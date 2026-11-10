@@ -20,7 +20,11 @@
     { "key": "gabbett_2016", "name": "Gabbett T.J. The training—injury prevention paradox", "url": "https://doi.org/10.1136/bjsports-2015-095788", "license": "Cita académica", "attribution": "Br J Sports Med 2016;50(5):273-280", "notes": "Relación aguda:crónica (ACWR)." },
     { "key": "fifa_11plus", "name": "Basado en el programa FIFA 11+ (Bizzini & Dvorak, 2015)", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4413741", "license": "Cita académica — ejercicios descritos con texto propio", "attribution": "Br J Sports Med 2015;49(9):577-579", "notes": "Pedir permiso a FIFA antes de usar su nombre o láminas en producción." },
     { "key": "nhs_c25k", "name": "NHS Couch to 5K — estructura de referencia", "url": "https://www.nhs.uk/live-well/exercise/running-and-aerobic-exercises/get-running-with-couch-to-5k/", "license": "OGL (texto) — estructura reescrita", "attribution": "National Health Service (Reino Unido)", "notes": "Solo la progresión de 9 semanas, con texto propio." },
-    { "key": "minsalud_af", "name": "MinSalud Colombia — Directrices de promoción y consejería de actividad física", "url": "https://www.minsalud.gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/VS/PP/ENT/directrices-promocion-consejeria-af-ths.pdf", "license": "Sin licencia explícita — solo cita", "attribution": "Ministerio de Salud y Protección Social de Colombia", "notes": "Tono local." }
+    { "key": "minsalud_af", "name": "MinSalud Colombia — Directrices de promoción y consejería de actividad física", "url": "https://www.minsalud.gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/VS/PP/ENT/directrices-promocion-consejeria-af-ths.pdf", "license": "Sin licencia explícita — solo cita", "attribution": "Ministerio de Salud y Protección Social de Colombia", "notes": "Tono local." },
+    { "key": "who5", "name": "WHO-5 Well-Being Index (Índice de Bienestar WHO-5)", "url": "https://www.psykiatri-regionh.dk/who-5/", "license": "Uso libre sin permiso, citando la fuente", "attribution": "WHO-5 Well-Being Index, Psychiatric Research Unit, Mental Health Centre North Zealand", "notes": "5 ítems, 0–5; puntaje bruto 0–25 ×4 = 0–100. Escala de bienestar, no es un diagnóstico." },
+    { "key": "audit_c", "name": "AUDIT-C (3 primeras preguntas del AUDIT de la OMS)", "url": "https://www.who.int/publications/i/item/WHO-MSD-MSB-01.6a", "license": "Uso libre (OMS; el AUDIT puede usarse sin permiso)", "attribution": "Babor TF et al., AUDIT, OMS 2001; AUDIT-C: Bush K et al., Arch Intern Med 1998", "notes": "Puntaje 0–12. Se usa para ajustar recuperación, no para diagnosticar." },
+    { "key": "ipaq", "name": "IPAQ — Cuestionario Internacional de Actividad Física, versión corta (7 días)", "url": "https://sites.google.com/view/ipaq", "license": "Dominio público / uso libre sin permiso", "attribution": "IPAQ Group; Craig CL et al., Med Sci Sports Exerc 2003", "notes": "MET-min/semana = 8·vig + 4·mod + 3,3·caminar (días × minutos)." },
+    { "key": "prochaska_ttm", "name": "Modelo transteórico — etapas de cambio para actividad física", "url": "https://doi.org/10.1080/02701367.1992.10607557", "license": "Modelo teórico citado; redacción propia", "attribution": "Prochaska JO & DiClemente CC (1983); Marcus BH et al., Res Q Exerc Sport 1992", "notes": "Algoritmo de 5 etapas con redacción propia del equipo." }
   ],
   "tags": [
     { "key": "rodilla", "label": "Rodilla", "kind": "zona", "bodyZone": "miembro_inferior" },
@@ -42,7 +46,9 @@
     { "key": "artritis", "label": "Artritis o artrosis", "kind": "condicion", "bodyZone": null },
     { "key": "embarazo", "label": "Embarazo o posparto", "kind": "estado", "bodyZone": null },
     { "key": "postoperatorio", "label": "Cirugía reciente", "kind": "estado", "bodyZone": null },
-    { "key": "mareos", "label": "Mareos o desmayos", "kind": "estado", "bodyZone": null }
+    { "key": "mareos", "label": "Mareos o desmayos", "kind": "estado", "bodyZone": null },
+    { "key": "anticoagulantes", "label": "Toma anticoagulantes (evitar contacto y caídas)", "kind": "condicion", "bodyZone": null },
+    { "key": "movilidad_reducida", "label": "Movilidad reducida", "kind": "condicion", "bodyZone": null }
   ],
   "metrics": [
     { "key": "minutos_sesion", "name": "Minutos de entrenamiento", "unit": "min", "valueType": "integer", "direction": "up" },
@@ -51,6 +57,13 @@
     { "key": "dolor_24h", "name": "Dolor a las 24 horas", "unit": "0-10", "valueType": "scale_0_10", "direction": "down" }
   ],
   "worlds": [
+    {
+      "key": "base", "name": "Mi Base", "icon": "🧭", "color": "#4F6D7A", "sortOrder": 0, "status": "base",
+      "tagline": "Tu punto de partida: muévete y cuéntanos de ti a tu ritmo",
+      "description": "Un espacio que empieza vacío y se llena con lo que nos cuentas. Registra cualquier actividad, sigue un plan suave basado en las recomendaciones de la OMS y explora los mundos cuando quieras.",
+      "highlights": ["Registra cualquier actividad", "Plan suave de movimiento diario", "Tu perfil se construye a tu ritmo"],
+      "tracks": []
+    },
     {
       "key": "gym", "name": "Gimnasio", "icon": "🏋️", "color": "#E4572E", "sortOrder": 1,
       "tagline": "Fuerza e hipertrofia con cargas, medidas en números",

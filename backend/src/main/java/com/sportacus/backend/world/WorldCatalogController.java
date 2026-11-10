@@ -30,9 +30,14 @@ public class WorldCatalogController {
     private final EnrollmentService enrollment;
     private final DiscoveryService discovery;
     private final UserContextService userContexts;
+    private final com.sportacus.backend.engagement.EngagementService engagement;
+    private final com.sportacus.backend.world.catalog.CatalogRepository catalog;
 
     public WorldCatalogController(EnrollmentService enrollment, DiscoveryService discovery,
-            UserContextService userContexts) {
+            UserContextService userContexts, com.sportacus.backend.engagement.EngagementService engagement,
+            com.sportacus.backend.world.catalog.CatalogRepository catalog) {
+        this.engagement = engagement;
+        this.catalog = catalog;
         this.enrollment = enrollment;
         this.discovery = discovery;
         this.userContexts = userContexts;
@@ -72,5 +77,19 @@ public class WorldCatalogController {
     @PostMapping("/me/worlds/{key}/activate")
     public MyWorld activate(@AuthenticationPrincipal User user, @PathVariable String key) {
         return enrollment.activate(user, key);
+    }
+
+    /** Logro con el nombre e icono de su mundo (null = logro general de Sportacus). */
+    public record AchievementView(String key, String worldKey, String worldName, String worldIcon, String title,
+            String icon, java.time.OffsetDateTime achievedAt) {
+    }
+
+    @GetMapping("/me/achievements")
+    public List<AchievementView> achievements(@AuthenticationPrincipal User user) {
+        return engagement.allAchievements(user.getId()).stream().map(a -> {
+            var w = a.worldKey() == null ? null : catalog.world(a.worldKey()).orElse(null);
+            return new AchievementView(a.key(), a.worldKey(), w == null ? null : w.name(), w == null ? null : w.icon(),
+                    a.title(), a.icon(), a.achievedAt());
+        }).toList();
     }
 }

@@ -1,4 +1,4 @@
-import { formatDistance, formatDuration, formatPace } from "../../constants/labels";
+import { formatDistance, formatDuration, formatPace, sideLabel } from "../../constants/labels";
 import { Prescription } from "../../services/types";
 
 /** Resumen corto de una prescripción: "3 × 8–12 · RIR 2", "6 × (1 min / 1:30 min)", "5 km · 5:30 /km". */
@@ -31,6 +31,17 @@ export function prescriptionSummary(p: Prescription): string {
   const pace = formatPace(p.paceSecPerKm);
   if (pace) parts.push(pace);
   return parts.join(" · ");
+}
+
+/** Chips de la prescripción: el resumen por partes + tempo, lado, descanso y límite de dolor. */
+export function prescriptionChips(p: Prescription): string[] {
+  const chips = prescriptionSummary(p).split(" · ").filter(Boolean);
+  if (p.tempo) chips.push(`Tempo ${p.tempo}`);
+  const side = sideLabel(p.side);
+  if (side) chips.push(side);
+  if (p.restS) chips.push(`Descanso ${formatDuration(p.restS)}`);
+  if (p.painMax != null) chips.push(`Dolor máx. ${p.painMax}/10`);
+  return chips;
 }
 
 /** "12,5" / "12.5" → 12.5; vacío o inválido → undefined. */

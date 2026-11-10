@@ -1,0 +1,256 @@
+{
+  "area": {
+    "key": "economia",
+    "name": "Recursos económicos",
+    "icon": "💰",
+    "sortOrder": 200,
+    "description": "Lo que puedes y quieres invertir. Nunca te recomendaremos algo que no encaje en tu bolsillo.",
+    "sensitive": true
+  },
+  "questionnaires": [
+    {
+      "key": "economia_presupuesto",
+      "title": "Tu presupuesto para moverte",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "ec_presupuesto",
+          "type": "options",
+          "prompt": "¿Cuánto puedes destinar al mes a tu actividad física?",
+          "hint": "Piénsalo en relación con tus gastos, no hay respuesta correcta.",
+          "options": [
+            {"id":"cero","icon":"🆓","text":"Nada por ahora","sub":"Solo opciones gratuitas"},
+            {"id":"bajo","icon":"💵","text":"Poco","sub":"Algún implemento económico o una app"},
+            {"id":"medio","icon":"💳","text":"Moderado","sub":"Un gimnasio de barrio o clases ocasionales"},
+            {"id":"alto","icon":"💎","text":"Amplio","sub":"Gimnasio completo, clases o entrenador"}
+          ],
+          "why": "Así solo te recomendamos opciones que encajan en tu bolsillo, incluso si son 100 % gratis.",
+          "uses": ["plan","descubrimiento","asistente"],
+          "priority": 5,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ec_gasto_actual",
+          "type": "options",
+          "prompt": "¿Cuánto gastas hoy en actividad física, en comparación con tu presupuesto?",
+          "hint": null,
+          "options": [
+            {"id":"nada","icon":null,"text":"Nada","sub":null},
+            {"id":"menos","icon":null,"text":"Menos de lo que podría","sub":null},
+            {"id":"justo","icon":null,"text":"Lo que puedo","sub":null},
+            {"id":"mas","icon":null,"text":"Más de lo que quisiera","sub":null}
+          ],
+          "why": "Nos dice si ya tienes un gasto que podemos aprovechar mejor o si conviene empezar gratis.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ec_invertir_en",
+          "type": "multi",
+          "prompt": "¿En qué estarías dispuesto a invertir si vale la pena?",
+          "hint": null,
+          "options": [
+            {"id":"gimnasio","icon":null,"text":"Gimnasio","sub":null},
+            {"id":"implementos","icon":null,"text":"Implementos para casa","sub":null},
+            {"id":"calzado","icon":null,"text":"Buen calzado","sub":null},
+            {"id":"ropa","icon":null,"text":"Ropa deportiva","sub":null},
+            {"id":"clases","icon":null,"text":"Clases grupales","sub":null},
+            {"id":"entrenador","icon":null,"text":"Entrenador personal","sub":null},
+            {"id":"nutricion","icon":null,"text":"Asesoría de nutrición","sub":null},
+            {"id":"apps","icon":null,"text":"Apps o suscripciones","sub":null},
+            {"id":"eventos","icon":null,"text":"Inscripciones a carreras o torneos","sub":null},
+            {"id":"ninguno","icon":null,"text":"Nada por ahora","sub":null}
+          ],
+          "why": "Priorizamos recomendaciones en lo que valoras y dejamos de lado lo que no.",
+          "uses": ["descubrimiento","asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ec_compra_unica",
+          "type": "options",
+          "prompt": "Si hicieras una sola compra para entrenar en casa, ¿de qué tamaño podría ser?",
+          "hint": null,
+          "options": [
+            {"id":"ninguna","icon":null,"text":"Ninguna","sub":null},
+            {"id":"pequena","icon":null,"text":"Pequeña (bandas, cuerda)","sub":null},
+            {"id":"media","icon":null,"text":"Media (mancuernas ajustables, barra)","sub":null},
+            {"id":"grande","icon":null,"text":"Grande (equipo más completo)","sub":null}
+          ],
+          "why": "Te sugerimos el implemento que más rinde para ese nivel de gasto.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ec_calzado",
+          "type": "options",
+          "prompt": "¿En qué estado está tu calzado deportivo?",
+          "hint": null,
+          "options": [
+            {"id":"bueno","icon":null,"text":"Bueno","sub":null},
+            {"id":"regular","icon":null,"text":"Regular","sub":null},
+            {"id":"gastado","icon":null,"text":"Muy gastado","sub":null},
+            {"id":"no_tengo","icon":null,"text":"No tengo calzado deportivo","sub":null}
+          ],
+          "why": "Un calzado gastado aumenta el riesgo de molestias; te avisamos cuándo conviene cambiarlo.",
+          "uses": ["seguridad","running","asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ec_estabilidad",
+          "type": "options",
+          "prompt": "¿Cómo describirías tu situación económica este año?",
+          "hint": null,
+          "options": [
+            {"id":"estable","icon":null,"text":"Estable","sub":null},
+            {"id":"variable","icon":null,"text":"Variable","sub":null},
+            {"id":"ajustada","icon":null,"text":"Ajustada","sub":null}
+          ],
+          "why": "En épocas ajustadas evitamos sugerir compras y destacamos lo gratuito.",
+          "uses": ["asistente","descubrimiento"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "economia_recursos",
+      "title": "Recursos a tu alcance",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "ec_beneficios",
+          "type": "multi",
+          "prompt": "¿Tienes acceso a alguno de estos beneficios?",
+          "hint": null,
+          "options": [
+            {"id":"caja_compensacion","icon":null,"text":"Caja de compensación","sub":null},
+            {"id":"empresa","icon":null,"text":"Bienestar de mi empresa","sub":null},
+            {"id":"universidad","icon":null,"text":"Universidad o colegio","sub":null},
+            {"id":"salud","icon":null,"text":"Plan de salud o prepagada","sub":null},
+            {"id":"publico","icon":null,"text":"Programas públicos de deporte","sub":null},
+            {"id":"ninguno","icon":null,"text":"Ninguno","sub":null}
+          ],
+          "why": "Muchos dan gimnasio o clases con descuento: te ayudamos a aprovecharlos.",
+          "uses": ["descubrimiento","asistente"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ec_gratis",
+          "type": "multi",
+          "prompt": "¿Qué opciones gratuitas te llaman la atención?",
+          "hint": null,
+          "options": [
+            {"id":"ciclovia","icon":null,"text":"Ciclovía o vías recreativas","sub":null},
+            {"id":"biosaludables","icon":null,"text":"Parques biosaludables","sub":null},
+            {"id":"comunitarias","icon":null,"text":"Clases comunitarias","sub":null},
+            {"id":"videos","icon":null,"text":"Rutinas en video","sub":null},
+            {"id":"grupos","icon":null,"text":"Grupos de running o caminata","sub":null},
+            {"id":"ninguno","icon":null,"text":"Ninguna en especial","sub":null}
+          ],
+          "why": "Te recomendamos planes gratuitos cerca de ti que encajen con tus gustos.",
+          "uses": ["descubrimiento","base"],
+          "priority": 3,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ec_comida",
+          "type": "options",
+          "prompt": "¿Tu presupuesto de comida te permite elegir lo que quieres comer?",
+          "hint": null,
+          "options": [
+            {"id":"ajustado","icon":null,"text":"Casi siempre es ajustado","sub":null},
+            {"id":"suficiente","icon":null,"text":"Suficiente","sub":null},
+            {"id":"holgado","icon":null,"text":"Holgado","sub":null}
+          ],
+          "why": "Así las ideas de alimentación usan alimentos accesibles para ti.",
+          "uses": ["asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ec_transporte",
+          "type": "options",
+          "prompt": "¿El costo del transporte influye en dónde puedes entrenar?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Si influye, priorizamos lugares a los que llegues caminando o en bici.",
+          "uses": ["plan","descubrimiento"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ec_suplementos_gasto",
+          "type": "options",
+          "prompt": "¿Te interesa gastar en suplementos?",
+          "hint": null,
+          "options": [
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"solo_basico","icon":null,"text":"Solo si es realmente útil","sub":null},
+            {"id":"si","icon":null,"text":"Sí","sub":null}
+          ],
+          "why": "Te damos información honesta sobre qué vale la pena, sin empujarte a comprar.",
+          "uses": ["asistente"],
+          "priority": 1,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

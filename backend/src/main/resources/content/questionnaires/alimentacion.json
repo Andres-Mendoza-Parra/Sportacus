@@ -1,0 +1,400 @@
+{
+  "area": {
+    "key": "alimentacion",
+    "name": "Alimentación e hidratación",
+    "icon": "🥗",
+    "sortOrder": 130,
+    "description": "Cómo comes y te hidratas. Ideas prácticas que encajan con tu vida, sin dietas extremas.",
+    "sensitive": true
+  },
+  "questionnaires": [
+    {
+      "key": "alimentacion_patron",
+      "title": "Cómo comes",
+      "subtitle": "3 minutos",
+      "minutes": 3,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "al_dieta",
+          "type": "options",
+          "prompt": "¿Qué tipo de alimentación sigues?",
+          "hint": null,
+          "options": [
+            {"id":"omnivora","icon":"🍽️","text":"Como de todo","sub":null},
+            {"id":"vegetariana","icon":"🥚","text":"Vegetariana","sub":null},
+            {"id":"vegana","icon":"🌱","text":"Vegana","sub":null},
+            {"id":"otra","icon":"🍴","text":"Otra","sub":null}
+          ],
+          "why": "Todas las ideas de comida respetan tu forma de comer.",
+          "uses": ["asistente"],
+          "priority": 5,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_dieta_otra",
+          "type": "text",
+          "prompt": "¿Cuál?",
+          "hint": null,
+          "why": "Así respetamos exactamente tu forma de comer en cada sugerencia.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"al_dieta","in":["otra"]},
+          "cadence": null
+        },
+        {
+          "id": "al_comidas_dia",
+          "type": "options",
+          "prompt": "¿Cuántas comidas haces al día?",
+          "hint": null,
+          "options": [
+            {"id":"1_2","icon":null,"text":"1 o 2","sub":null},
+            {"id":"3","icon":null,"text":"3","sub":null},
+            {"id":"4_5","icon":null,"text":"4 o 5","sub":null},
+            {"id":"variable","icon":null,"text":"Varía mucho","sub":null}
+          ],
+          "why": "Te sugerimos cuándo comer alrededor de tus sesiones según tu rutina.",
+          "uses": ["asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_horario",
+          "type": "options",
+          "prompt": "¿Tus horarios de comida son regulares?",
+          "hint": null,
+          "options": [
+            {"id":"regular","icon":null,"text":"Regulares","sub":null},
+            {"id":"irregular","icon":null,"text":"Irregulares","sub":null}
+          ],
+          "why": "Con horarios irregulares te damos opciones prácticas para no entrenar con el tanque vacío.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_desayuno",
+          "type": "options",
+          "prompt": "¿Desayunas?",
+          "hint": null,
+          "options": [
+            {"id":"siempre","icon":null,"text":"Casi siempre","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"nunca","icon":null,"text":"Casi nunca","sub":null}
+          ],
+          "why": "Si entrenas temprano, te ayudamos a decidir si comer algo antes y qué.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_cocina",
+          "type": "options",
+          "prompt": "¿Quién prepara la mayoría de tus comidas?",
+          "hint": null,
+          "options": [
+            {"id":"yo","icon":null,"text":"Yo","sub":null},
+            {"id":"familia","icon":null,"text":"Alguien de mi familia","sub":null},
+            {"id":"compro","icon":null,"text":"Compro comida hecha","sub":null},
+            {"id":"mixto","icon":null,"text":"Un poco de todo","sub":null}
+          ],
+          "why": "Las ideas serán realistas: recetas si cocinas, mejores elecciones si compras hecho.",
+          "uses": ["asistente"],
+          "priority": 3,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_fuera",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia comes fuera de casa?",
+          "hint": null,
+          "options": [
+            {"id":"casi_nunca","icon":null,"text":"Casi nunca","sub":null},
+            {"id":"semanal","icon":null,"text":"Algunas veces por semana","sub":null},
+            {"id":"diario","icon":null,"text":"A diario","sub":null}
+          ],
+          "why": "Te damos pautas para elegir bien en restaurantes, cafeterías o corrientazo.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "alimentacion_que",
+      "title": "Qué comes y bebes",
+      "subtitle": "3 minutos",
+      "minutes": 3,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "al_frutas_verduras",
+          "type": "options",
+          "prompt": "¿Cuántas porciones de frutas y verduras comes al día?",
+          "hint": "Una porción ≈ una fruta mediana o un puñado de verduras.",
+          "options": [
+            {"id":"0_1","icon":null,"text":"0 o 1","sub":null},
+            {"id":"2_3","icon":null,"text":"2 o 3","sub":null},
+            {"id":"4_5","icon":null,"text":"4 o 5","sub":null},
+            {"id":"mas_5","icon":null,"text":"Más de 5","sub":null}
+          ],
+          "why": "Te sugerimos pasos pequeños para mejorar sin cambiarlo todo.",
+          "uses": ["asistente"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_proteina",
+          "type": "multi",
+          "prompt": "¿Qué fuentes de proteína comes con frecuencia?",
+          "hint": null,
+          "options": [
+            {"id":"res_cerdo","icon":null,"text":"Carne de res o cerdo","sub":null},
+            {"id":"pollo","icon":null,"text":"Pollo","sub":null},
+            {"id":"pescado","icon":null,"text":"Pescado","sub":null},
+            {"id":"huevo","icon":null,"text":"Huevo","sub":null},
+            {"id":"lacteos","icon":null,"text":"Lácteos","sub":null},
+            {"id":"leguminosas","icon":null,"text":"Fríjol, lenteja, garbanzo","sub":null},
+            {"id":"soya","icon":null,"text":"Soya o tofu","sub":null},
+            {"id":"suplemento","icon":null,"text":"Suplemento de proteína","sub":null},
+            {"id":"ninguna","icon":null,"text":"Ninguna con frecuencia","sub":null}
+          ],
+          "why": "Te ayudamos a cubrir la proteína que necesitas con alimentos que ya comes.",
+          "uses": ["asistente","gym"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_ultraprocesados",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia comes paquetes, comida rápida o embutidos?",
+          "hint": null,
+          "options": [
+            {"id":"casi_nunca","icon":null,"text":"Casi nunca","sub":null},
+            {"id":"semanal","icon":null,"text":"Algunas veces por semana","sub":null},
+            {"id":"diario","icon":null,"text":"Una vez al día","sub":null},
+            {"id":"varias","icon":null,"text":"Varias veces al día","sub":null}
+          ],
+          "why": "Sin prohibiciones: te damos alternativas que te den más energía para entrenar.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_azucaradas",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia tomas gaseosas, jugos azucarados o bebidas endulzadas?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Casi nunca","sub":null},
+            {"id":"semanal","icon":null,"text":"Algunas veces por semana","sub":null},
+            {"id":"diario","icon":null,"text":"Una al día","sub":null},
+            {"id":"varias","icon":null,"text":"Varias al día","sub":null}
+          ],
+          "why": "Te sugerimos cambios sencillos que suman energía y descanso.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_agua",
+          "type": "options",
+          "prompt": "¿Cuánta agua tomas al día?",
+          "hint": "Un vaso ≈ 250 ml.",
+          "options": [
+            {"id":"menos_1l","icon":null,"text":"Menos de 4 vasos","sub":null},
+            {"id":"1_2l","icon":null,"text":"4 a 8 vasos","sub":null},
+            {"id":"mas_2l","icon":null,"text":"Más de 8 vasos","sub":null},
+            {"id":"no_se","icon":null,"text":"No lo sé","sub":null}
+          ],
+          "why": "Te damos recordatorios y metas de hidratación según tu clima y tu actividad.",
+          "uses": ["asistente","seguridad"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_hidratacion_entreno",
+          "type": "options",
+          "prompt": "¿Llevas agua cuando entrenas?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Te recordamos hidratarte antes, durante y después, sobre todo con calor.",
+          "uses": ["asistente","seguridad"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_alergias",
+          "type": "multi",
+          "prompt": "¿Tienes alergias o intolerancias alimentarias diagnosticadas?",
+          "hint": null,
+          "options": [
+            {"id":"gluten","icon":null,"text":"Gluten o celiaquía","sub":null},
+            {"id":"lactosa","icon":null,"text":"Lactosa","sub":null},
+            {"id":"frutos_secos","icon":null,"text":"Maní o frutos secos","sub":null},
+            {"id":"mariscos","icon":null,"text":"Mariscos","sub":null},
+            {"id":"huevo","icon":null,"text":"Huevo","sub":null},
+            {"id":"otra","icon":null,"text":"Otra","sub":null},
+            {"id":"ninguna","icon":null,"text":"Ninguna","sub":null}
+          ],
+          "why": "Nunca te sugeriremos alimentos que no te convienen.",
+          "uses": ["seguridad","asistente"],
+          "priority": 4,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "alimentacion_entreno",
+      "title": "Comer para moverte",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "al_antes_entreno",
+          "type": "options",
+          "prompt": "¿Comes algo antes de entrenar?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"ayunas","icon":null,"text":"Entreno en ayunas a propósito","sub":null}
+          ],
+          "why": "Te sugerimos qué y cuándo comer según la hora y el tipo de sesión.",
+          "uses": ["asistente","seguridad"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_suplementos",
+          "type": "multi",
+          "prompt": "¿Tomas algún suplemento?",
+          "hint": null,
+          "options": [
+            {"id":"proteina","icon":null,"text":"Proteína","sub":null},
+            {"id":"creatina","icon":null,"text":"Creatina","sub":null},
+            {"id":"cafeina","icon":null,"text":"Cafeína o preentreno","sub":null},
+            {"id":"multivitaminico","icon":null,"text":"Multivitamínico","sub":null},
+            {"id":"omega3","icon":null,"text":"Omega 3","sub":null},
+            {"id":"hierro_vitd","icon":null,"text":"Hierro o vitamina D","sub":null},
+            {"id":"otro","icon":null,"text":"Otro","sub":null},
+            {"id":"ninguno","icon":null,"text":"Ninguno","sub":null}
+          ],
+          "why": "Te damos información basada en evidencia sobre lo que ya tomas.",
+          "uses": ["asistente","gym"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_enfoque",
+          "type": "options",
+          "prompt": "¿Qué te gustaría mejorar de tu alimentación?",
+          "hint": null,
+          "options": [
+            {"id":"habitos","icon":null,"text":"Comer más ordenado","sub":null},
+            {"id":"energia","icon":null,"text":"Tener más energía","sub":null},
+            {"id":"rendimiento","icon":null,"text":"Rendir mejor","sub":null},
+            {"id":"composicion","icon":null,"text":"Acompañar un cambio de composición","sub":null},
+            {"id":"nada","icon":null,"text":"Nada en especial por ahora","sub":null}
+          ],
+          "why": "Enfocamos los consejos en lo que te importa y dejamos lo demás.",
+          "uses": ["asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "al_profesional",
+          "type": "options",
+          "prompt": "¿Te acompaña un profesional de nutrición?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"antes","icon":null,"text":"Antes sí","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Si es así, nuestras ideas complementan y nunca reemplazan sus indicaciones.",
+          "uses": ["seguridad","asistente"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,24 +1,33 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import FormScreen from "../../components/forms/FormScreen";
+import HealthConsentGate from "../../components/health/HealthConsentGate";
 import HealthSummaryCard from "../../components/health/HealthSummaryCard";
 import { useToast } from "../../components/ui/Feedback";
 import GradientButton from "../../components/ui/GradientButton";
 import ScreenHeader from "../../components/ui/ScreenHeader";
-import { parseMode } from "../../navigation/onboarding";
+import { useWorld } from "../../context/WorldContext";
 import { extractErrorMessage } from "../../services/api";
 import { confirmClearance, fetchScreeningForm, saveScreening } from "../../services/healthService";
 import { Answers, HealthSummary } from "../../services/types";
 import { useTheme } from "../../theme";
 
-/** Paso 2: chequeo de salud universal → resultado (riesgo, avisos y aval profesional). */
-export default function HealthStep() {
-  const { mode: rawMode } = useLocalSearchParams<{ mode?: string }>();
-  const mode = parseMode(rawMode);
+/** Chequeo de salud con el consentimiento de datos de salud por delante (si falta). */
+export default function HealthRoute() {
+  return (
+    <HealthConsentGate title="Chequeo de salud">
+      <HealthStep />
+    </HealthConsentGate>
+  );
+}
+
+/** Chequeo de salud (opcional, desde Mi Base, Perfil 360 o Cuenta) → resultado (riesgo, avisos y aval). */
+function HealthStep() {
   const toast = useToast();
+  const { invalidate } = useWorld();
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const [result, setResult] = useState<HealthSummary | null>(null);
@@ -27,6 +36,8 @@ export default function HealthStep() {
   async function submit(answers: Answers) {
     try {
       setResult(await saveScreening(answers));
+      // El plan depende del chequeo: las pestañas se recargan (y el servidor lo regenera si hace falta).
+      invalidate();
     } catch (error) {
       toast.error(extractErrorMessage(error));
       throw error;
@@ -37,6 +48,7 @@ export default function HealthStep() {
     setConfirming(true);
     try {
       setResult(await confirmClearance());
+      invalidate();
       toast.success("Gracias. Registramos el aval de tu profesional.");
     } catch (error) {
       toast.error(extractErrorMessage(error));
@@ -46,22 +58,18 @@ export default function HealthStep() {
   }
 
   function finish() {
-    if (mode === "edit") {
-      toast.success("Chequeo actualizado. Ajustamos tus planes.");
-      if (router.canGoBack()) router.back();
-      else router.replace("/account");
-      return;
-    }
-    router.replace("/onboarding/choose");
+    toast.success("Chequeo guardado. Ajustamos tus planes.");
+    if (router.canGoBack()) router.back();
+    else router.replace("/home");
   }
 
   function exit() {
     if (router.canGoBack()) router.back();
-    else router.replace(mode === "edit" ? "/account" : "/onboarding/profile");
+    else router.replace("/home");
   }
 
   if (!result) {
-    return <FormScreen load={fetchScreeningForm} submitLabel="Ver resultado" onSubmit={submit} onExit={exit} exitIcon={mode === "edit" ? "close" : "back"} />;
+    return <FormScreen load={fetchScreeningForm} submitLabel="Ver resultado" onSubmit={submit} onExit={exit} exitIcon="close" />;
   }
 
   const blocked = result.redFlags || (result.requiresClearance && !result.clearanceConfirmed);
@@ -72,13 +80,13 @@ export default function HealthStep() {
         <HealthSummaryCard summary={result} onConfirmClearance={clearance} confirming={confirming} />
         {blocked ? (
           <Text style={{ fontSize: 13, color: colors.textMuted, lineHeight: 19 }}>
-            Puedes seguir y elegir tu mundo: te recomendaremos opciones suaves y seguras, y te avisaremos antes de cualquier actividad intensa.
+            Puedes seguir entrenando: te recomendaremos opciones suaves y seguras, y te avisaremos antes de cualquier actividad intensa.
           </Text>
         ) : null}
         <Text style={{ fontSize: 12, color: colors.textFaint, lineHeight: 17 }}>
           Sportacus no diagnostica ni reemplaza la valoración de un profesional de la salud. Tus respuestas se guardan cifradas.
         </Text>
-        <GradientButton title={mode === "edit" ? "Listo" : "Continuar"} onPress={finish} />
+        <GradientButton title="Listo" onPress={finish} />
         <GradientButton title="Corregir respuestas" variant="ghost" onPress={() => setResult(null)} />
       </ScrollView>
     </View>

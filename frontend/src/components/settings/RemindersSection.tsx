@@ -3,6 +3,7 @@ import { Switch, Text, View } from "react-native";
 import Animated, { FadeInDown, LinearTransition } from "react-native-reanimated";
 
 import { extractErrorMessage } from "../../services/api";
+import { track } from "../../services/analytics";
 import {
   DEFAULT_REMINDERS,
   IS_EXPO_GO,
@@ -70,6 +71,7 @@ export default function RemindersSection({ delay }: { delay: number }) {
       return;
     }
     await update({ ...reminders, enabled });
+    if (enabled) track("reminder_enabled");
     toast.success(enabled ? "Recordatorios activados 🔔" : "Recordatorios desactivados");
   }
 

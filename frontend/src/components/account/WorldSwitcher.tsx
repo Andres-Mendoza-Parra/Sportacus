@@ -9,12 +9,25 @@ import { Theme, useThemedStyles, withAlpha } from "../../theme";
 import { useToast } from "../ui/Feedback";
 import PressableScale from "../ui/PressableScale";
 
-/** Lista de mundos inscritos: el activo marcado, los demás se activan con un toque. */
-export default function WorldSwitcher() {
+export const BASE_WORLD = "base";
+
+/** Subtítulo de un mundo inscrito; Mi Base no tiene ruta ni nivel que mostrar. */
+function worldSubtitle(w: MyWorld): string {
+  const sessions = `${w.sessions} ${w.sessions === 1 ? "sesión" : "sesiones"}`;
+  if (w.key === BASE_WORLD) return `Tu punto de partida · ${sessions}`;
+  return [w.trackName, `Nivel ${w.level}`, sessions].filter(Boolean).join(" · ");
+}
+
+/**
+ * Lista de mundos inscritos (Mi Base primero): el activo marcado, los demás se activan con un toque.
+ * `onNavigate` se llama justo antes de navegar (p. ej. para cerrar el menú rápido).
+ */
+export default function WorldSwitcher({ onNavigate }: { onNavigate?: () => void } = {}) {
   const styles = useThemedStyles(createStyles);
   const toast = useToast();
   const { worlds, activate } = useWorld();
   const [switching, setSwitching] = useState<string | null>(null);
+  const sorted = [...worlds].sort((a, b) => Number(b.key === BASE_WORLD) - Number(a.key === BASE_WORLD));
 
   async function choose(world: MyWorld) {
     if (world.active || switching) return;
@@ -22,6 +35,7 @@ export default function WorldSwitcher() {
     try {
       await activate(world.key);
       toast.success(`Ahora estás en ${world.name} ${world.icon}`);
+      onNavigate?.();
       router.navigate("/home");
     } catch (error) {
       toast.error(extractErrorMessage(error));
@@ -32,7 +46,7 @@ export default function WorldSwitcher() {
 
   return (
     <View style={{ gap: 10 }}>
-      {worlds.map((w) => (
+      {sorted.map((w) => (
         <PressableScale
           key={w.key}
           onPress={() => choose(w)}
@@ -47,9 +61,7 @@ export default function WorldSwitcher() {
           </View>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{w.name}</Text>
-            <Text style={styles.sub}>
-              {w.trackName} · Nivel {w.level} · {w.sessions} {w.sessions === 1 ? "sesión" : "sesiones"}
-            </Text>
+            <Text style={styles.sub}>{worldSubtitle(w)}</Text>
           </View>
           {switching === w.key ? (
             <ActivityIndicator color={w.color} />
@@ -62,10 +74,14 @@ export default function WorldSwitcher() {
       ))}
       <PressableScale
         style={styles.add}
-        onPress={() => router.push({ pathname: "/onboarding/choose", params: { mode: "add" } })}
+        onPress={() => {
+          onNavigate?.();
+          router.push("/onboarding/choose");
+        }}
         accessibilityRole="button"
+        accessibilityLabel="Explorar mundos"
       >
-        <Text style={styles.addText}>＋ Añadir un mundo</Text>
+        <Text style={styles.addText}>🧭 Explorar mundos</Text>
       </PressableScale>
     </View>
   );

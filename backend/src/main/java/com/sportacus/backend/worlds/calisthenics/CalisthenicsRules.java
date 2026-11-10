@@ -247,4 +247,72 @@ final class CalisthenicsRules {
     static int num(Object o, int fallback) {
         return o instanceof Number n ? n.intValue() : fallback;
     }
+
+    // ───────────────────────── Onboarding mínimo y Perfil 360 ─────────────────────────
+
+    /** Pregunta del onboarding (opcional) que da la marca de cada árbol. */
+    static final Map<String, String> MARK_QUESTION = Map.of("empuje", "c_pushups", "jale", "c_pullups",
+            "fondos", "c_dips", "core", "c_plank", "piernas", "c_squats", "parada_manos", "c_handstand");
+
+    /** Test → pregunta de marca que deja de ser desconocida al hacerlo. */
+    static final Map<String, String> TEST_MARK = Map.of("cal_test_flexiones", "c_pushups",
+            "cal_test_dominadas", "c_pullups", "cal_test_fondos", "c_dips", "cal_test_sentadillas", "c_squats");
+
+    /** Árboles cuya marca no se respondió: se ubican en el escalón base seguro (marca 0). */
+    static List<String> unknownMarkTrees(List<String> trees, java.util.function.Predicate<String> answered) {
+        return trees.stream().filter(t -> MARK_QUESTION.containsKey(t) && !answered.test(MARK_QUESTION.get(t))).toList();
+    }
+
+    /** Aviso para el usuario cuando faltan marcas (null si no falta ninguna). */
+    static String unknownMarksNotice(List<String> treeNames) {
+        if (treeNames.isEmpty()) return null;
+        return "Aún no sabemos tus marcas en " + String.join(", ", treeNames)
+                + ": empezamos en un escalón base seguro. Haz el test del árbol o cuéntanos tus marcas para ajustarlo.";
+    }
+
+    /** Equipo de calistenia que ya declaró en su perfil (p_equipment), para precargar c_equipment. */
+    static List<String> homeEquipmentFromProfile(List<String> profileEquipment) {
+        if (profileEquipment == null || profileEquipment.isEmpty()) return List.of();
+        List<String> out = profileEquipment.stream()
+                .filter(e -> List.of("barra_dominadas", "paralelas", "anillas", "bandas").contains(e)).toList();
+        return out.isEmpty() ? List.of("ninguno") : out;
+    }
+
+    /** Lugar sugerido según sus entornos del perfil (null si no aplica). */
+    static String placeFromEnvironments(List<String> environments) {
+        if (environments == null) return null;
+        boolean home = environments.contains("casa");
+        boolean park = environments.contains("parque");
+        if (home && park) return "ambos";
+        if (park) return "parque";
+        if (home) return "casa";
+        return null;
+    }
+
+    /** Movimiento con saltos o aterrizajes (pliometría, burpees…): se excluye en casa si no se puede saltar. */
+    static boolean jumpy(String key, String name) {
+        String s = ((key == null ? "" : key) + " " + (name == null ? "" : name)).toLowerCase(java.util.Locale.ROOT);
+        return s.contains("salto") || s.contains("saltar") || s.contains("jump") || s.contains("burpee")
+                || s.contains("pliom");
+    }
+
+    /** Movimientos a los que se suele subir con un salto o que terminan cayendo a los pies. */
+    static final java.util.Set<String> HOP_ENTRY = java.util.Set.of("dominada_negativa", "fondos_negativos",
+            "soporte_paralelas", "parada_manos_intentos", "parada_manos_libre", "transicion_muscle_up");
+
+    /** Indicación para entrenar sin saltos ni golpes en casa (null si el movimiento no lo necesita). */
+    static String quietCue(String movementKey) {
+        if (!HOP_ENTRY.contains(movementKey)) return null;
+        return movementKey.startsWith("parada")
+                ? "Sin saltos: sube caminando con los pies por la pared y baja con control, sin golpes"
+                : "Sin saltar: sube apoyándote en una silla y baja a los pies con suavidad";
+    }
+
+    /** Minutos de una sesión exprés (para quien tiene poco margen, p. ej. con hijos pequeños). */
+    static final int SHORT_SESSION_MIN = 25;
+
+    static int sessionMinutes(int profileMinutes, boolean shortSessions) {
+        int m = Math.max(20, profileMinutes);
+        return shortSessions ? Math.min(m, SHORT_SESSION_MIN) : m;
+    }
 }

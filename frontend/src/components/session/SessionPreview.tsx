@@ -8,6 +8,7 @@ import { BlockView, SessionView, SessionUi } from "../../services/types";
 import { useTheme } from "../../theme";
 import { Card, SectionTitle } from "../ui/Card";
 import PressableScale from "../ui/PressableScale";
+import BlockThumb from "./BlockThumb";
 import { prescriptionSummary } from "./format";
 
 interface Props {
@@ -18,13 +19,13 @@ interface Props {
   swappingId: string | null;
 }
 
-/** Vista previa de la sesión: datos generales, consejos y lista de bloques con su prescripción. */
+/** Vista previa de la sesión: datos generales, consejos y bloques (miniatura, dosis y por qué); cada uno abre su detalle. */
 export default function SessionPreview({ session, blocks, ui, onSwap, swappingId }: Props) {
   const { colors } = useTheme();
   const meta = [
     session.weekday ? weekdayName(session.weekday) : null,
     session.estMinutes ? `~${session.estMinutes} min` : null,
-    `${blocks.length} bloques`,
+    `${blocks.length} ${blocks.length === 1 ? "bloque" : "bloques"}`,
     session.done ? "✓ Hecha esta semana" : null,
   ].filter(Boolean);
 
@@ -49,26 +50,34 @@ export default function SessionPreview({ session, blocks, ui, onSwap, swappingId
         </>
       ) : null}
 
-      <SectionTitle>Bloques</SectionTitle>
+      <SectionTitle>Bloques · toca uno para ver por qué y cómo</SectionTitle>
       <View style={{ gap: 10 }}>
         {blocks.map((block, i) => (
           <Animated.View key={block.id} entering={FadeInDown.delay(i * 50).duration(300)}>
-            <Card style={{ padding: 14, flexDirection: "row", alignItems: "center", gap: 12 }}>
-              <View style={{ width: 30, height: 30, borderRadius: 10, backgroundColor: colors.primarySoft, alignItems: "center", justifyContent: "center" }}>
-                <Text style={{ fontSize: 13, fontWeight: "800", color: colors.primary }}>{i + 1}</Text>
-              </View>
+            <Card style={{ padding: 12, flexDirection: "row", alignItems: "center", gap: 12 }}>
               <PressableScale
-                style={{ flex: 1 }}
-                disabled={!block.movementKey}
+                style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: 12 }}
                 accessibilityRole="button"
-                accessibilityLabel={`Ver técnica de ${block.title}`}
-                onPress={() => block.movementKey && router.push({ pathname: "/movement/[key]", params: { key: block.movementKey } })}
+                accessibilityLabel={`Bloque ${i + 1}: ${block.title}. ${prescriptionSummary(block.prescription)}`}
+                accessibilityHint="Abre por qué y cómo hacer este ejercicio"
+                onPress={() => router.push({ pathname: "/block/[id]", params: { id: block.id } })}
               >
-                <Text style={{ fontSize: 10, fontWeight: "700", color: colors.textFaint, textTransform: "uppercase" }}>
-                  {blockTypeLabel(block.blockType)}
-                </Text>
-                <Text style={{ fontSize: 15, fontWeight: "700", color: colors.text }}>{block.title}</Text>
-                <Text style={{ fontSize: 12, color: colors.textMuted, marginTop: 2 }}>{prescriptionSummary(block.prescription)}</Text>
+                <BlockThumb block={block} index={i + 1} />
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: 10, fontWeight: "700", color: colors.textFaint, textTransform: "uppercase" }}>
+                    {blockTypeLabel(block.blockType)}
+                  </Text>
+                  <Text style={{ fontSize: 15, fontWeight: "700", color: colors.text }} numberOfLines={2}>
+                    {block.title}
+                  </Text>
+                  <Text style={{ fontSize: 12, color: colors.primary, fontWeight: "600", marginTop: 2 }}>{prescriptionSummary(block.prescription)}</Text>
+                  {block.summary ? (
+                    <Text style={{ fontSize: 12, color: colors.textMuted, marginTop: 3, lineHeight: 17 }} numberOfLines={2}>
+                      💡 {block.summary}
+                    </Text>
+                  ) : null}
+                </View>
+                <Text style={{ fontSize: 22, color: colors.textFaint }}>›</Text>
               </PressableScale>
               {!block.progressionKey ? (
                 <PressableScale

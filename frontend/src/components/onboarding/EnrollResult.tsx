@@ -25,7 +25,7 @@ export default function EnrollResult({ result, onEnter }: Props) {
   return (
     <View style={styles.bg}>
       <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
-        <WorldHero color={world.color} icon={world.icon} title={`¡Bienvenido a ${world.name}!`} subtitle="Tu plan está listo." back={false}>
+        <WorldHero color={world.color} icon={world.icon} title={`¡Te damos la bienvenida a ${world.name}!`} subtitle="Tu plan está listo." back={false}>
           <View style={styles.pills}>
             <View style={styles.pill}>
               <Text style={styles.pillLabel}>Ruta</Text>

@@ -4,12 +4,14 @@ import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Switch, Text, Te
 import Animated, { FadeInDown } from "react-native-reanimated";
 
 import MessageBubble from "../../components/chat/MessageBubble";
+import { TourTarget } from "../../components/tour/TourContext";
 import TypingDots from "../../components/chat/TypingDots";
 import { useConfirm, useToast } from "../../components/ui/Feedback";
 import GradientHeader from "../../components/ui/GradientHeader";
 import PressableScale from "../../components/ui/PressableScale";
 import { useAuth } from "../../context/AuthContext";
 import { useWorld } from "../../context/WorldContext";
+import { track } from "../../services/analytics";
 import { extractErrorMessage } from "../../services/api";
 import {
   ChatAction,
@@ -86,6 +88,7 @@ export default function ChatScreen() {
     setInput("");
     push({ from: "user", text: question });
     setIsSending(true);
+    track("assistant_message", { personalized: useMyData });
     try {
       const response = await askAssistant(question, useMyData);
       const { text: reply, actions } = parseReply(response.reply);
@@ -196,7 +199,7 @@ export default function ChatScreen() {
         ))}
       </ScrollView>
 
-      <View style={styles.inputWrap}>
+      <TourTarget id="chat-input" style={styles.inputWrap}>
         <TextInput
           style={styles.input}
           placeholder="Escribe tu pregunta..."
@@ -216,7 +219,7 @@ export default function ChatScreen() {
         >
           <Text style={styles.sendIcon}>➤</Text>
         </Pressable>
-      </View>
+      </TourTarget>
     </KeyboardAvoidingView>
   );
 }
@@ -269,7 +272,7 @@ const createStyles = ({ colors }: Theme) => ({
     backgroundColor: colors.inputBg,
     color: colors.text,
   },
-  sendBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: colors.primary, alignItems: "center" as const, justifyContent: "center" as const },
+  sendBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: colors.primary, alignItems: "center" as const, justifyContent: "center" as const },
   sendBtnDisabled: { opacity: 0.45 },
   sendIcon: { color: "#fff", fontSize: 16 },
 });

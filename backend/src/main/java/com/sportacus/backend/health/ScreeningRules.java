@@ -72,6 +72,22 @@ public final class ScreeningRules {
             flags.add("embarazo");
             risk = Math.max(risk, 1);
         }
+        // Medicamentos: no restringen por sí solos, pero cambian cómo se mide y se cuida la intensidad.
+        List<String> meds = a.listWithoutNone("s_medications");
+        if (meds.contains("betabloqueadores")) flags.add("fc_no_fiable"); // la frecuencia cardiaca no refleja el esfuerzo
+        if (meds.contains("insulina")) flags.add("riesgo_hipoglucemia");
+        if (meds.contains("anticoagulantes")) {
+            flags.add("anticoagulado"); // evitar contacto y caídas
+            risk = Math.max(risk, 1);
+        }
+        List<String> mobility = a.listWithoutNone("s_mobility");
+        if (mobility.stream().anyMatch(m -> m.equals("silla_ruedas") || m.equals("ayuda_marcha") || m.equals("amputacion"))) {
+            flags.add("movilidad_reducida");
+            risk = Math.max(risk, 1);
+        }
+        if (mobility.contains("silla_ruedas")) flags.add("silla_ruedas");
+        if (mobility.contains("vision")) flags.add("baja_vision");
+        if (mobility.contains("audicion")) flags.add("baja_audicion");
         if ("grave".equals(a.string("s_pain_severity")) && !a.listWithoutNone("s_pain_zones").isEmpty()) {
             flags.add("dolor_limitante");
             risk = Math.max(risk, 1);

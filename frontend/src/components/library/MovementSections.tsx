@@ -11,7 +11,7 @@ import { openSource } from "../assessments/shared";
 import { LevelDots } from "./MovementRow";
 
 /** Lista con viñeta o numerada dentro de una tarjeta; no se muestra si está vacía. */
-function ListCard({ title, items, numbered, icon, delay }: { title: string; items: string[]; numbered?: boolean; icon?: string; delay: number }) {
+export function ListCard({ title, items, numbered, icon, delay }: { title: string; items: string[]; numbered?: boolean; icon?: string; delay: number }) {
   const styles = useThemedStyles(createStyles);
   if (items.length === 0) return null;
   return (

@@ -99,7 +99,8 @@ public class MovementService {
                 .map(t -> "Precaución por " + catalog.tagLabels().getOrDefault(t, t).toLowerCase(Locale.ROOT)).toList();
         return new MovementDetail(m.key(), m.name(), description, steps, m.cues(), mistakes, m.muscles(), m.equipment(),
                 m.impact(), wm == null ? null : wm.level(), wm == null ? null : wm.pattern(), images, video,
-                wger.muscleViews(), cautions, safety.allowed(m, ctx.user()), favorites(ctx.user().userId()).contains(key),
+                wger.muscleViews().isEmpty() ? media.muscleViewsFor(m.muscles()) : wger.muscleViews(), cautions,
+                safety.allowed(m, ctx.user()), favorites(ctx.user().userId()).contains(key),
                 src == null ? null : src.name(), src == null ? null : src.url(),
                 m.license() != null ? m.license() : src == null ? null : src.license(), m.author());
     }

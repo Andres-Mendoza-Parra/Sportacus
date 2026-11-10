@@ -19,7 +19,7 @@ export default function WorldCardItem({ world, onPress }: Props) {
   const styles = useThemedStyles(createStyles);
   const accent = deriveAccent(world.color);
   const selectable = isSelectable(world);
-  const badge = world.active ? "Activo" : world.enrolled ? "Inscrito" : !selectable ? "Próximamente" : null;
+  const badge = world.active ? "Activo" : world.enrolled ? "En tus mundos" : !selectable ? "Próximamente" : null;
 
   return (
     <PressableScale

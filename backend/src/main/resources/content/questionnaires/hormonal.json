@@ -1,0 +1,348 @@
+{
+  "area": {
+    "key": "hormonal",
+    "name": "Etapa de vida y salud hormonal",
+    "icon": "🌸",
+    "sortOrder": 180,
+    "description": "Ciclo menstrual, embarazo, posparto y menopausia. Información educativa para adaptar tu plan; no es un diagnóstico.",
+    "sensitive": true
+  },
+  "questionnaires": [
+    {
+      "key": "hormonal_etapa",
+      "title": "Tu etapa de vida",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "ho_etapa",
+          "type": "options",
+          "prompt": "¿En qué etapa estás?",
+          "hint": null,
+          "options": [
+            {"id":"ciclo_regular","icon":"🗓️","text":"Tengo ciclo menstrual regular","sub":null},
+            {"id":"ciclo_irregular","icon":"🔀","text":"Tengo ciclo menstrual irregular","sub":null},
+            {"id":"embarazo","icon":"🤰","text":"Estoy en embarazo","sub":null},
+            {"id":"posparto","icon":"👶","text":"Estoy en posparto (menos de 1 año)","sub":null},
+            {"id":"perimenopausia","icon":"🌗","text":"Perimenopausia","sub":null},
+            {"id":"menopausia","icon":"🌕","text":"Menopausia","sub":null},
+            {"id":"no_aplica","icon":"➖","text":"No aplica","sub":null}
+          ],
+          "why": "Cada etapa cambia lo que conviene: intensidad, impacto, fuerza y recuperación.",
+          "uses": ["seguridad","plan","asistente"],
+          "priority": 5,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"p_sex","in":["femenino","otro"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_ciclo_duracion",
+          "type": "options",
+          "prompt": "¿Cada cuánto suele llegar tu periodo?",
+          "hint": null,
+          "options": [
+            {"id":"menos_21","icon":null,"text":"Menos de 21 días","sub":null},
+            {"id":"21_35","icon":null,"text":"Entre 21 y 35 días","sub":null},
+            {"id":"mas_35","icon":null,"text":"Más de 35 días","sub":null},
+            {"id":"no_se","icon":null,"text":"No lo sé","sub":null}
+          ],
+          "why": "Nos permite anticipar las fases del ciclo si quieres adaptar el plan a ellas.",
+          "uses": ["plan"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["ciclo_regular","ciclo_irregular"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_ultimo_periodo",
+          "type": "date",
+          "prompt": "¿Cuándo empezó tu último periodo?",
+          "hint": null,
+          "why": "Con esta fecha estimamos tu fase actual. Es opcional y puedes actualizarla cuando quieras.",
+          "uses": ["plan","asistente"],
+          "priority": 2,
+          "refreshDays": 30,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["ciclo_regular","ciclo_irregular"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_sintomas_ciclo",
+          "type": "multi",
+          "prompt": "¿Qué síntomas del ciclo te afectan para entrenar?",
+          "hint": null,
+          "options": [
+            {"id":"colicos","icon":null,"text":"Cólicos","sub":null},
+            {"id":"fatiga","icon":null,"text":"Cansancio","sub":null},
+            {"id":"hinchazon","icon":null,"text":"Hinchazón","sub":null},
+            {"id":"animo","icon":null,"text":"Cambios de ánimo","sub":null},
+            {"id":"cabeza","icon":null,"text":"Dolor de cabeza","sub":null},
+            {"id":"sangrado_abundante","icon":null,"text":"Sangrado abundante","sub":null},
+            {"id":"sueno","icon":null,"text":"Peor sueño","sub":null},
+            {"id":"ninguno","icon":null,"text":"Ninguno en especial","sub":null}
+          ],
+          "why": "En esos días proponemos sesiones que te sienten mejor, sin dejar de moverte si quieres.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["ciclo_regular","ciclo_irregular"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_ajustar_ciclo",
+          "type": "options",
+          "prompt": "¿Quieres que adaptemos tu plan a tu ciclo?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"quizas","icon":null,"text":"Quizás más adelante","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Si quieres, ajustamos intensidad y recordatorios según la fase.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["ciclo_regular","ciclo_irregular"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_anticonceptivo",
+          "type": "options",
+          "prompt": "¿Usas anticonceptivos hormonales?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Cambian cómo se notan las fases del ciclo; lo tenemos en cuenta al adaptar el plan.",
+          "uses": ["plan"],
+          "priority": 1,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["ciclo_regular","ciclo_irregular"]},
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "hormonal_embarazo_posparto",
+      "title": "Embarazo y posparto",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "ho_semanas",
+          "type": "number",
+          "prompt": "¿Cuántas semanas de embarazo tienes?",
+          "hint": null,
+          "min": 1,
+          "max": 42,
+          "step": null,
+          "unit": "semanas",
+          "why": "La actividad recomendada cambia por trimestre; ajustamos ejercicios y posiciones.",
+          "uses": ["seguridad","plan"],
+          "priority": 4,
+          "refreshDays": 14,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["embarazo"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_aval",
+          "type": "options",
+          "prompt": "¿Tu profesional de salud te autorizó a hacer ejercicio?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"no","icon":null,"text":"Todavía no","sub":null},
+            {"id":"restricciones","icon":null,"text":"Sí, con restricciones","sub":null}
+          ],
+          "why": "Sin aval, solo proponemos actividad muy suave y te animamos a consultarlo.",
+          "uses": ["seguridad","plan"],
+          "priority": 5,
+          "refreshDays": 30,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["embarazo","posparto"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_meses_posparto",
+          "type": "options",
+          "prompt": "¿Cuánto tiempo hace que diste a luz?",
+          "hint": null,
+          "options": [
+            {"id":"0_6sem","icon":null,"text":"Menos de 6 semanas","sub":null},
+            {"id":"6sem_3m","icon":null,"text":"6 semanas a 3 meses","sub":null},
+            {"id":"3_6m","icon":null,"text":"3 a 6 meses","sub":null},
+            {"id":"6_12m","icon":null,"text":"6 a 12 meses","sub":null}
+          ],
+          "why": "El regreso al ejercicio es gradual: empezamos por lo que tu cuerpo necesita ahora.",
+          "uses": ["seguridad","plan"],
+          "priority": 4,
+          "refreshDays": 30,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["posparto"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_parto",
+          "type": "options",
+          "prompt": "¿Cómo fue el parto?",
+          "hint": null,
+          "options": [
+            {"id":"vaginal","icon":null,"text":"Vaginal","sub":null},
+            {"id":"cesarea","icon":null,"text":"Cesárea","sub":null}
+          ],
+          "why": "Tras una cesárea cuidamos más el abdomen y la progresión.",
+          "uses": ["seguridad","plan"],
+          "priority": 3,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["posparto"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_lactancia",
+          "type": "options",
+          "prompt": "¿Estás lactando?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Ajustamos hidratación, energía y comodidad en tus sesiones.",
+          "uses": ["asistente","plan"],
+          "priority": 2,
+          "refreshDays": 60,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["posparto"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_suelo_pelvico",
+          "type": "options",
+          "prompt": "¿Notas escapes de orina al saltar, toser o reír?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"a_menudo","icon":null,"text":"A menudo","sub":null}
+          ],
+          "why": "Es común y tiene manejo: si pasa, priorizamos suelo pélvico y bajo impacto. No es un diagnóstico.",
+          "uses": ["seguridad","plan"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["embarazo","posparto","perimenopausia","menopausia"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_diastasis",
+          "type": "options",
+          "prompt": "¿Te han dicho que tienes separación de los músculos abdominales (diástasis)?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"no_se","icon":null,"text":"No lo sé","sub":null}
+          ],
+          "why": "Si es así, evitamos ejercicios que la empeoren y elegimos alternativas.",
+          "uses": ["seguridad","plan"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["posparto"]},
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "hormonal_menopausia",
+      "title": "Perimenopausia y menopausia",
+      "subtitle": "1 minuto",
+      "minutes": 1,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "ho_sintomas_meno",
+          "type": "multi",
+          "prompt": "¿Qué cambios notas en esta etapa?",
+          "hint": null,
+          "options": [
+            {"id":"bochornos","icon":null,"text":"Bochornos","sub":null},
+            {"id":"sueno","icon":null,"text":"Peor sueño","sub":null},
+            {"id":"articulaciones","icon":null,"text":"Dolor articular","sub":null},
+            {"id":"animo","icon":null,"text":"Cambios de ánimo","sub":null},
+            {"id":"energia","icon":null,"text":"Menos energía","sub":null},
+            {"id":"peso","icon":null,"text":"Cambios de peso","sub":null},
+            {"id":"ninguno","icon":null,"text":"Ninguno en especial","sub":null}
+          ],
+          "why": "La fuerza y el impacto ayudan a huesos y músculos; ajustamos según lo que sientes.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["perimenopausia","menopausia"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_terapia",
+          "type": "options",
+          "prompt": "¿Usas terapia hormonal indicada por tu médico?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Solo es contexto para el plan; no damos indicaciones sobre medicamentos.",
+          "uses": ["asistente"],
+          "priority": 1,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["perimenopausia","menopausia"]},
+          "cadence": null
+        },
+        {
+          "id": "ho_densitometria",
+          "type": "options",
+          "prompt": "¿Te han hecho una densitometría ósea?",
+          "hint": null,
+          "options": [
+            {"id":"normal","icon":null,"text":"Sí, normal","sub":null},
+            {"id":"baja","icon":null,"text":"Sí, con densidad baja","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Si hay baja densidad ósea, elegimos impacto y fuerza con cuidado y progresión.",
+          "uses": ["seguridad","plan"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ho_etapa","in":["perimenopausia","menopausia"]},
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

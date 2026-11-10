@@ -129,8 +129,8 @@ public class CalisthenicsWorld implements WorldModule {
 
     @Override
     public FormSpec onboardingForm(UserContext user) {
-        return Forms.form("calisthenics", "Tu punto de partida en calistenia",
-                "Con tus marcas te ubicamos en el escalón justo de cada árbol de habilidades.",
+        FormSpec form = Forms.form("calisthenics", "Tu punto de partida en calistenia",
+                "Solo necesitamos tu objetivo y dónde entrenas. Tus marcas son opcionales: sin ellas empezamos en un escalón seguro.",
                 single("c_goal", "¿Qué quieres lograr con tu peso corporal?", null,
                         opt("base", "🌱", "Construir una base sólida", "Flexiones, remo, sentadilla y plancha bien hechas"),
                         opt("fuerza", "💥", "Ser más fuerte", "Dominadas, fondos y pistol squat"),
@@ -140,23 +140,38 @@ public class CalisthenicsWorld implements WorldModule {
                         opt("primera_dominada", "🧗", "Mi primera dominada"), opt("parada_manos", "🤸", "Parada de manos"),
                         opt("l_sit", "🎯", "L-sit"), opt("muscle_up", "🚀", "Muscle-up"),
                         opt("pistol", "🦵", "Pistol squat"), opt("fondos", "💪", "Fondos en paralelas"))),
-                number("c_pushups", "¿Cuántas flexiones completas haces seguidas?",
-                        "Pecho cerca del suelo y cuerpo recto. Si ninguna, pon 0.", 0, 150, "reps"),
-                number("c_pullups", "¿Cuántas dominadas estrictas haces seguidas?",
-                        "Desde brazos estirados hasta pasar la barbilla. 0 es un punto de partida válido.", 0, 60, "reps"),
-                number("c_dips", "¿Cuántos fondos en paralelas haces seguidos?", "Si nunca los has probado, pon 0.", 0, 80, "reps"),
-                number("c_plank", "¿Cuántos segundos aguantas en plancha?", "Antebrazos en el suelo y cuerpo recto.", 0, 600, "s"),
-                number("c_squats", "¿Cuántas sentadillas profundas haces seguidas?", null, 0, 300, "reps"),
-                single("c_handstand", "¿Qué tan cerca estás de la parada de manos?", null,
-                        opt("nunca", "🌱", "Nunca la he intentado"), opt("pica", "🔺", "Hago flexiones en pica"),
-                        opt("pared", "🧱", "Aguanto en la pared"), opt("libre", "⭐", "Sostengo unos segundos sin pared")),
                 single("c_place", "¿Dónde vas a entrenar?", null,
                         opt("casa", "🏠", "En casa"), opt("parque", "🌳", "En un parque con barras"),
                         opt("ambos", "🔁", "Casa y parque")),
+                optional(number("c_pushups", "Si lo sabes: ¿cuántas flexiones completas haces seguidas?",
+                        "Opcional. Pecho cerca del suelo y cuerpo recto. Si ninguna, pon 0.", 0, 150, "reps")),
+                optional(number("c_pullups", "¿Cuántas dominadas estrictas haces seguidas?",
+                        "Opcional. Desde brazos estirados hasta pasar la barbilla. 0 es un punto de partida válido.", 0, 60, "reps")),
+                optional(number("c_dips", "¿Cuántos fondos en paralelas haces seguidos?", "Opcional. Si nunca los has probado, pon 0.", 0, 80, "reps")),
+                optional(number("c_plank", "¿Cuántos segundos aguantas en plancha?", "Opcional. Antebrazos en el suelo y cuerpo recto.", 0, 600, "s")),
+                optional(number("c_squats", "¿Cuántas sentadillas profundas haces seguidas?", "Opcional.", 0, 300, "reps")),
+                optional(single("c_handstand", "¿Qué tan cerca estás de la parada de manos?", "Opcional.",
+                        opt("nunca", "🌱", "Nunca la he intentado"), opt("pica", "🔺", "Hago flexiones en pica"),
+                        opt("pared", "🧱", "Aguanto en la pared"), opt("libre", "⭐", "Sostengo unos segundos sin pared"))),
                 optional(multi("c_equipment", "¿Qué tienes a mano en casa?", "En el parque ya contamos barra, paralelas y banco.",
                         opt("barra_dominadas", "➖", "Barra de dominadas"), opt("paralelas", "🟰", "Paralelas o dip station"),
                         opt("anillas", "⭕", "Anillas"), opt("bandas", "🎗️", "Bandas elásticas"),
-                        opt("ninguno", "🚫", "Nada de esto"))));
+                        opt("ninguno", "🚫", "Nada de esto"))),
+                optional(single("c_short", "¿Prefieres sesiones exprés de " + CalisthenicsRules.SHORT_SESSION_MIN + " minutos?",
+                        "Útiles si tienes poco margen (por ejemplo, con niños pequeños en casa).",
+                        opt("si", "⏱️", "Sí, sesiones cortas"), opt("no", "🕐", "No, uso mi tiempo habitual"))));
+        return form.withAnswers(prefill(user));
+    }
+
+    /** Precarga lo que ya contó en su Perfil 360 / perfil común para no volver a preguntarlo. */
+    static Map<String, Object> prefill(UserContext user) {
+        Map<String, Object> out = new LinkedHashMap<>();
+        String place = CalisthenicsRules.placeFromEnvironments(user.profile().environments());
+        if (place != null) out.put("c_place", place);
+        List<String> eq = CalisthenicsRules.homeEquipmentFromProfile(user.profile().equipment());
+        if (!eq.isEmpty()) out.put("c_equipment", eq);
+        if (user.insights().youngChildren()) out.put("c_short", "si");
+        return out;
     }
 
     @Override
@@ -200,11 +215,16 @@ public class CalisthenicsWorld implements WorldModule {
         };
         List<Factor> why = new ArrayList<>();
         List<String> notices = new ArrayList<>();
+        boolean marksUnknown = !a.has("c_pushups") && !a.has("c_pullups");
         // Las habilidades (invertidos, muscle-up) exigen una base mínima de empuje y jale.
         if ("habilidades".equals(track) && maxes.pushups() < 5 && maxes.pullups() == 0) {
             track = "fundamentos";
-            why.add(Factor.of("ruta", 0, "Empiezas en Fundamentos: las habilidades piden al menos 5 flexiones o 1 dominada"));
-            notices.add("Cuando llegues a la flexión completa podrás cambiar a la ruta Habilidades.");
+            why.add(Factor.of("ruta", 0, marksUnknown
+                    ? "Empiezas en Fundamentos: las habilidades piden al menos 5 flexiones o 1 dominada y aún no sabemos tus marcas"
+                    : "Empiezas en Fundamentos: las habilidades piden al menos 5 flexiones o 1 dominada"));
+            notices.add(marksUnknown
+                    ? "Cuéntanos cuántas flexiones o dominadas haces (o haz el test) y, si llegas, pasas a la ruta Habilidades."
+                    : "Cuando llegues a la flexión completa podrás cambiar a la ruta Habilidades.");
         } else {
             why.add(Factor.of("ruta", 0, "Ruta " + trackName(track) + " según tu objetivo"));
         }
@@ -216,6 +236,7 @@ public class CalisthenicsWorld implements WorldModule {
                 h.hasLowerLimbIssue(), user.profile().ageOr(30) >= 65, skills.contains("l_sit"));
         Map<String, Integer> steps = new LinkedHashMap<>();
         Map<String, Integer> lastIndex = new LinkedHashMap<>();
+        List<String> unknownTrees = CalisthenicsRules.unknownMarkTrees(trees, a::has);
         for (String tree : trees) {
             ProgressionInfo prog = progression(tree);
             if (prog == null) continue;
@@ -223,7 +244,8 @@ public class CalisthenicsWorld implements WorldModule {
             int step = Math.min(p.step(), prog.lastIndex());
             steps.put(prog.key(), step);
             lastIndex.put(prog.key(), prog.lastIndex());
-            why.add(Factor.of("ubicacion_" + tree, 0, prog.name() + ": " + p.basis() + " → empiezas en «"
+            String basis = unknownTrees.contains(tree) ? "aún no sabemos tu marca (escalón base seguro)" : p.basis();
+            why.add(Factor.of("ubicacion_" + tree, 0, prog.name() + ": " + basis + " → empiezas en «"
                     + prog.step(step).name() + "» (escalón " + (step + 1) + " de " + prog.steps().size() + ")"));
         }
         int level = CalisthenicsRules.level(steps, lastIndex);
@@ -241,6 +263,22 @@ public class CalisthenicsWorld implements WorldModule {
         state.put("place", place);
         state.put("equipment", homeEquipment);
         state.put("maxes", maxesMap(maxes));
+        List<String> unknownMarks = unknownTrees.stream().map(CalisthenicsRules.MARK_QUESTION::get).toList();
+        state.put("unknownMarks", unknownMarks);
+        String marksNotice = CalisthenicsRules.unknownMarksNotice(unknownTrees.stream().map(this::treeName).toList());
+        if (marksNotice != null) notices.add(marksNotice);
+        if (!a.has("c_place")) {
+            why.add(Factor.of("lugar", 0, "Sin lugar indicado entrenas en casa"
+                    + (homeEquipment.isEmpty() ? " con tu peso corporal y una silla" : "")
+                    + "; si vas a un parque con barras, cámbialo en tu configuración"));
+        }
+        boolean shortSessions = "si".equals(a.string("c_short"))
+                || (!a.has("c_short") && user.insights().youngChildren());
+        state.put("shortSessions", shortSessions);
+        if (shortSessions) {
+            why.add(Factor.of("sesiones_cortas", 0, "Sesiones exprés de ~" + CalisthenicsRules.SHORT_SESSION_MIN + " min"
+                    + (user.insights().youngChildren() ? ": nos contaste que tienes hijos pequeños" : ", como pediste")));
+        }
 
         if (trees.contains("jale") && "casa".equals(place) && !homeEquipment.contains("barra_dominadas")
                 && !user.profile().hasEquipment("barra_dominadas")) {
@@ -250,7 +288,10 @@ public class CalisthenicsWorld implements WorldModule {
             notices.add("En casa los fondos se quedan en la silla; con paralelas (o en el parque) avanzas por todo el árbol.");
         }
         if (!h.vigorousAllowed()) {
-            notices.add("Hasta que confirmes el aval de un profesional dejaremos 3 repeticiones en reserva y nada de ir al fallo.");
+            notices.add(h.moderateReason() + ". Mientras tanto dejamos 3 repeticiones en reserva y nada de ir al fallo.");
+        }
+        if (user.insights().noJumpingAtHome() && !"parque".equals(place)) {
+            notices.add("Nos contaste que en casa no puedes saltar: en casa nada de saltos ni caídas; subes a la barra o a las paralelas con una silla.");
         }
         if (!h.injuredZones().isEmpty()) {
             notices.add("Cuidamos tus zonas con molestias (" + String.join(", ", h.injuredZones())
@@ -259,14 +300,17 @@ public class CalisthenicsWorld implements WorldModule {
         if (bmi != null && bmi >= 30) {
             notices.add("Empezamos con variantes inclinadas y asistidas para cuidar muñecas, hombros y rodillas.");
         }
-        return new EnrollmentResult(track, level, a.asMap(), state, goals(track, skills, steps, maxes), steps, why, notices);
+        return new EnrollmentResult(track, level, a.asMap(), state,
+                goals(track, skills, steps, maxes, a.has("c_pullups")), steps, why, notices);
     }
 
-    private List<GoalSpec> goals(String track, List<String> skills, Map<String, Integer> steps, Maxes maxes) {
+    private List<GoalSpec> goals(String track, List<String> skills, Map<String, Integer> steps, Maxes maxes,
+            boolean pullupsKnown) {
         List<GoalSpec> goals = new ArrayList<>();
         LocalDate now = LocalDate.now();
         Set<String> wanted = new LinkedHashSet<>(skills);
-        if (maxes.pullups() == 0 && steps.containsKey("cal_jale")) wanted.add("primera_dominada");
+        // Solo proponemos la primera dominada si nos dijo que aún no tiene (no lo suponemos).
+        if (pullupsKnown && maxes.pullups() == 0 && steps.containsKey("cal_jale")) wanted.add("primera_dominada");
         for (String s : wanted) {
             if (goals.size() >= 2) break;
             switch (s) {
@@ -345,14 +389,19 @@ public class CalisthenicsWorld implements WorldModule {
         List<String> trees = treesOf(ctx, track);
         Map<String, Integer> steps = userWorlds.progressionSteps(ctx.world().id());
         Set<String> equipment = equipmentFor(ctx);
+        // En casa sin poder saltar: fuera los movimientos con saltos y avisamos cómo subir sin golpes.
+        boolean quietHome = quietHome(ctx);
         Map<String, WorldMovement> usable = new LinkedHashMap<>();
-        kit.usableMovements(KEY, user, equipment).forEach(m -> usable.put(m.key(), m));
+        kit.usableMovements(KEY, user, equipment).stream()
+                .filter(m -> !(quietHome && CalisthenicsRules.jumpy(m.key(), m.name())))
+                .forEach(m -> usable.put(m.key(), m));
         Set<String> safe = kit.safety().filter(kit.catalog().movements(KEY), user).stream().map(WorldMovement::key)
                 .collect(Collectors.toSet());
         Map<String, Object> holds = ctx.world().stateMap("holds");
         boolean gentle = !user.health().vigorousAllowed();
         int days = Math.max(2, Math.min(5, user.profile().daysOr(3)));
-        int minutes = Math.max(20, user.profile().minutesOr(45));
+        boolean shortSessions = Boolean.TRUE.equals(ctx.world().stateValue("shortSessions"));
+        int minutes = CalisthenicsRules.sessionMinutes(user.profile().minutesOr(45), shortSessions);
         Set<String> focusTrees = ctx.world().profile().listWithoutNone("c_skills").stream()
                 .map(CalisthenicsRules.SKILL_TREE::get).filter(Objects::nonNull).collect(Collectors.toSet());
 
@@ -392,6 +441,7 @@ public class CalisthenicsWorld implements WorldModule {
         WorldMovement cooldown = usable.get("vuelta_calma_calistenia");
         Map<String, Integer> frequency = new LinkedHashMap<>();
         boolean anyVolume = false;
+        boolean anyQuiet = false;
         List<GeneratedSession> sessions = new ArrayList<>();
 
         for (int d = 0; d < schedule.size(); d++) {
@@ -412,6 +462,11 @@ public class CalisthenicsWorld implements WorldModule {
                             .withNotes(c.prog().name() + " · escalón " + (c.currentStep() + 1) + " de " + c.prog().steps().size());
                 } else {
                     b = b.withNotes(c.note());
+                }
+                String quiet = quietHome ? CalisthenicsRules.quietCue(c.movement().key()) : null;
+                if (quiet != null) {
+                    b = b.withNotes(b.notes() + " · " + quiet);
+                    anyQuiet = true;
                 }
                 blocks.add(b);
                 used += blockSeconds(p);
@@ -457,7 +512,12 @@ public class CalisthenicsWorld implements WorldModule {
                 + (minFreq < 2 ? " (con más minutos por sesión llegarías a 2 en todos)" : "")));
         why.add(1, Factor.of("escalones", 0, "El bloque principal de cada árbol es tu escalón actual; se desbloquea el siguiente al cumplir su criterio (p. ej. 3 × 12 limpias)"));
         if (anyVolume) why.add(Factor.of("volumen", 0, "Con el tiempo que sobra sumas series del escalón anterior: volumen fácil que consolida la técnica"));
-        if (gentle) why.add(Factor.of("seguridad", 0, "Sin aval médico confirmado: 3 repeticiones en reserva y sin ir al fallo"));
+        if (gentle) why.add(Factor.of("seguridad", 0, user.health().moderateReason() + ": 3 repeticiones en reserva y sin ir al fallo"));
+        if (shortSessions) why.add(Factor.of("sesiones_cortas", 0, "Sesiones exprés de ~" + minutes + " min"
+                + (user.insights().youngChildren() ? " porque nos contaste que tienes hijos pequeños" : ", como elegiste")
+                + "; puedes cambiarlo cuando quieras"));
+        if (quietHome) why.add(Factor.of("sin_saltos", 0, "Como en casa no puedes saltar, el plan no tiene saltos"
+                + (anyQuiet ? " y te indicamos cómo subir a la barra o a las paralelas sin golpes" : "")));
         String title = "Calistenia · " + track.name().toLowerCase() + " · " + active.size() + " árboles";
         return new GeneratedPlan(title, "Semana tipo que se repite; cada escalón que desbloqueas actualiza tu plan.", 1,
                 null, why, sessions);
@@ -568,6 +628,11 @@ public class CalisthenicsWorld implements WorldModule {
                 .orElse(null));
     }
 
+    /** Entrena (al menos a veces) en casa y nos dijo que allí no puede saltar. */
+    private static boolean quietHome(WorldContext ctx) {
+        return ctx.user().insights().noJumpingAtHome() && !"parque".equals(ctx.world().stateString("place"));
+    }
+
     /** Equipo para calistenia: lo de casa + lo del parque si entrena allí; siempre una silla. */
     private Set<String> equipmentFor(WorldContext ctx) {
         Set<String> eq = new HashSet<>(ctx.user().profile().equipment() == null ? List.of() : ctx.user().profile().equipment());
@@ -599,7 +664,8 @@ public class CalisthenicsWorld implements WorldModule {
 
         // Métricas: mejor serie y mejor sostenimiento por movimiento, con récords personales. Los bloques de
         // volumen (accesorio) son series cómodas a propósito: no cuentan como marca.
-        boolean declaredNoPullups = CalisthenicsRules.num(ctx.world().stateMap("maxes").get("pullups"), 0) == 0;
+        boolean declaredNoPullups = CalisthenicsRules.num(ctx.world().stateMap("maxes").get("pullups"), 0) == 0
+                && !stringList(ctx.world().stateValue("unknownMarks")).contains("c_pullups");
         for (var e : byMovement.entrySet()) {
             if (e.getValue().stream().allMatch(b -> "accesorio".equals(b.blockType()))) continue;
             String mk = e.getKey();
@@ -738,6 +804,11 @@ public class CalisthenicsWorld implements WorldModule {
             }
         }
         fx.state("maxes", maxes);
+        String knownNow = CalisthenicsRules.TEST_MARK.get(key);
+        List<String> unknownMarks = stringList(ctx.world().stateValue("unknownMarks"));
+        if (knownNow != null && unknownMarks.contains(knownNow)) {
+            fx.state("unknownMarks", unknownMarks.stream().filter(m -> !m.equals(knownNow)).toList());
+        }
 
         ProgressionInfo prog = progression(tree);
         List<String> trees = treesOf(ctx);
@@ -887,6 +958,22 @@ public class CalisthenicsWorld implements WorldModule {
         if (!h.injuredZones().isEmpty()) {
             out.add(Insight.of("🩹", "Cuidamos tus zonas sensibles", "Evitamos cargar: " + String.join(", ", h.injuredZones())
                     + ". Si un ejercicio duele (no es esfuerzo, es dolor), detente.", "warn"));
+        }
+        if (!h.vigorousAllowed()) {
+            out.add(Insight.of("🛡️", "Intensidad moderada", h.moderateReason() + ".", "info"));
+        }
+        // 5) Datos que aún faltan o que pueden cambiar el plan.
+        List<String> unknownMarks = stringList(ctx.world().stateValue("unknownMarks"));
+        if (!unknownMarks.isEmpty()) {
+            out.add(new Insight("📏", "Ajusta tu punto de partida",
+                    "Aún no sabemos algunas de tus marcas y empezaste en un escalón base seguro. Haz el test o cuéntanos tus marcas para ajustarlo.",
+                    "info", "Contar mis marcas", "/onboarding/setup/" + KEY + "?mode=edit"));
+        }
+        if (user.insights().youngChildren() && !Boolean.TRUE.equals(ctx.world().stateValue("shortSessions"))
+                && !"no".equals(ctx.world().profile().string("c_short"))) {
+            out.add(new Insight("⏱️", "¿Poco margen en casa?",
+                    "Como tienes hijos pequeños, puedes pasar a sesiones exprés de " + CalisthenicsRules.SHORT_SESSION_MIN
+                            + " min sin perder tus escalones.", "info", "Cambiar", "/onboarding/setup/" + KEY + "?mode=edit"));
         }
         if (plan.doneThisWeek() == 0) {
             out.add(new Insight("▶️", "Empieza la semana", "Tu primera sesión te espera.", "info", "Entrenar", "/session"));

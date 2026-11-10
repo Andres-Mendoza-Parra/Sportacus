@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
-import { setCacheWorld } from "../services/worldService";
+import { clearBlockDetailMemo, setCacheWorld } from "../services/worldService";
 import { activateWorld, fetchMyWorlds } from "../services/worldsService";
 import { MyWorld } from "../services/types";
 import { useTheme } from "../theme";
@@ -23,7 +23,9 @@ interface WorldContextValue {
 const WorldContext = createContext<WorldContextValue | undefined>(undefined);
 
 /**
- * Mundo activo del usuario: carga /me/worlds, expone el activo y tiñe toda la app con su color.
+ * Mundo activo del usuario: carga /me/worlds, expone el activo y avisa su color al tema. El color del mundo
+ * solo tiñe la app cuando en Ajustes está elegido "Color de mi mundo" (accent === "mundo", lo resuelve
+ * ThemeProvider); se registra siempre para que volver a esa opción aplique el color correcto al instante.
  * Cambiar de mundo (activate) re-especializa todas las pestañas porque `version` cambia.
  */
 export function WorldProvider({ children }: { children: React.ReactNode }) {
@@ -84,7 +86,10 @@ export function WorldProvider({ children }: { children: React.ReactNode }) {
     [setWorldColor, setWorlds],
   );
 
-  const invalidate = useCallback(() => setVersion((v) => v + 1), []);
+  const invalidate = useCallback(() => {
+    clearBlockDetailMemo();
+    setVersion((v) => v + 1);
+  }, []);
 
   useEffect(() => {
     if (!token) {

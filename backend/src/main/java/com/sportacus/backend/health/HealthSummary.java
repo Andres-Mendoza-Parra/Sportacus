@@ -58,9 +58,24 @@ public record HealthSummary(
         return worst;
     }
 
-    /** La intensidad vigorosa requiere aval médico confirmado cuando el chequeo lo pidió. */
+    /**
+     * Intensidad vigorosa: requiere haber hecho el chequeo (modo prudente mientras tanto) y, si el chequeo lo pidió,
+     * el aval médico confirmado.
+     */
     public boolean vigorousAllowed() {
-        return !(requiresClearance && !clearanceConfirmed);
+        return screened && !(requiresClearance && !clearanceConfirmed);
+    }
+
+    /** Sin chequeo de salud todavía: se entrena en modo prudente (moderado, sin impacto alto). */
+    public boolean prudentMode() {
+        return !screened;
+    }
+
+    /** Explicación para el usuario de por qué la intensidad es moderada (null si no lo es). */
+    public String moderateReason() {
+        if (!screened) return "Modo prudente: completa tu chequeo de salud (1 minuto) para desbloquear la intensidad alta";
+        if (requiresClearance && !clearanceConfirmed) return "Intensidad moderada hasta que confirmes el aval médico";
+        return null;
     }
 
     /** Hay banderas rojas o síntomas cardiovasculares sin aval: la app debe detener planes y derivar. */

@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.UUID;
 
 /** Plan activo tal como se muestra (y como lo leen los mundos para armar su dashboard). */
+/**
+ * @param updateReason por qué se regeneró el plan solo (datos nuevos), o null
+ * @param updatedAt    cuándo se generó este plan
+ */
 public record PlanView(UUID id, String title, String summary, int weeks, int currentWeek, LocalDate startsOn,
-        LocalDate weekStart, Double score, List<Factor> rationale, List<SessionView> sessions) {
+        LocalDate weekStart, Double score, List<Factor> rationale, List<SessionView> sessions, String updateReason,
+        java.time.OffsetDateTime updatedAt) {
 
     /** Sesiones de la semana en curso del plan. */
     public List<SessionView> currentWeekSessions() {
@@ -28,6 +33,6 @@ public record PlanView(UUID id, String title, String summary, int weeks, int cur
 
     public record BlockView(UUID id, int orderIndex, String blockType, String movementKey, String movementName,
             String title, Prescription prescription, String progressionKey, Integer stepIndex, String notes,
-            String imageUrl) {
+            String imageUrl, String summary) {
     }
 }

@@ -87,11 +87,13 @@ public class GymWorld implements WorldModule {
 
     @Override
     public FormSpec onboardingForm(UserContext user) {
-        return Forms.form("gym", "Tu entrenamiento en el gimnasio", "Así ajustamos el split, las series y las cargas.",
+        boolean caution = user.insights().eatingCaution();
+        FormSpec form = Forms.form("gym", "Tu entrenamiento en el gimnasio",
+                "Solo 3 preguntas; lo demás es opcional y puedes afinarlo después.",
                 single("g_goal", "¿Cuál es tu objetivo principal?", null,
                         opt("hipertrofia", "💪", "Ganar músculo"),
                         opt("fuerza", "🏆", "Ser más fuerte en los básicos"),
-                        opt("recomposicion", "🔥", "Perder grasa sin perder músculo"),
+                        opt("recomposicion", "🔥", GymPersonalization.recompositionOption(caution)),
                         opt("base", "🧱", "Aprender la técnica y crear el hábito")),
                 single("g_experience", "¿Cuánto tiempo llevas entrenando con pesas?", null,
                         opt("0", "🌱", "Nunca o casi nunca"), opt("1", "🌿", "Menos de 6 meses"),
@@ -110,6 +112,9 @@ public class GymWorld implements WorldModule {
                         "g_experience", "2", "3")),
                 optional(showIf(number("g_deadlift_5rm", "¿Y 5 repeticiones de peso muerto?", null, 10, 450, "kg"),
                         "g_experience", "2", "3")));
+        // Si el Perfil 360 ya dice dónde entrena (entornos / equipo), lo dejamos precargado.
+        String place = GymPersonalization.defaultPlace(user.profile());
+        return place == null ? form : form.withAnswers(Map.of("g_place", place));
     }
 
     @Override
@@ -140,9 +145,21 @@ public class GymWorld implements WorldModule {
         int exp = a.integer("g_experience", 0);
         int level = Math.min(5, Math.max(1, exp + 1));
         if ("0".equals(a.string("g_experience")) && !"base".equals(track)) level = 1;
+        boolean caution = user.insights().eatingCaution();
         List<Factor> why = new ArrayList<>();
-        why.add(Factor.of("ruta", 0, "Ruta " + track + " según tu objetivo"));
-        why.add(Factor.of("nivel", 0, "Nivel " + level + " de 5 según tu experiencia"));
+        why.add(Factor.of("ruta", 0, "Ruta de " + GymPersonalization.trackLabel(track, caution) + " según tu objetivo"));
+        why.add(Factor.of("nivel", 0, a.has("g_experience") ? "Nivel " + level + " de 5 según tu experiencia"
+                : "Nivel 1 de 5: aún no sabemos tu experiencia, así que empezamos por la técnica"));
+        String place = a.string("g_place");
+        if (place == null) {
+            String guessed = GymPersonalization.defaultPlace(user.profile());
+            place = guessed == null ? "gimnasio" : guessed;
+            why.add(Factor.of("lugar", 0, guessed == null ? "Asumimos un gimnasio; cámbialo cuando quieras"
+                    : "Usamos el lugar y el equipo de tu perfil"));
+        }
+        if (caution && "recomposicion".equals(track)) {
+            why.add(Factor.of("enfoque", 0, "Por lo que nos contaste sobre tu relación con la comida, el foco es fuerza y salud, no el peso"));
+        }
 
         Map<String, Object> loads = new LinkedHashMap<>();
         // 5RM ≈ 87 % del 1RM; empezamos al ~80 % del 5RM declarado para afinar la técnica la primera semana.
@@ -151,7 +168,7 @@ public class GymWorld implements WorldModule {
         putLoad(loads, "peso_muerto", a.number("g_deadlift_5rm"));
         Map<String, Object> state = new LinkedHashMap<>();
         state.put("loads", loads);
-        state.put("place", a.string("g_place", "gimnasio"));
+        state.put("place", place);
         state.put("focus", a.list("g_focus"));
 
         List<GoalSpec> goals = new ArrayList<>();
@@ -166,13 +183,7 @@ public class GymWorld implements WorldModule {
             default -> goals.add(new GoalSpec("gym_tecnica", "Completar 12 sesiones dominando los patrones básicos",
                     Map.of("sessions", 12), LocalDate.now().plusWeeks(6)));
         }
-        List<String> notices = new ArrayList<>();
-        if (!user.health().vigorousAllowed()) {
-            notices.add("Mantendremos RIR 3 (lejos del fallo) hasta que confirmes el aval de un profesional.");
-        }
-        if (!user.health().injuredZones().isEmpty()) {
-            notices.add("Excluimos los ejercicios que cargan tus zonas con molestias: " + String.join(", ", user.health().injuredZones()) + ".");
-        }
+        List<String> notices = GymPersonalization.notices(user.health(), user.insights(), place, !loads.isEmpty());
         return new EnrollmentResult(track, level, a.asMap(), state, goals, Map.of(), why, notices);
     }
 
@@ -226,7 +237,10 @@ public class GymWorld implements WorldModule {
         int days = Math.max(2, Math.min(6, user.profile().daysOr(3)));
         int minutes = user.profile().minutesOr(60);
         Set<String> equipment = equipmentFor(ctx);
-        List<WorldMovement> usable = kit.usableMovements(KEY, user, equipment);
+        String place = ctx.world().stateString("place");
+        boolean noJumps = GymPersonalization.avoidJumps(user.insights(), place);
+        List<WorldMovement> usable = kit.usableMovements(KEY, user, equipment).stream()
+                .filter(m -> !noJumps || !GymPersonalization.jumpy(m.movement())).toList();
         Set<String> liked = kit.liked(user.userId(), KEY);
         Set<String> disliked = kit.disliked(user.userId(), KEY);
         Map<String, Object> loads = ctx.world().stateMap("loads");
@@ -237,7 +251,7 @@ public class GymWorld implements WorldModule {
         int sets = track.configInt("sets", 3);
         int repsMin = track.configInt("repsMin", 8);
         int repsMax = track.configInt("repsMax", 12);
-        int rir = user.health().vigorousAllowed() ? track.configInt("rir", 2) : 3;
+        int rir = GymPersonalization.rir(user.health(), track.configInt("rir", 2));
         int rest = track.configInt("restS", 90);
         // Cada ejercicio ≈ series × (40 s de trabajo + descanso); 8 min de calentamiento.
         int perExerciseS = sets * (40 + rest);
@@ -256,7 +270,7 @@ public class GymWorld implements WorldModule {
             List<GeneratedBlock> blocks = new ArrayList<>();
             if (warmup != null) {
                 blocks.add(GeneratedBlock.of("calentamiento", warmup.key(), warmup.name(),
-                        Prescription.time(300, "suave").withCue("Después, 2 series de aproximación ligeras en el primer ejercicio")));
+                        Prescription.time(300, "suave").withCue(GymPersonalization.warmupCue(noJumps))));
             }
             Set<String> usedToday = new HashSet<>();
             for (String pattern : slots) {
@@ -300,7 +314,15 @@ public class GymWorld implements WorldModule {
         why.add(Factor.of("rango", 0, repsMin + "–" + repsMax + " repeticiones con RIR " + rir + " (ruta " + track.name() + ")"));
         why.add(Factor.of("volumen", 0, "Objetivo de ~10 series semanales por músculo (Schoenfeld et al., 2017)"));
         if (excluded > 0) why.add(Factor.of("seguridad", 0, excluded + " ejercicios descartados por tu equipamiento o tu salud"));
-        String title = "Plan de " + track.name().toLowerCase() + " · " + splitName(days);
+        if (!user.health().vigorousAllowed()) why.add(Factor.of("intensidad", 0, user.health().moderateReason()));
+        if (noJumps) why.add(Factor.of("sin_saltos", 0, "Como en casa no puedes saltar, el plan no incluye saltos"));
+        if (user.insights().lowBudget() && GymPersonalization.atHome(place)) {
+            why.add(Factor.of("presupuesto", 0, GymPersonalization.budgetTip()));
+        }
+        boolean caution = user.insights().eatingCaution();
+        if (caution) why.add(Factor.of("enfoque", 0, "El foco es fuerza, energía y salud; no perseguimos cambios de peso"));
+        String title = "Plan de " + (caution ? GymPersonalization.trackLabel(track.key(), true) : track.name().toLowerCase())
+                + " · " + splitName(days);
         return new GeneratedPlan(title, "Semana tipo que se repite; la carga sube sola cuando dominas el rango.", 1,
                 null, why, sessions);
     }
@@ -503,6 +525,12 @@ public class GymWorld implements WorldModule {
     private List<Insight> insights(WorldContext ctx, Map<String, Double> weekly, PlanView plan) {
         List<Insight> out = new ArrayList<>();
         HealthSummary h = ctx.user().health();
+        if (h.prudentMode()) {
+            out.add(new Insight("🛡️", "Modo prudente", h.moderateReason() + ".", "info", "Hacer chequeo", "/health"));
+        }
+        if (ctx.user().insights().lowBudget() && GymPersonalization.atHome(ctx.world().stateString("place"))) {
+            out.add(Insight.of("🎒", "Entrena sin gastar", GymPersonalization.budgetTip(), "info"));
+        }
         if (!h.injuredZones().isEmpty()) {
             out.add(Insight.of("🩹", "Cuidamos tus zonas sensibles",
                     "Tu plan evita cargar: " + String.join(", ", h.injuredZones()) + ". Si duele, para y cambia el ejercicio.", "info"));
@@ -575,6 +603,9 @@ public class GymWorld implements WorldModule {
                 técnica de los patrones básicos, sobrecarga progresiva y volumen semanal por músculo (10–20 series).
                 El usuario sigue la ruta "%s" en nivel %d de 5. Sugiere cargas solo en relación con lo que ya registró
                 (p. ej. "sube 2,5 kg"), nunca cifras absolutas inventadas. Prioriza la técnica sobre la carga.
-                """.formatted(ctx.world().trackKey(), ctx.world().level());
+                """.formatted(ctx.world().trackKey(), ctx.world().level())
+                + (ctx.user().insights().eatingCaution()
+                        ? "Nunca hables de perder grasa, déficit calórico, peso ni estética: enfócate en fuerza, energía y salud.\n"
+                        : "");
     }
 }

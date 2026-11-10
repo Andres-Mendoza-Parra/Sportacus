@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 
+import { PASSWORD_HINT, PASSWORD_MAX, passwordError } from "../../constants/validation";
 import { useAuth } from "../../context/AuthContext";
 import { extractErrorMessage } from "../../services/api";
 import { changePassword, updateProfile } from "../../services/profileService";
@@ -20,7 +21,7 @@ interface PasswordErrors {
 export default function AccountSection({ delay }: { delay: number }) {
   const s = useThemedStyles(createStyles);
   const toast = useToast();
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, adoptSession } = useAuth();
   const [name, setName] = useState(user?.name ?? "");
   const [nameError, setNameError] = useState<string | null>(null);
   const [savingName, setSavingName] = useState(false);
@@ -52,17 +53,20 @@ export default function AccountSection({ delay }: { delay: number }) {
   async function savePassword() {
     const next: PasswordErrors = {};
     if (!currentPassword) next.current = "Ingresa tu contraseña actual";
-    if (newPassword.length < 6) next.next = "Debe tener al menos 6 caracteres";
+    const pwd = passwordError(newPassword);
+    if (pwd) next.next = pwd;
     if (confirmPassword !== newPassword) next.confirm = "Las contraseñas no coinciden";
     setErrors(next);
     if (Object.keys(next).length > 0) return;
     setSavingPassword(true);
     try {
-      await changePassword(currentPassword, newPassword);
+      const response = await changePassword(currentPassword, newPassword);
+      // Las sesiones anteriores quedan revocadas: esta sigue con el token nuevo.
+      if (response?.token) await adoptSession(response);
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-      toast.success("Contraseña actualizada");
+      toast.success("Contraseña actualizada. Cerramos tus otras sesiones abiertas por seguridad.");
     } catch (error) {
       toast.error(extractErrorMessage(error));
     } finally {
@@ -101,6 +105,8 @@ export default function AccountSection({ delay }: { delay: number }) {
       />
       <TextField
         label="Nueva contraseña"
+        placeholder={PASSWORD_HINT}
+        maxLength={PASSWORD_MAX}
         passwordToggle
         value={newPassword}
         onChangeText={(t) => {

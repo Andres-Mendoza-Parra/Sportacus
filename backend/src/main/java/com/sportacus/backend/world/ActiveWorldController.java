@@ -31,6 +31,8 @@ import com.sportacus.backend.world.dashboard.DashboardService;
 import com.sportacus.backend.world.dashboard.DashboardService.DashboardResponse;
 import com.sportacus.backend.world.dashboard.DashboardService.ProgressResponse;
 import com.sportacus.backend.world.enrollment.WorldContextService;
+import com.sportacus.backend.world.goals.GoalService;
+import com.sportacus.backend.world.goals.GoalService.GoalView;
 import com.sportacus.backend.world.library.MovementService;
 import com.sportacus.backend.world.library.MovementService.MovementCard;
 import com.sportacus.backend.world.library.MovementService.MovementDetail;
@@ -56,10 +58,12 @@ public class ActiveWorldController {
     private final AssessmentService assessments;
     private final MovementService movements;
     private final WorldRegistry registry;
+    private final GoalService goals;
 
     public ActiveWorldController(WorldContextService contexts, DashboardService dashboards, PlanService plans,
             SessionService sessions, SessionLogRepository sessionLogs, AssessmentService assessments,
-            MovementService movements, WorldRegistry registry) {
+            MovementService movements, WorldRegistry registry, GoalService goals) {
+        this.goals = goals;
         this.contexts = contexts;
         this.dashboards = dashboards;
         this.plans = plans;
@@ -98,19 +102,28 @@ public class ActiveWorldController {
         return plans.regenerate(ctx(user, world));
     }
 
-    public record SessionDetail(SessionView session, SessionUi ui) {
+    /** @param today disposición de hoy (check-in): el reproductor sugiere bajar el volumen si factor < 1 */
+    public record SessionDetail(SessionView session, SessionUi ui,
+            com.sportacus.backend.world.core.ProfileInsights.Readiness today) {
     }
 
     @GetMapping("/sessions/{sessionId}")
     public SessionDetail session(@AuthenticationPrincipal User user, @PathVariable UUID sessionId,
             @RequestParam(required = false) String world) {
         WorldContext c = ctx(user, world);
-        return new SessionDetail(plans.session(c, sessionId), registry.require(c.world().worldKey()).sessionUi());
+        return new SessionDetail(plans.session(c, sessionId), registry.require(c.world().worldKey()).sessionUi(),
+                c.user().insights().readiness());
     }
 
     @GetMapping("/session-ui")
     public SessionUi sessionUi(@AuthenticationPrincipal User user, @RequestParam(required = false) String world) {
         return registry.require(ctx(user, world).world().worldKey()).sessionUi();
+    }
+
+    @GetMapping("/blocks/{blockId}")
+    public PlanService.BlockDetail block(@AuthenticationPrincipal User user, @PathVariable UUID blockId,
+            @RequestParam(required = false) String world) {
+        return plans.blockDetail(ctx(user, world), blockId);
     }
 
     @PostMapping("/blocks/{blockId}/swap")
@@ -141,7 +154,7 @@ public class ActiveWorldController {
     public void nextDayPain(@AuthenticationPrincipal User user, @PathVariable UUID logId,
             @RequestBody PainRequest body, @RequestParam(required = false) String world) {
         if (body == null || body.pain() == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Falta el dolor");
-        sessions.nextDayPain(ctx(user, world), logId, body.pain());
+        sessions.nextDayPain(user, logId, body.pain()); // el mundo sale del registro, no del activo
     }
 
     public record StepRequest(Integer step) {
@@ -155,6 +168,24 @@ public class ActiveWorldController {
         WorldContext c = ctx(user, world);
         sessions.adjustStep(c, key, body.step());
         return plans.ensurePlan(contexts.reload(c));
+    }
+
+    // ── Metas ─────────────────────────────────────────────────
+
+    /** Metas del mundo con su avance; las medibles que ya se cumplieron quedan logradas. */
+    @GetMapping("/goals")
+    public List<GoalView> goals(@AuthenticationPrincipal User user, @RequestParam(required = false) String world) {
+        return goals.list(ctx(user, world).world().id());
+    }
+
+    @PostMapping("/goals/{id}/complete")
+    public GoalView completeGoal(@AuthenticationPrincipal User user, @PathVariable UUID id) {
+        return goals.complete(user.getId(), id);
+    }
+
+    @PostMapping("/goals/{id}/reopen")
+    public GoalView reopenGoal(@AuthenticationPrincipal User user, @PathVariable UUID id) {
+        return goals.reopen(user.getId(), id);
     }
 
     // ── Tests ─────────────────────────────────────────────────

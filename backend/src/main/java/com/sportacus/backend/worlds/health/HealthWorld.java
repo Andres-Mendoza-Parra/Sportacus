@@ -3,6 +3,7 @@ package com.sportacus.backend.worlds.health;
 import static com.sportacus.backend.world.form.Forms.multi;
 import static com.sportacus.backend.world.form.Forms.no;
 import static com.sportacus.backend.world.form.Forms.opt;
+import static com.sportacus.backend.world.form.Forms.optional;
 import static com.sportacus.backend.world.form.Forms.range;
 import static com.sportacus.backend.world.form.Forms.showIf;
 import static com.sportacus.backend.world.form.Forms.single;
@@ -113,23 +114,27 @@ public class HealthWorld implements WorldModule {
                         opt("rodilla", "🦵", "Rodilla"), opt("cadera", "🦴", "Cadera"),
                         opt("lumbar", "🔻", "Espalda baja"), opt("hombro", "💪", "Hombro"),
                         opt("tobillo", "🦶", "Tobillo o pie"), opt("ninguna", "🧍", "Ninguna en particular")),
-                showIf(single("h_onset", "¿Hace cuánto empezó la molestia (o fue la cirugía)?", null,
+                // Obligatorias solo las 4 que deciden ruta y fase con seguridad (motivo, zona y dolor); el resto es
+                // opcional y, si falta, se asume lo más prudente (ver enroll y HealthAdaptations.enrollNotices).
+                range("h_pain_rest", "¿Cuánto dolor tienes ahora, en reposo?", "0 = nada · 10 = el peor imaginable", 0, 10, 1, "/10"),
+                range("h_pain_activity", "¿Y cuánto dolor tienes al moverte o en tus actividades?", "0 = nada · 10 = el peor imaginable", 0, 10, 1, "/10"),
+                optional(showIf(single("h_onset", "¿Hace cuánto empezó la molestia (o fue la cirugía)?",
+                        "Si no la respondes, empezamos en la fase más suave.",
                         opt("menos_6s", "🆕", "Menos de 6 semanas"),
                         opt("6s_3m", "📅", "Entre 6 semanas y 3 meses"),
                         opt("mas_3m", "🗓️", "Más de 3 meses")),
-                        "h_reason", "dolor_sin_lesion", "lesion_reciente", "postoperatorio", "cronica"),
-                range("h_pain_rest", "¿Cuánto dolor tienes ahora, en reposo?", "0 = nada · 10 = el peor imaginable", 0, 10, 1, "/10"),
-                range("h_pain_activity", "¿Y cuánto dolor tienes al moverte o en tus actividades?", "0 = nada · 10 = el peor imaginable", 0, 10, 1, "/10"),
-                single("h_guided", "¿Te está guiando un profesional de la salud (médico, fisioterapeuta)?", null,
-                        yes("Sí"), no("No")),
-                showIf(single("h_postop_clearance", "¿Tu médico o fisioterapeuta te autorizó a hacer ejercicio?", null,
-                        yes("Sí, tengo su autorización"), no("Todavía no")), "h_reason", "postoperatorio"),
-                multi("h_limits", "¿Qué te cuesta hoy por tu molestia?", "Elige todas las que apliquen.",
+                        "h_reason", "dolor_sin_lesion", "lesion_reciente", "postoperatorio", "cronica")),
+                optional(showIf(single("h_postop_clearance", "¿Tu médico o fisioterapeuta te autorizó a hacer ejercicio?",
+                        "Hasta que lo confirmes, el plan se queda en la fase 1.",
+                        yes("Sí, tengo su autorización"), no("Todavía no")), "h_reason", "postoperatorio")),
+                optional(single("h_falls", "¿Te has caído en el último año, te sientes inestable al caminar o te preocupa caerte?",
+                        "Preguntas clave de CDC STEADI para detectar riesgo de caídas.", yes("Sí"), no("No"))),
+                optional(single("h_guided", "¿Te está guiando un profesional de la salud (médico, fisioterapeuta)?", null,
+                        yes("Sí"), no("No"))),
+                optional(multi("h_limits", "¿Qué te cuesta hoy por tu molestia?", "Elige todas las que apliquen.",
                         opt("escaleras", "🪜", "Subir escaleras"), opt("silla", "🪑", "Levantarme de la silla"),
                         opt("caminar_15", "🚶", "Caminar 15 minutos"), opt("cargar_bolsas", "🛍️", "Cargar bolsas"),
-                        opt("dormir", "😴", "Dormir"), opt("ninguna", "✅", "Nada de esto")),
-                single("h_falls", "¿Te has caído en el último año, te sientes inestable al caminar o te preocupa caerte?",
-                        "Preguntas clave de CDC STEADI para detectar riesgo de caídas.", yes("Sí"), no("No")));
+                        opt("dormir", "😴", "Dormir"), opt("ninguna", "✅", "Nada de esto"))));
         Map<String, Object> prefill = new LinkedHashMap<>();
         String zone = HealthTriage.zoneFromHealth(user.health().injuredZones());
         if (zone != null) prefill.put("h_zone", zone);
@@ -204,7 +209,8 @@ public class HealthWorld implements WorldModule {
         state.put("redStreak", 0);
         state.put("greenRun", 0);
         state.put("volumeFactor", Math.max(painRest, painActivity) >= 7 ? 0.8 : 1.0);
-        state.put("fallRisk", falls);
+        // Riesgo de caídas para el plan: lo declarado, movilidad reducida o baja visión y, sin respuesta con 60+ años, se asume.
+        state.put("fallRisk", HealthAdaptations.initialFallRisk(a, h, age));
         state.put("baselinePain", painRest);
 
         List<Factor> why = new ArrayList<>();
@@ -233,6 +239,7 @@ public class HealthWorld implements WorldModule {
         if (h.injuredZones().stream().anyMatch(z -> z.equals("codo") || z.equals("muneca"))) {
             notices.add("Aún no tenemos un protocolo específico para codo o muñeca; evitamos los apoyos sobre las manos que te molesten.");
         }
+        notices.addAll(HealthAdaptations.enrollNotices(a, h, age));
         Map<String, Object> profile = a.asMap();
         profile.put("h_track_chosen", track);
         return new EnrollmentResult(track, phase + 1, profile, state, goals, Map.of(progKey(track), phase), why, notices);
@@ -255,6 +262,9 @@ public class HealthWorld implements WorldModule {
         if ("postoperatorio".equals(reason)) return "como regreso gradual tras la cirugía";
         if (Math.max(rest, act) >= 4) return "porque tu dolor (" + Math.max(rest, act) + "/10) aún es moderado o alto";
         if ("menos_6s".equals(onset) || "lesion_reciente".equals(reason)) return "porque la molestia es reciente";
+        if (onset == null && HealthAdaptations.painReason(reason)) {
+            return "porque aún no sabemos hace cuánto empezó la molestia";
+        }
         return phase == 0 ? "para crear la base con seguridad" : "porque tu dolor es bajo y la molestia no es reciente";
     }
 
@@ -346,15 +356,21 @@ public class HealthWorld implements WorldModule {
         boolean cardio = "cardiometabolico".equals(track);
         boolean older = "adulto_mayor".equals(track);
         boolean fallRisk = Boolean.TRUE.equals(ctx.world().stateValue("fallRisk"));
-        Set<String> liked = kit.liked(user.userId(), KEY);
+        Set<String> liked = new HashSet<>(kit.liked(user.userId(), KEY));
         Set<String> disliked = kit.disliked(user.userId(), KEY);
         Random rnd = WorldToolkit.stableRandom(user.userId(), KEY + track + phase);
+        boolean wheelchair = HealthAdaptations.wheelchair(user.health());
 
         List<WorldMovement> mine = usable.stream().filter(m -> inTrack(m, track)).toList();
         List<WorldMovement> warmups = mine.stream().filter(m -> "calentamiento".equals(m.role()))
                 .sorted(java.util.Comparator.comparing((WorldMovement m) -> !"respiracion".equals(m.pattern()))).toList();
         List<WorldMovement> cooldowns = mine.stream().filter(m -> "vuelta_calma".equals(m.role())).toList();
-        List<WorldMovement> mains = mine.stream().filter(m -> "principal".equals(m.role()) && inPhase(m, track, phase + 1)).toList();
+        List<WorldMovement> mains = HealthAdaptations.seatedOnlyIfWheelchair(
+                mine.stream().filter(m -> "principal".equals(m.role()) && inPhase(m, track, phase + 1)).toList(),
+                WorldMovement::key, wheelchair);
+        // Movilidad reducida (chequeo): las variantes sentadas puntúan como si te gustaran.
+        if (HealthAdaptations.reducedMobility(user.health())) liked.addAll(HealthAdaptations.seatedKeys(mains, WorldMovement::key));
+        String profileNote = HealthAdaptations.sessionNote(track, user.insights());
         List<Integer> weekdays = kit.weekdays(user.profile(), days);
         Map<String, Integer> uses = new LinkedHashMap<>();
         Set<Integer> strengthDays = cardio ? Set.of(0, (days + 1) / 2) : Set.of();
@@ -421,7 +437,8 @@ public class HealthWorld implements WorldModule {
                     note(m, today, uses, patternsToday);
                 }
                 // Caminata corta al final cuando la ruta la incluye y queda tiempo.
-                List<WorldMovement> walks = mains.stream().filter(m -> "aerobico".equals(m.pattern())).toList();
+                List<WorldMovement> walks = mains.stream().filter(m -> "aerobico".equals(m.pattern()))
+                        .filter(m -> !wheelchair || HealthAdaptations.isSeated(m.key())).toList();
                 if (!walks.isEmpty() && (d % 2 == 0 || "lumbar".equals(track))) {
                     WorldMovement w = walks.get(d % walks.size());
                     int left = budgetS - used;
@@ -439,7 +456,8 @@ public class HealthWorld implements WorldModule {
             String title = "Sesión " + LETTERS[d % LETTERS.length] + " · Fase " + (phase + 1);
             String focus = cardio ? (strengthDays.contains(d) ? "Aeróbico + fuerza" : "Aeróbico")
                     : shortPhase(phaseName);
-            String notes = SESSION_NOTE + (vf < 1 ? " Volumen al " + Math.round(vf * 100) + " % por tu último semáforo." : "");
+            String notes = SESSION_NOTE + (vf < 1 ? " Volumen al " + Math.round(vf * 100) + " % por tu último semáforo." : "")
+                    + (profileNote == null ? "" : " " + profileNote);
             sessions.add(new GeneratedSession(0, d, d < weekdays.size() ? weekdays.get(d) : null, title, focus,
                     "protocolo", Math.max(10, Math.round(totalSeconds(blocks) / 60f)), notes, blocks));
         }
@@ -460,6 +478,7 @@ public class HealthWorld implements WorldModule {
             default -> "Ejercicios terapéuticos generales basados en la OMS (Package of Interventions for Rehabilitation) y el NIA";
         }));
         if (vf < 1) why.add(Factor.of("volumen", 0, "Volumen al " + Math.round(vf * 100) + " % por tu semáforo reciente"));
+        why.addAll(HealthAdaptations.planFactors(track, user.health(), user.insights()));
         why.add(Factor.of("sesiones", 0, days + " sesiones cortas por semana (≈" + minutesTarget(user, track) + " min), de bajo impacto"));
         int excluded = kit.catalog().movements(KEY).size() - usable.size();
         if (excluded > 0) why.add(Factor.of("seguridad", 0, excluded + " ejercicios descartados por tu equipamiento o tu salud"));
@@ -766,7 +785,9 @@ public class HealthWorld implements WorldModule {
             boolean risk = HealthTriage.isRisk(band);
             Map<String, Object> tests = new LinkedHashMap<>(ctx.world().stateMap("fallTests"));
             tests.put(key, risk);
-            boolean anyRisk = tests.values().stream().anyMatch(Boolean.TRUE::equals) || a(ctx).yes("h_falls");
+            // Un test sin riesgo despeja el "riesgo supuesto" por falta de respuesta, pero no lo declarado en el chequeo.
+            boolean anyRisk = tests.values().stream().anyMatch(Boolean.TRUE::equals)
+                    || HealthAdaptations.declaredFallRisk(a(ctx), ctx.user().health());
             boolean before = Boolean.TRUE.equals(ctx.world().stateValue("fallRisk"));
             effects.state("fallTests", tests).state("fallRisk", anyRisk);
             if (risk) {
@@ -806,6 +827,10 @@ public class HealthWorld implements WorldModule {
         if (postOpLocked(ctx.user().health(), a(ctx))) {
             w.add(Widget.notice("aval_cirugia", "warn", "Fase 1 hasta tu autorización",
                     "Tras tu cirugía, el plan se queda en movilidad suave. Cuando tu profesional te autorice, confírmalo en tu perfil de salud."));
+        }
+        if (ctx.user().health().prudentMode()) {
+            w.add(Widget.notice("modo_prudente", "info", "Modo prudente", ctx.user().health().moderateReason()
+                    + ". Así también detectamos señales que un profesional deba revisar."));
         }
         if (Boolean.TRUE.equals(ctx.world().stateValue("referAdvised"))) {
             w.add(Widget.notice("consulta_rojo", "warn", "Consulta a un profesional",
@@ -859,6 +884,7 @@ public class HealthWorld implements WorldModule {
             out.add(new Insight("📏", "Haz tus tests de STEADI", "Levantarte de la silla, TUG y equilibrio: 5 minutos para medir tu punto de partida.",
                     "info", "Ver tests", "/assessments"));
         }
+        out.addAll(HealthAdaptations.tips(track(ctx), ctx.user().health(), ctx.user().insights()));
         if (plan.doneThisWeek() == 0) {
             out.add(new Insight("▶️", "Empieza tu semana", "Sesión corta y suave: registra tu dolor antes de empezar.", "info", "Empezar", "/session"));
         }
@@ -1024,9 +1050,20 @@ public class HealthWorld implements WorldModule {
                 Explica los ejercicios con lenguaje sencillo, anima a moverse en el rango cómodo y a registrar el dolor.
                 Basa tus explicaciones en guías públicas (OMS, CDC STEADI, NIA) y recuerda que el programa es educativo.%s
                 """.formatted(track(ctx), phaseName, last == null ? "sin datos" : last, Math.round(volumeFactor(ctx) * 100),
-                ctx.user().health().mustRefer()
+                (ctx.user().health().mustRefer()
                         ? "\nIMPORTANTE: el usuario marcó señales de alarma; insiste en que consulte antes de progresar."
-                        : "");
+                        : "") + personaNotes(ctx.user()));
+    }
+
+    /** Datos del chequeo y del Perfil 360 que cambian cómo se habla de intensidad y ejercicios. */
+    private static String personaNotes(UserContext user) {
+        StringBuilder sb = new StringBuilder();
+        if (user.health().prudentMode()) sb.append("\nNo ha hecho el chequeo de salud: invítalo con amabilidad a completarlo, sin presionar.");
+        if (user.insights().heartRateUnreliable()) sb.append("\nToma betabloqueadores: no uses pulsaciones; guía la intensidad por la prueba del habla.");
+        if (user.insights().hypoglycemiaRisk()) sb.append("\nUsa insulina: recuerda comer antes y llevar un carbohidrato rápido.");
+        if (HealthAdaptations.wheelchair(user.health())) sb.append("\nUsa silla de ruedas: propón solo variantes sentadas.");
+        else if (HealthAdaptations.reducedMobility(user.health())) sb.append("\nTiene movilidad reducida: prioriza variantes sentadas o con apoyo.");
+        return sb.toString();
     }
 
     // ───────────────────────── Utilidades ─────────────────────────

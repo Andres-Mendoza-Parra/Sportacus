@@ -1,0 +1,53 @@
+{
+  "key": "politica_datos",
+  "version": "1.0",
+  "title": "Política de tratamiento de datos personales",
+  "updatedAt": "2026-11-09",
+  "summary": "Usamos tus datos solo para crear tu plan y cuidarte mientras entrenas. Tus datos de salud son opcionales, van cifrados y solo los tratamos si nos das una autorización aparte. No vendemos tus datos ni los compartimos con anunciantes. Puedes descargarlos, corregirlos o borrarlos cuando quieras.",
+  "sections": [
+    {
+      "title": "1. Quién es responsable de tus datos",
+      "body": "Sportacus es un proyecto académico (nombre provisional) que te ayuda a entrenar con un plan a tu medida. El responsable del tratamiento de tus datos personales es el equipo del proyecto Sportacus.\n\n• Responsable: [MARCADOR: nombre completo de la persona o institución responsable y su número de identificación].\n• Domicilio: [MARCADOR: dirección y ciudad en Colombia].\n• Correo para temas de privacidad: privacidad@sportacus.app [MARCADOR: reemplazar por el correo real antes de publicar].\n\nEsta política sigue la Ley 1581 de 2012 de protección de datos personales y el Decreto 1377 de 2013 (hoy compilado en el Decreto 1074 de 2015)."
+    },
+    {
+      "title": "2. Qué datos recogemos",
+      "body": "Solo pedimos lo necesario y casi todo es opcional:\n\n• Datos de tu cuenta: nombre (o apodo), correo electrónico y contraseña. La contraseña nunca se guarda tal cual: guardamos una huella irreversible (hash).\n• Año de nacimiento: es obligatorio porque Sportacus es para personas de 12 años o más y adaptamos el entrenamiento a la edad.\n• Tu perfil de entrenamiento (opcional): sexo, peso, estatura, nivel de actividad, días y minutos disponibles, lugares y equipo con los que entrenas, país y ciudad.\n• Perfil 360 (opcional): respuestas sobre tus metas, horarios, gustos, hábitos y otras áreas. Puedes omitir cualquier pregunta o elegir \"Prefiero no decir\".\n• Tu actividad: mundos en los que te inscribes, planes, sesiones que registras (duración, esfuerzo percibido, notas), metas, logros y pruebas.\n• Datos de uso de la app: eventos como \"abriste una pantalla\" o \"terminaste una sesión\", con fecha y datos técnicos mínimos. Nunca incluyen el texto que escribes ni datos de salud.\n• Datos de salud (sensibles y opcionales): los describimos en la sección 4."
+    },
+    {
+      "title": "3. Para qué usamos tus datos",
+      "body": "Usamos tus datos solo para estas finalidades:\n\n• Crear y administrar tu cuenta e iniciar sesión de forma segura.\n• Armar tu plan de entrenamiento y ajustarlo cuando cambian tus datos (por ejemplo, si cambias tus días disponibles o haces tu chequeo de salud).\n• Cuidarte: evitar ejercicios que no te convienen según tus lesiones, condiciones o señales de alerta.\n• Mostrarte tu progreso, rachas, metas y logros.\n• Responder tus preguntas en el asistente, que funciona dentro de la infraestructura de Sportacus.\n• Mejorar la app con analítica propia y agregada (por ejemplo, cuántas personas completan su primera semana). No usamos herramientas de analítica de terceros.\n• Fines académicos del proyecto, siempre con datos agregados o anonimizados, sin identificarte.\n\nNo usamos tus datos para publicidad ni para crear perfiles comerciales, y Sportacus no tiene fines de lucro ni monetización."
+    },
+    {
+      "title": "4. Datos sensibles: tu salud",
+      "body": "Algunos datos son sensibles según la ley: los de salud. En Sportacus son:\n\n• El chequeo de salud: condiciones diagnosticadas, síntomas, señales de alerta, dolores y lesiones, cirugías recientes, medicamentos, condiciones de movilidad o sensoriales y embarazo.\n• El check-in diario: sueño, energía, ánimo, estrés y dolor.\n• El dolor que registras antes, después y al día siguiente de tus sesiones.\n• Las áreas sensibles del Perfil 360 (por ejemplo, alimentación o salud hormonal), que tienen su propia autorización por área.\n\nTe lo decimos con claridad:\n\n• No es obligatorio que nos des datos sensibles. Puedes usar Sportacus sin ellos; en ese caso tu plan será más prudente.\n• Solo los tratamos si nos das una autorización expresa y aparte de la aceptación de esta política (al registrarte o después, en Cuenta → Privacidad).\n• Los usamos solo para adaptar tu entrenamiento y cuidarte.\n• Puedes retirar la autorización cuando quieras. Al retirarla borramos tus chequeos, condiciones, respuestas del check-in y métricas de bienestar y dolor."
+    },
+    {
+      "title": "5. Niñas, niños y adolescentes",
+      "body": "Sportacus es para personas de 12 años o más. No creamos cuentas para menores de 12 años.\n\nSi tienes entre 12 y 17 años, puedes usar Sportacus solo si tu madre, padre o la persona que tiene tu representación legal conoce y autoriza que lo uses, después de haber escuchado tu opinión. Al registrarte nos confirmas esa autorización y la dejamos registrada.\n\nCuando tratamos datos de adolescentes respetamos su interés superior y sus derechos fundamentales, como pide el Decreto 1377 de 2013: usamos solo los datos necesarios para un entrenamiento seguro, aplicamos límites de intensidad adecuados a la edad y nunca usamos esos datos con fines comerciales. Tu representante puede ejercer en tu nombre los derechos de la sección 6 escribiendo al correo de privacidad."
+    },
+    {
+      "title": "6. Tus derechos",
+      "body": "Como titular de tus datos tienes derecho a:\n\n• Conocer los datos que tenemos sobre ti y acceder a ellos gratis.\n• Actualizarlos y rectificarlos si están incompletos o son incorrectos.\n• Pedir prueba de la autorización que nos diste.\n• Saber cómo hemos usado tus datos.\n• Revocar la autorización y pedir que suprimamos tus datos, cuando no exista un deber legal que nos obligue a conservarlos.\n• Presentar quejas ante la Superintendencia de Industria y Comercio (SIC) por infracciones a la ley, después de haber hecho tu consulta o reclamo ante nosotros."
+    },
+    {
+      "title": "7. Cómo ejercer tus derechos",
+      "body": "Desde la app, sin esperar a nadie:\n\n• Ver y corregir tus datos: en Cuenta y en tu Perfil 360.\n• Descargar todos tus datos: Cuenta → Privacidad → Exportar mis datos.\n• Retirar autorizaciones: Cuenta → Privacidad (datos de salud y áreas sensibles).\n• Borrar tu cuenta y todos tus datos: Cuenta → Privacidad → Borrar mi cuenta. El borrado es definitivo.\n\nTambién puedes escribir a privacidad@sportacus.app [MARCADOR: correo real] con tu nombre, el correo de tu cuenta y lo que necesitas. Para protegerte, podemos pedirte que confirmes tu identidad.\n\nPlazos de la Ley 1581 de 2012: respondemos las consultas en máximo 10 días hábiles (prorrogables 5 días hábiles más, avisándote) y los reclamos en máximo 15 días hábiles (prorrogables 8 días hábiles más, avisándote)."
+    },
+    {
+      "title": "8. Cómo protegemos tus datos",
+      "body": "• Las contraseñas se guardan con una huella irreversible (BCrypt).\n• Las respuestas del chequeo de salud y de las áreas sensibles del Perfil 360 se guardan cifradas (AES-256-GCM).\n• Algunas categorías de salud codificadas (por ejemplo, la zona de una lesión o la etiqueta de una condición) se guardan sin cifrar porque el filtro de seguridad las necesita para descartar ejercicios; solo el sistema y el equipo autorizado acceden a ellas.\n• Las sesiones usan tokens que caducan y que se anulan al cambiar la contraseña o al cerrar sesión en todos los dispositivos.\n• Bloqueamos temporalmente el inicio de sesión después de 3 intentos fallidos.\n• La comunicación entre la app y el servidor viaja cifrada (HTTPS) [MARCADOR: confirmar en el despliegue].\n\nNingún sistema es 100 % seguro. Si ocurriera un incidente que afecte tus datos, te avisaremos e informaremos a la SIC como exige la ley."
+    },
+    {
+      "title": "9. Con quién compartimos tus datos",
+      "body": "• No vendemos, alquilamos ni cedemos tus datos personales. Nunca.\n• No los compartimos con anunciantes ni con redes sociales.\n• No hacemos transferencias de tus datos a terceros.\n• El asistente funciona con un modelo de inteligencia artificial que corre en la infraestructura de Sportacus: tus mensajes no se envían a servicios de inteligencia artificial externos.\n• Imágenes y videos de ejercicios: algunas ilustraciones se cargan desde servicios externos de imágenes o repositorios públicos. Al mostrarlas, tu dispositivo se conecta a esos servicios, que pueden ver datos técnicos como tu dirección IP y el tipo de dispositivo, igual que cualquier página web. Esos servicios no reciben tus datos de Sportacus (perfil, salud ni entrenamientos).\n• Alojamiento: [MARCADOR: proveedor de alojamiento y país donde están los servidores. Si están fuera de Colombia, indicarlo aquí como transmisión internacional de datos a un encargado].\n\nSolo entregaríamos datos a una autoridad que los pida en ejercicio de sus funciones legales."
+    },
+    {
+      "title": "10. Cuánto tiempo guardamos tus datos",
+      "body": "Guardamos tus datos mientras tengas tu cuenta. Nada de lo que registras se pierde mientras la mantengas activa.\n\nSi borras tu cuenta, eliminamos tus datos personales de forma definitiva, incluidos tu historial y el registro de tus autorizaciones. Las copias de seguridad se eliminan en máximo [MARCADOR: número] días. Los datos de uso que conservemos para estadísticas del proyecto quedan anonimizados y no permiten identificarte."
+    },
+    {
+      "title": "11. Cambios a esta política y vigencia",
+      "body": "Versión 1.0, vigente desde el 9 de noviembre de 2026.\n\nSi cambiamos esta política de forma importante, te lo avisaremos en la app y te pediremos que aceptes la nueva versión antes de seguir. Siempre podrás consultar la versión vigente desde la pantalla de inicio de sesión, desde Ajustes y desde el menú de la app.\n\nEsta política estará vigente mientras Sportacus funcione o hasta que la cambiemos."
+    }
+  ]
+}

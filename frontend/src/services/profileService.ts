@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { AccountView, Answers, FormSpec, ProfilePatch } from "./types";
+import { AccountView, Answers, AuthResponse, FormSpec, ProfilePatch } from "./types";
 
 /** Cuenta, perfil común y estado del recibimiento (docs/16 §3 y §7). */
 export async function fetchAccount(): Promise<AccountView> {
@@ -22,8 +22,10 @@ export async function updateProfile(patch: ProfilePatch): Promise<AccountView> {
   return data;
 }
 
-export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
-  await api.post("/profile/password", { currentPassword, newPassword });
+/** Cambia la contraseña. El servidor revoca los tokens anteriores y devuelve uno nuevo. */
+export async function changePassword(currentPassword: string, newPassword: string): Promise<AuthResponse> {
+  const { data } = await api.post<AuthResponse>("/profile/password", { currentPassword, newPassword });
+  return data;
 }
 
 export async function exportProfileData(): Promise<unknown> {
@@ -34,4 +36,17 @@ export async function exportProfileData(): Promise<unknown> {
 /** Borrado total de la cuenta (el backend no pide cuerpo). */
 export async function deleteAccount(): Promise<void> {
   await api.delete("/profile");
+}
+
+/** Marca el recorrido inicial como visto (lo termine o lo salte). */
+export async function completeTutorial(): Promise<void> {
+  await api.post("/profile/tutorial", { completed: true });
+}
+
+/**
+ * Consentimiento para tratar datos de salud (área "salud"). Sin él, el chequeo de salud y el check-in
+ * responden 403. Revocarlo BORRA chequeos, condiciones, respuestas de check-in y métricas de bienestar.
+ */
+export async function setHealthDataConsent(granted: boolean): Promise<void> {
+  await api.post("/profile/consent/salud", { granted });
 }

@@ -3,6 +3,7 @@ import { cachedRequest } from "./cache";
 import {
   AssessmentResult,
   AssessmentView,
+  BlockDetail,
   BlockView,
   DashboardView,
   MovementDetail,
@@ -59,14 +60,21 @@ export async function fetchSessionUi(): Promise<SessionUi> {
   return data;
 }
 
-/** Cambia el movimiento del bloque por una alternativa segura del mismo patrón. */
-export async function swapBlock(blockId: string): Promise<BlockView> {
-  const { data } = await api.post<BlockView>(`/world/blocks/${encodeURIComponent(blockId)}/swap`);
+/** Cambia el movimiento del bloque por una alternativa segura del mismo patrón. `world` = mundo dueño del bloque. */
+export async function swapBlock(blockId: string, world?: string | null): Promise<BlockView> {
+  const { data } = await api.post<BlockView>(`/world/blocks/${encodeURIComponent(blockId)}/swap`, undefined, {
+    params: world ? { world } : undefined,
+  });
+  clearBlockDetailMemo();
   return data;
 }
 
-export async function logSession(request: SessionLogRequest): Promise<SessionResult> {
-  const { data } = await api.post<SessionResult>("/world/sessions/log", request, { timeout: 30000 });
+/** `world` fuerza el mundo destino (p. ej. "base" para la actividad libre); sin él, el mundo activo. */
+export async function logSession(request: SessionLogRequest, world?: string): Promise<SessionResult> {
+  const { data } = await api.post<SessionResult>("/world/sessions/log", request, {
+    timeout: 30000,
+    params: world ? { world } : undefined,
+  });
   return data;
 }
 
@@ -116,4 +124,36 @@ export async function setFavorite(key: string, favorite: boolean): Promise<void>
 
 export async function sendMovementFeedback(key: string, reaction: "like" | "dislike"): Promise<void> {
   await api.post(`/world/movements/${encodeURIComponent(key)}/feedback`, { reaction });
+}
+
+/** Detalle de un bloque del plan (por qué, dosis, cómo hacerlo, precauciones). `world` fuerza el mundo. */
+export function fetchBlockDetail(blockId: string, world?: string | null): Promise<BlockDetail> {
+  return cachedRequest(cacheKey(`block:${blockId}`), async () =>
+    (
+      await api.get<BlockDetail>(`/world/blocks/${encodeURIComponent(blockId)}`, {
+        params: world ? { world } : undefined,
+      })
+    ).data,
+  );
+}
+
+/** Caché en memoria por bloque + movimiento (un cambio de ejercicio invalida la entrada). */
+const blockDetailMemo = new Map<string, Promise<BlockDetail>>();
+
+/** Olvida los detalles de bloque en memoria (tras cambiar datos que afectan al plan). */
+export function clearBlockDetailMemo(): void {
+  blockDetailMemo.clear();
+}
+
+/** Igual que fetchBlockDetail pero reutiliza la respuesta mientras el bloque no cambie de movimiento. */
+export function getBlockDetailCached(block: Pick<BlockView, "id" | "movementKey">): Promise<BlockDetail> {
+  const key = `${worldKey}:${block.id}:${block.movementKey ?? ""}`;
+  const hit = blockDetailMemo.get(key);
+  if (hit) return hit;
+  const promise = fetchBlockDetail(block.id).catch((error: unknown) => {
+    blockDetailMemo.delete(key);
+    throw error;
+  });
+  blockDetailMemo.set(key, promise);
+  return promise;
 }

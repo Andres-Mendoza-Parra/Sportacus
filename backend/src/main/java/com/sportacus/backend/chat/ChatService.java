@@ -50,10 +50,13 @@ public class ChatService {
     private final WorldRegistry registry;
     private final PlanService plans;
     private final int topK;
+    private final ProfilePromptBuilder profilePrompt;
 
     public ChatService(EmbeddingClient embeddingClient, KnowledgeRetrievalService retrievalService,
             LocalLlmClient llmClient, WorldContextService contexts, UserWorldRepository userWorlds,
-            WorldRegistry registry, PlanService plans, @Value("${sportacus.rag.top-k}") int topK) {
+            WorldRegistry registry, PlanService plans, @Value("${sportacus.rag.top-k}") int topK,
+            ProfilePromptBuilder profilePrompt) {
+        this.profilePrompt = profilePrompt;
         this.embeddingClient = embeddingClient;
         this.retrievalService = retrievalService;
         this.llmClient = llmClient;
@@ -65,7 +68,7 @@ public class ChatService {
     }
 
     public ChatResponse answer(User user, ChatRequest request) {
-        WorldContext ctx = userWorlds.findActive(user.getId()).isPresent() ? contexts.resolve(user, null) : null;
+        WorldContext ctx = contexts.resolve(user, null); // siempre hay al menos Mi Base
         String worldKey = ctx == null ? null : ctx.world().worldKey();
         List<KnowledgeChunk> chunks = List.of();
         if (retrievalService.isAvailable()) {
@@ -102,18 +105,10 @@ public class ChatService {
     }
 
     private String userContext(WorldContext ctx) {
-        StringBuilder sb = new StringBuilder();
-        var p = ctx.user().profile();
-        sb.append("- Nombre: ").append(ctx.user().displayName()).append('\n');
-        if (p.age() != null) sb.append("- Edad: ").append(p.age()).append(" años\n");
-        sb.append("- Mundo: ").append(ctx.world().worldKey()).append(", ruta ").append(ctx.world().trackKey())
+        StringBuilder sb = new StringBuilder(profilePrompt.build(ctx.user()));
+        sb.append("- Mundo activo: ").append(ctx.world().worldKey())
+                .append(ctx.world().trackKey() == null ? "" : ", ruta " + ctx.world().trackKey())
                 .append(", nivel ").append(ctx.world().level()).append(" de 5\n");
-        HealthSummary h = ctx.user().health();
-        if (!h.conditions().isEmpty()) {
-            sb.append("- Condiciones/lesiones activas: ")
-                    .append(String.join(", ", h.conditions().stream().map(c -> c.label()).toList())).append('\n');
-        }
-        if (!h.vigorousAllowed()) sb.append("- Debe mantener intensidad moderada hasta tener aval médico\n");
         try {
             PlanView plan = plans.ensurePlan(ctx);
             var next = plan.nextSession();

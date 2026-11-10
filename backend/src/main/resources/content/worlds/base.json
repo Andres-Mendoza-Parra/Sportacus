@@ -1,0 +1,64 @@
+{
+  "world": "base",
+  "metrics": [
+    {
+      "key": "base_min_actividad",
+      "name": "Minutos de actividad",
+      "unit": "min",
+      "valueType": "integer",
+      "direction": "up",
+      "description": "Minutos de cualquier actividad registrada en Mi Base (plan o registro libre). Meta OMS 2020: 150–300 min de actividad moderada a la semana."
+    },
+    {
+      "key": "base_min_vigorosa",
+      "name": "Minutos de actividad intensa",
+      "unit": "min",
+      "valueType": "integer",
+      "direction": "up",
+      "description": "Minutos de actividades con esfuerzo percibido 7/10 o más. Según la OMS, cada minuto intenso equivale a dos moderados."
+    }
+  ],
+  "movements": [
+    { "key": "base_remo_mochila", "name": "Remo con mochila", "role": "principal", "pattern": "jale", "level": 1,
+      "description": "Remo inclinado con una mochila cargada con libros o botellas de agua: fortalece la espalda sin comprar equipo.",
+      "steps": [
+        "Llena una mochila con algo de peso (libros o botellas de agua) y ciérrala bien.",
+        "De pie, rodillas un poco flexionadas, inclina el tronco hacia delante con la espalda recta; apoya una mano en una silla o mesa si lo prefieres.",
+        "Sujeta la mochila por las asas con los brazos estirados hacia el suelo.",
+        "Lleva la mochila hacia el abdomen juntando los omóplatos y baja despacio."
+      ],
+      "cues": ["Espalda larga, como una mesa", "Los codos rozan el cuerpo al subir", "Exhala al tirar"],
+      "mistakes": ["Redondear la espalda", "Tirar con impulso del tronco", "Cargar demasiado peso al principio"],
+      "regions": ["tren_superior"], "muscles": ["espalda", "biceps", "hombros"], "equipment": [],
+      "environments": ["casa", "exterior"], "impact": "bajo", "media": { "images": ["https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/0.jpg", "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/1.jpg"] }, "source": "sportacus",
+      "contraindications": [{ "tag": "lumbar", "level": "precaucion" }, { "tag": "hombro", "level": "precaucion" }] },
+
+    { "ref": "hea_respiracion_diafragmatica", "role": "calentamiento", "level": 1, "pattern": "respiracion" },
+    { "ref": "hea_movilidad_articular_suave", "role": "calentamiento", "level": 1, "pattern": "movilidad" },
+    { "ref": "hea_relajacion_guiada", "role": "vuelta_calma", "level": 1, "pattern": "respiracion" },
+
+    { "ref": "hea_caminata_suave", "role": "principal", "level": 1, "pattern": "caminata", "attrs": { "outdoor": true } },
+    { "ref": "hea_caminata_rapida", "role": "principal", "level": 1, "pattern": "caminata", "attrs": { "outdoor": true } },
+    { "ref": "hea_marcha_estatica", "role": "principal", "level": 1, "pattern": "caminata", "attrs": { "indoor": true } },
+
+    { "ref": "hea_sentarse_levantarse", "role": "principal", "level": 1, "pattern": "piernas" },
+    { "ref": "flexion_inclinada", "role": "principal", "level": 1, "pattern": "empuje" },
+    { "ref": "hea_flexion_pared", "role": "principal", "level": 1, "pattern": "empuje", "attrs": { "fallback": true } },
+    { "ref": "puente_gluteo", "role": "principal", "level": 1, "pattern": "gluteo" },
+    { "ref": "hea_puente_gluteo", "role": "principal", "level": 1, "pattern": "gluteo", "attrs": { "fallback": true } },
+    { "ref": "remo_bajo_mesa", "role": "principal", "level": 1, "pattern": "jale", "attrs": { "fallback": true } },
+    { "ref": "superman_y", "role": "principal", "level": 1, "pattern": "jale", "attrs": { "fallback": true } },
+    { "ref": "dead_bug", "role": "accesorio", "level": 1, "pattern": "core" },
+    { "ref": "elevacion_talones", "role": "accesorio", "level": 1, "pattern": "gemelo" },
+
+    { "ref": "hea_equilibrio_un_pie_apoyo", "role": "accesorio", "level": 1, "pattern": "equilibrio" },
+    { "ref": "hea_tandem_apoyo", "role": "accesorio", "level": 1, "pattern": "equilibrio" },
+
+    { "ref": "hea_apertura_toracica_silla", "role": "accesorio", "level": 1, "pattern": "movilidad" },
+    { "ref": "hea_estiramiento_flexores_cadera", "role": "accesorio", "level": 1, "pattern": "movilidad" },
+    { "ref": "hea_rotacion_tronco_sentado", "role": "accesorio", "level": 1, "pattern": "movilidad" },
+    { "ref": "hea_retraccion_escapular", "role": "accesorio", "level": 1, "pattern": "movilidad" },
+    { "ref": "hea_estiramiento_pecho_pared", "role": "accesorio", "level": 1, "pattern": "movilidad" },
+    { "ref": "hea_gato_camello", "role": "accesorio", "level": 1, "pattern": "movilidad" }
+  ]
+}

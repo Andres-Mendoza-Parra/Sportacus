@@ -1,0 +1,309 @@
+{
+  "area": {
+    "key": "agenda",
+    "name": "Tiempo y agenda",
+    "icon": "🗓️",
+    "sortOrder": 20,
+    "description": "Cuándo y cuánto puedes entrenar. Arma un plan que quepa de verdad en tu semana.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "agenda_semana",
+      "title": "Tu semana",
+      "subtitle": "1 minuto",
+      "minutes": 1,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "p_days",
+          "type": "range",
+          "prompt": "¿Cuántos días por semana quieres entrenar?",
+          "hint": null,
+          "min": 1,
+          "max": 7,
+          "step": 1,
+          "unit": "días",
+          "why": "Define cuántas sesiones tiene tu plan y cómo repartimos el descanso.",
+          "uses": ["plan"],
+          "priority": 5,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": "days_per_week",
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "p_minutes",
+          "type": "options",
+          "prompt": "¿Cuánto tiempo tienes por sesión?",
+          "hint": null,
+          "options": [
+            {"id":"20","icon":"⏱️","text":"20 minutos","sub":null},
+            {"id":"30","icon":"⏱️","text":"30 minutos","sub":null},
+            {"id":"45","icon":"⏱️","text":"45 minutos","sub":null},
+            {"id":"60","icon":"⏱️","text":"1 hora","sub":null},
+            {"id":"90","icon":"⏱️","text":"1 hora y media","sub":null}
+          ],
+          "why": "Ajustamos la duración de cada sesión para que la termines sin correr.",
+          "uses": ["plan"],
+          "priority": 5,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": "minutes_per_session",
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "p_preferred_days",
+          "type": "multi",
+          "prompt": "¿Qué días te quedan mejor?",
+          "hint": null,
+          "options": [
+            {"id":"1","icon":null,"text":"Lunes","sub":null},
+            {"id":"2","icon":null,"text":"Martes","sub":null},
+            {"id":"3","icon":null,"text":"Miércoles","sub":null},
+            {"id":"4","icon":null,"text":"Jueves","sub":null},
+            {"id":"5","icon":null,"text":"Viernes","sub":null},
+            {"id":"6","icon":null,"text":"Sábado","sub":null},
+            {"id":"7","icon":null,"text":"Domingo","sub":null}
+          ],
+          "why": "Ponemos tus sesiones en los días que elijas y el descanso en los demás.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": "preferred_days",
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ag_horario",
+          "type": "options",
+          "prompt": "¿A qué hora sueles poder entrenar?",
+          "hint": null,
+          "options": [
+            {"id":"manana_temprano","icon":"🌅","text":"Madrugada (antes de las 7)","sub":null},
+            {"id":"manana","icon":"☀️","text":"Mañana","sub":null},
+            {"id":"mediodia","icon":"🕛","text":"Mediodía","sub":null},
+            {"id":"tarde","icon":"🌇","text":"Tarde","sub":null},
+            {"id":"noche","icon":"🌙","text":"Noche","sub":null},
+            {"id":"variable","icon":"🔀","text":"Varía mucho","sub":null}
+          ],
+          "why": "Adaptamos calentamientos, intensidad y recordatorios a tu hora del día.",
+          "uses": ["plan","asistente"],
+          "priority": 4,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "agenda_detalle",
+      "title": "Tu rutina en detalle",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "ag_rutina",
+          "type": "options",
+          "prompt": "¿Qué tan estable es tu horario de una semana a otra?",
+          "hint": null,
+          "options": [
+            {"id":"fija","icon":null,"text":"Casi siempre igual","sub":null},
+            {"id":"semi","icon":null,"text":"Cambia un poco","sub":null},
+            {"id":"cambia","icon":null,"text":"Cambia cada semana","sub":null},
+            {"id":"turnos","icon":null,"text":"Trabajo por turnos","sub":null}
+          ],
+          "why": "Si tu horario cambia, te damos un plan flexible en vez de días fijos.",
+          "uses": ["plan"],
+          "priority": 4,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ag_turnos",
+          "type": "options",
+          "prompt": "¿Cómo son tus turnos?",
+          "hint": null,
+          "options": [
+            {"id":"diurnos","icon":null,"text":"Diurnos","sub":null},
+            {"id":"nocturnos","icon":null,"text":"Nocturnos","sub":null},
+            {"id":"rotativos","icon":null,"text":"Rotativos","sub":null}
+          ],
+          "why": "Con turnos nocturnos o rotativos movemos las sesiones y cuidamos más la recuperación.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"ag_rutina","in":["turnos"]},
+          "cadence": null
+        },
+        {
+          "id": "ag_finde",
+          "type": "options",
+          "prompt": "Los fines de semana, ¿tienes más o menos tiempo para moverte?",
+          "hint": null,
+          "options": [
+            {"id":"mas","icon":null,"text":"Más tiempo","sub":null},
+            {"id":"igual","icon":null,"text":"Igual","sub":null},
+            {"id":"menos","icon":null,"text":"Menos tiempo","sub":null}
+          ],
+          "why": "Si tienes más tiempo, ahí ubicamos sesiones largas o actividades al aire libre.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ag_micro",
+          "type": "options",
+          "prompt": "¿Te sirven sesiones cortas de 5 a 10 minutos durante el día?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí, me vienen bien","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"no","icon":null,"text":"Prefiero una sola sesión","sub":null}
+          ],
+          "why": "Los días sin tiempo te proponemos \"snacks\" de movimiento en vez de saltarte la sesión.",
+          "uses": ["plan","asistente","base"],
+          "priority": 3,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ag_doble",
+          "type": "options",
+          "prompt": "¿Podrías entrenar dos veces el mismo día si lo necesitas?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"a_veces","icon":null,"text":"Solo algunos días","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Nos permite dividir sesiones largas cuando tu semana se complica.",
+          "uses": ["plan"],
+          "priority": 1,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ag_epocas",
+          "type": "multi",
+          "prompt": "¿Hay épocas del año en que tienes mucho menos tiempo?",
+          "hint": null,
+          "options": [
+            {"id":"fin_mes","icon":null,"text":"Cierres de mes","sub":null},
+            {"id":"examenes","icon":null,"text":"Exámenes o entregas","sub":null},
+            {"id":"temporada_alta","icon":null,"text":"Temporada alta en el trabajo","sub":null},
+            {"id":"diciembre","icon":null,"text":"Diciembre y fiestas","sub":null},
+            {"id":"vacaciones_hijos","icon":null,"text":"Vacaciones escolares","sub":null},
+            {"id":"ninguna","icon":null,"text":"Ninguna en especial","sub":null}
+          ],
+          "why": "Anticipamos esas semanas con un plan de mantenimiento más ligero.",
+          "uses": ["plan","asistente"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ag_vacaciones",
+          "type": "options",
+          "prompt": "Cuando viajas o estás de vacaciones, ¿quieres seguir entrenando?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí, algo sencillo","sub":null},
+            {"id":"a_veces","icon":null,"text":"Depende del viaje","sub":null},
+            {"id":"no","icon":null,"text":"Prefiero descansar","sub":null}
+          ],
+          "why": "Preparamos rutinas de viaje sin equipo, o pausas planeadas sin culpa.",
+          "uses": ["plan","asistente"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ag_reprogramar",
+          "type": "options",
+          "prompt": "Si se te cae una sesión, ¿qué prefieres?",
+          "hint": null,
+          "options": [
+            {"id":"mover","icon":null,"text":"Moverla a otro día","sub":null},
+            {"id":"acortar","icon":null,"text":"Hacer una versión corta ese día","sub":null},
+            {"id":"saltar","icon":null,"text":"Saltarla y seguir","sub":null},
+            {"id":"preguntar","icon":null,"text":"Que me preguntes","sub":null}
+          ],
+          "why": "Define cómo reorganizamos tu semana cuando algo se cruza.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ag_desplazamiento",
+          "type": "number",
+          "prompt": "¿Cuántos minutos tardas en llegar al lugar donde entrenas?",
+          "hint": null,
+          "min": 0,
+          "max": 120,
+          "step": null,
+          "unit": "min",
+          "why": "Si llegar toma mucho, priorizamos opciones cerca de casa o sesiones más completas.",
+          "uses": ["plan","descubrimiento"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "ag_tiempo_libre",
+          "type": "options",
+          "prompt": "¿Cuánto tiempo libre real tienes en un día normal?",
+          "hint": null,
+          "options": [
+            {"id":"casi_nada","icon":null,"text":"Casi nada","sub":null},
+            {"id":"menos_1h","icon":null,"text":"Menos de 1 hora","sub":null},
+            {"id":"1_2h","icon":null,"text":"1 a 2 horas","sub":null},
+            {"id":"mas_2h","icon":null,"text":"Más de 2 horas","sub":null}
+          ],
+          "why": "Ajusta cuánto te pedimos además del entrenamiento (movilidad, caminar, descanso).",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

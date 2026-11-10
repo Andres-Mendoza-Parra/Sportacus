@@ -1,0 +1,315 @@
+{
+  "area": {
+    "key": "historial",
+    "name": "Historial deportivo",
+    "icon": "📜",
+    "sortOrder": 80,
+    "description": "Lo que has hecho antes, lo que funcionó y lo que no. Aprendemos de tu historia.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "historial_trayectoria",
+      "title": "Tu trayectoria",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "hi_experiencia",
+          "type": "options",
+          "prompt": "¿Cómo describirías tu experiencia haciendo ejercicio?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca he entrenado de forma regular","sub":null},
+            {"id":"poco","icon":null,"text":"He probado un poco","sub":null},
+            {"id":"intermitente","icon":null,"text":"He entrenado por épocas","sub":null},
+            {"id":"constante_antes","icon":null,"text":"Fui constante, hoy no","sub":null},
+            {"id":"constante_ahora","icon":null,"text":"Soy constante hoy","sub":null}
+          ],
+          "why": "Define tu punto de partida técnico y cuánta explicación necesitas.",
+          "uses": ["plan","asistente"],
+          "priority": 5,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "hi_anos",
+          "type": "options",
+          "prompt": "¿Cuánto tiempo has entrenado en total, sumando todas tus épocas?",
+          "hint": null,
+          "options": [
+            {"id":"menos_1","icon":null,"text":"Menos de 1 año","sub":null},
+            {"id":"1_3","icon":null,"text":"1 a 3 años","sub":null},
+            {"id":"3_10","icon":null,"text":"3 a 10 años","sub":null},
+            {"id":"mas_10","icon":null,"text":"Más de 10 años","sub":null}
+          ],
+          "why": "La experiencia acumulada cambia qué tan rápido puedes progresar.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"hi_experiencia","in":["poco","intermitente","constante_antes","constante_ahora"]},
+          "cadence": null
+        },
+        {
+          "id": "hi_deportes",
+          "type": "multi",
+          "prompt": "¿Qué actividades has practicado con cierta regularidad?",
+          "hint": null,
+          "options": [
+            {"id":"futbol","icon":"⚽","text":"Fútbol","sub":null},
+            {"id":"running","icon":"🏃","text":"Correr","sub":null},
+            {"id":"gimnasio","icon":"🏋️","text":"Gimnasio","sub":null},
+            {"id":"calistenia","icon":"🤸","text":"Calistenia","sub":null},
+            {"id":"ciclismo","icon":"🚴","text":"Ciclismo","sub":null},
+            {"id":"natacion","icon":"🏊","text":"Natación","sub":null},
+            {"id":"baile","icon":"💃","text":"Baile","sub":null},
+            {"id":"artes_marciales","icon":"🥋","text":"Artes marciales","sub":null},
+            {"id":"yoga_pilates","icon":"🧘","text":"Yoga o pilates","sub":null},
+            {"id":"baloncesto_voleibol","icon":"🏀","text":"Baloncesto o voleibol","sub":null},
+            {"id":"raqueta","icon":"🎾","text":"Tenis u otro de raqueta","sub":null},
+            {"id":"otro","icon":null,"text":"Otro","sub":null},
+            {"id":"ninguno","icon":null,"text":"Ninguna","sub":null}
+          ],
+          "why": "Aprovechamos lo que ya sabes hacer y te sugerimos mundos afines.",
+          "uses": ["descubrimiento","plan"],
+          "priority": 4,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "hi_nivel",
+          "type": "options",
+          "prompt": "¿Hasta qué nivel llegaste?",
+          "hint": null,
+          "options": [
+            {"id":"recreativo","icon":null,"text":"Recreativo","sub":null},
+            {"id":"club","icon":null,"text":"Club o liga aficionada","sub":null},
+            {"id":"competitivo","icon":null,"text":"Competitivo (torneos, federado)","sub":null},
+            {"id":"alto_rendimiento","icon":null,"text":"Alto rendimiento","sub":null}
+          ],
+          "why": "Si competiste, podemos usar un lenguaje y una progresión más avanzados.",
+          "uses": ["plan","asistente"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"hi_experiencia","in":["poco","intermitente","constante_antes","constante_ahora"]},
+          "cadence": null
+        },
+        {
+          "id": "hi_ultima_vez",
+          "type": "options",
+          "prompt": "¿Cuándo fue la última vez que entrenaste con regularidad?",
+          "hint": null,
+          "options": [
+            {"id":"actualmente","icon":null,"text":"Actualmente","sub":null},
+            {"id":"menos_3m","icon":null,"text":"Hace menos de 3 meses","sub":null},
+            {"id":"3_12m","icon":null,"text":"Hace 3 a 12 meses","sub":null},
+            {"id":"1_5a","icon":null,"text":"Hace 1 a 5 años","sub":null},
+            {"id":"mas_5a","icon":null,"text":"Hace más de 5 años","sub":null},
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null}
+          ],
+          "why": "Si llevas tiempo sin entrenar, empezamos suave para que tu cuerpo se readapte.",
+          "uses": ["seguridad","plan"],
+          "priority": 5,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "hi_infancia",
+          "type": "options",
+          "prompt": "¿Eras activo de niño o adolescente?",
+          "hint": null,
+          "options": [
+            {"id":"muy","icon":null,"text":"Muy activo","sub":null},
+            {"id":"algo","icon":null,"text":"Algo","sub":null},
+            {"id":"poco","icon":null,"text":"Poco","sub":null},
+            {"id":"nada","icon":null,"text":"Nada","sub":null}
+          ],
+          "why": "Las habilidades de la infancia vuelven rápido: nos ayuda a calibrar la técnica.",
+          "uses": ["plan"],
+          "priority": 1,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "hi_eventos",
+          "type": "multi",
+          "prompt": "¿Has participado en alguno de estos eventos?",
+          "hint": null,
+          "options": [
+            {"id":"5k","icon":null,"text":"Carrera de 5 km","sub":null},
+            {"id":"10k","icon":null,"text":"Carrera de 10 km","sub":null},
+            {"id":"media","icon":null,"text":"Media maratón","sub":null},
+            {"id":"maraton","icon":null,"text":"Maratón","sub":null},
+            {"id":"trail","icon":null,"text":"Trail o montaña","sub":null},
+            {"id":"bici","icon":null,"text":"Evento de ciclismo","sub":null},
+            {"id":"torneo","icon":null,"text":"Torneo deportivo","sub":null},
+            {"id":"ninguno","icon":null,"text":"Ninguno","sub":null}
+          ],
+          "why": "Nos da una idea de tu base y de los retos que podrían motivarte.",
+          "uses": ["running","descubrimiento"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "historial_aprendizajes",
+      "title": "Lo que aprendiste",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "hi_abandono",
+          "type": "options",
+          "prompt": "¿Por qué dejaste de entrenar la última vez?",
+          "hint": null,
+          "options": [
+            {"id":"tiempo","icon":"⏳","text":"Falta de tiempo","sub":null},
+            {"id":"lesion","icon":"🩹","text":"Una lesión","sub":null},
+            {"id":"aburrimiento","icon":"😴","text":"Me aburrí","sub":null},
+            {"id":"resultados","icon":"📉","text":"No veía resultados","sub":null},
+            {"id":"motivacion","icon":"🔋","text":"Perdí la motivación","sub":null},
+            {"id":"mudanza","icon":"📦","text":"Me mudé o cambió mi rutina","sub":null},
+            {"id":"dinero","icon":"💸","text":"Por dinero","sub":null},
+            {"id":"salud","icon":"🩺","text":"Un tema de salud","sub":null},
+            {"id":"nunca_empece","icon":"🌱","text":"Nunca empecé en serio","sub":null},
+            {"id":"no_lo_deje","icon":"💪","text":"No lo he dejado","sub":null}
+          ],
+          "why": "Atacamos esa causa desde el inicio para que esta vez sea diferente.",
+          "uses": ["plan","asistente"],
+          "priority": 5,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "hi_intentos",
+          "type": "options",
+          "prompt": "¿Cuántas veces has empezado y dejado una rutina?",
+          "hint": null,
+          "options": [
+            {"id":"0","icon":null,"text":"Ninguna","sub":null},
+            {"id":"1_2","icon":null,"text":"1 o 2","sub":null},
+            {"id":"3_5","icon":null,"text":"3 a 5","sub":null},
+            {"id":"muchas","icon":null,"text":"Muchas","sub":null}
+          ],
+          "why": "Si ha pasado varias veces, el plan empieza más pequeño y fácil de sostener.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "hi_racha",
+          "type": "options",
+          "prompt": "¿Cuánto duró tu racha más larga entrenando con constancia?",
+          "hint": null,
+          "options": [
+            {"id":"menos_1m","icon":null,"text":"Menos de 1 mes","sub":null},
+            {"id":"1_3m","icon":null,"text":"1 a 3 meses","sub":null},
+            {"id":"3_12m","icon":null,"text":"3 a 12 meses","sub":null},
+            {"id":"mas_1a","icon":null,"text":"Más de 1 año","sub":null},
+            {"id":"nunca","icon":null,"text":"Nunca tuve una racha","sub":null}
+          ],
+          "why": "Ponemos metas de constancia que superen tu mejor racha, paso a paso.",
+          "uses": ["progreso","asistente"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "hi_funciono",
+          "type": "multi",
+          "prompt": "¿Qué te ayudó a ser constante cuando lo lograste?",
+          "hint": null,
+          "options": [
+            {"id":"companero","icon":null,"text":"Entrenar con alguien","sub":null},
+            {"id":"horario","icon":null,"text":"Un horario fijo","sub":null},
+            {"id":"meta","icon":null,"text":"Una meta o evento","sub":null},
+            {"id":"clases","icon":null,"text":"Clases o grupo","sub":null},
+            {"id":"app","icon":null,"text":"Una app o registro","sub":null},
+            {"id":"entrenador","icon":null,"text":"Un entrenador","sub":null},
+            {"id":"resultados","icon":null,"text":"Ver resultados","sub":null},
+            {"id":"disfrutar","icon":null,"text":"Disfrutar la actividad","sub":null},
+            {"id":"ninguno","icon":null,"text":"Nada en particular","sub":null}
+          ],
+          "why": "Repetimos lo que ya te funcionó: es la mejor pista para tu plan.",
+          "uses": ["plan","asistente"],
+          "priority": 4,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "hi_mala_experiencia",
+          "type": "multi",
+          "prompt": "¿Algo te dejó un mal recuerdo del ejercicio?",
+          "hint": null,
+          "options": [
+            {"id":"lesion","icon":null,"text":"Una lesión","sub":null},
+            {"id":"burlas","icon":null,"text":"Burlas o comentarios","sub":null},
+            {"id":"exigencia","icon":null,"text":"Un entrenador muy duro","sub":null},
+            {"id":"agotamiento","icon":null,"text":"Terminar agotado","sub":null},
+            {"id":"comparacion","icon":null,"text":"Compararme con otros","sub":null},
+            {"id":"clases_colegio","icon":null,"text":"Las clases de educación física","sub":null},
+            {"id":"ninguna","icon":null,"text":"Ninguna","sub":null}
+          ],
+          "why": "Evitamos repetir lo que te alejó: el tono, la intensidad o el contexto.",
+          "uses": ["asistente","plan"],
+          "priority": 3,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "hi_marca",
+          "type": "text",
+          "prompt": "¿Tienes alguna marca personal que recuerdes?",
+          "hint": null,
+          "why": "Nos da una referencia para tu progreso (ej.: 5 km en 30 min, 10 dominadas).",
+          "uses": ["progreso","running","gym"],
+          "priority": 1,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"hi_experiencia","in":["intermitente","constante_antes","constante_ahora"]},
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

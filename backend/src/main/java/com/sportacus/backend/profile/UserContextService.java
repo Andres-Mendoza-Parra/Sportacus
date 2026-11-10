@@ -5,19 +5,23 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.sportacus.backend.health.HealthService;
+import com.sportacus.backend.health.HealthSummary;
 import com.sportacus.backend.user.User;
 import com.sportacus.backend.world.core.UserContext;
 
-/** Arma el {@link UserContext} (perfil común + salud) que reciben todos los mundos. */
+/** Arma el {@link UserContext} (perfil común + salud + Perfil 360 derivado) que reciben todos los mundos. */
 @Service
 public class UserContextService {
 
     private final ProfileRepository profileRepository;
     private final HealthService healthService;
+    private final ProfileFactsService facts;
 
-    public UserContextService(ProfileRepository profileRepository, HealthService healthService) {
+    public UserContextService(ProfileRepository profileRepository, HealthService healthService,
+            ProfileFactsService facts) {
         this.profileRepository = profileRepository;
         this.healthService = healthService;
+        this.facts = facts;
     }
 
     public UserContext of(User user) {
@@ -25,6 +29,7 @@ public class UserContextService {
     }
 
     public UserContext of(UUID userId, String name) {
-        return new UserContext(userId, name, profileRepository.load(userId), healthService.summary(userId));
+        HealthSummary h = healthService.summary(userId);
+        return new UserContext(userId, name, profileRepository.load(userId), h, facts.insights(userId, h));
     }
 }

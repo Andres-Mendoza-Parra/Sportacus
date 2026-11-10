@@ -1,13 +1,13 @@
 import { router } from "expo-router";
 import { useState } from "react";
-import { RefreshControl, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, RefreshControl, ScrollView, Switch, Text, View } from "react-native";
 
 import LinkRow from "../../components/account/LinkRow";
 import ProfileSummary from "../../components/account/ProfileSummary";
 import WorldSwitcher from "../../components/account/WorldSwitcher";
 import HealthSummaryCard from "../../components/health/HealthSummaryCard";
 import { Card, SectionTitle } from "../../components/ui/Card";
-import { useToast } from "../../components/ui/Feedback";
+import { useConfirm, useToast } from "../../components/ui/Feedback";
 import GradientButton from "../../components/ui/GradientButton";
 import GradientHeader from "../../components/ui/GradientHeader";
 import { ScreenSkeleton } from "../../components/ui/Skeleton";
@@ -17,7 +17,9 @@ import { useAccountActions } from "../../hooks/useAccountActions";
 import { useLoader, useReloadOnFocus } from "../../hooks/useLoader";
 import { extractErrorMessage } from "../../services/api";
 import { confirmClearance } from "../../services/healthService";
-import { fetchAccount } from "../../services/profileService";
+import { fetchOverview, setConsent } from "../../services/profile360Service";
+import { fetchAccount, setHealthDataConsent } from "../../services/profileService";
+import { AreaView } from "../../services/types";
 import { Theme, useThemedStyles, useTheme } from "../../theme";
 
 /** Pestaña Cuenta: datos personales, salud, mis mundos (cambio de mundo activo) y acciones de cuenta. */
@@ -25,11 +27,78 @@ export default function AccountScreen() {
   const styles = useThemedStyles(createStyles);
   const { colors } = useTheme();
   const toast = useToast();
-  const { active, version } = useWorld();
+  const confirm = useConfirm();
+  const { active, version, invalidate } = useWorld();
   const account = useLoader(fetchAccount, [version]);
+  const overview = useLoader(fetchOverview, [version]);
   const actions = useAccountActions();
   const [confirming, setConfirming] = useState(false);
+  const [consentBusy, setConsentBusy] = useState<string | null>(null);
+  const [healthBusy, setHealthBusy] = useState(false);
   useReloadOnFocus(account.reload);
+  useReloadOnFocus(overview.reload);
+
+  async function toggleConsent(area: AreaView, granted: boolean) {
+    const ok = await confirm(
+      granted
+        ? {
+            title: `¿Permitir guardar ${area.name.toLowerCase()}?`,
+            message: "Guardamos cifradas solo las respuestas que quieras dar, para personalizar tu plan. Puedes revocarlo cuando quieras (Ley 1581 de 2012).",
+            confirmText: "Permitir",
+          }
+        : {
+            title: `¿Revocar el permiso de ${area.name}?`,
+            message: `Borraremos de forma permanente todas tus respuestas de “${area.name}” y no volveremos a preguntarte por ellas hasta que nos des permiso de nuevo.`,
+            confirmText: "Revocar y borrar",
+            destructive: true,
+          },
+    );
+    if (!ok) return;
+    setConsentBusy(area.key);
+    try {
+      const updated = await setConsent(area.key, granted);
+      if (overview.data) {
+        overview.setData({ ...overview.data, areas: overview.data.areas.map((a) => (a.key === updated.key ? updated : a)) });
+      }
+      toast.success(granted ? "Permiso concedido. Gracias por tu confianza." : "Permiso revocado y respuestas borradas.");
+      overview.reload();
+    } catch (error) {
+      toast.error(extractErrorMessage(error));
+    } finally {
+      setConsentBusy(null);
+    }
+  }
+
+  async function toggleHealthData(granted: boolean) {
+    const ok = await confirm(
+      granted
+        ? {
+            title: "¿Autorizar tus datos de salud?",
+            message:
+              "Guardaremos cifrados tu chequeo de salud y tu check-in diario, solo para cuidarte en tu plan. Puedes revocarlo cuando quieras (Ley 1581 de 2012).",
+            confirmText: "Autorizar",
+          }
+        : {
+            title: "¿Revocar la autorización de datos de salud?",
+            message:
+              "Borraremos de forma permanente tus chequeos de salud, condiciones, respuestas de check-in y métricas de bienestar y dolor. Tu plan volverá al modo prudente. No se puede deshacer.",
+            confirmText: "Revocar y borrar",
+            destructive: true,
+          },
+    );
+    if (!ok) return;
+    setHealthBusy(true);
+    try {
+      await setHealthDataConsent(granted);
+      toast.success(granted ? "Autorización registrada. Gracias por tu confianza." : "Autorización revocada y datos de salud borrados.");
+      await account.reload();
+      invalidate();
+    } catch (error) {
+      toast.error(extractErrorMessage(error));
+    } finally {
+      setHealthBusy(false);
+    }
+  }
 
   async function handleClearance() {
     setConfirming(true);
@@ -49,6 +118,10 @@ export default function AccountScreen() {
   if (!data) return <ErrorState message={account.error ?? "Sin datos"} onRetry={account.reload} style={{ flex: 1, justifyContent: "center" }} />;
 
   const initials = (data.name || data.email).trim().slice(0, 2).toUpperCase();
+  const completeness = overview.data?.completeness ?? data.completeness ?? null;
+  // El área "salud" tiene su propio interruptor (consentimiento de datos de salud).
+  const sensitiveAreas = (overview.data?.areas ?? []).filter((a) => a.sensitive && a.key !== "salud");
+  const legal = data.legal ?? null;
 
   return (
     <ScrollView
@@ -64,7 +137,7 @@ export default function AccountScreen() {
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{data.name}</Text>
             <Text style={styles.email}>{data.email}</Text>
-            {active ? <Text style={styles.world}>{`${active.icon} ${active.name} · ${active.trackName}`}</Text> : null}
+            {active ? <Text style={styles.world}>{`${active.icon} ${[active.name, active.trackName].filter(Boolean).join(" · ")}`}</Text> : null}
           </View>
         </View>
       </GradientHeader>
@@ -76,10 +149,19 @@ export default function AccountScreen() {
         </Card>
 
         <SectionTitle>Mi perfil</SectionTitle>
+        <Card style={{ paddingVertical: 4, marginBottom: 10 }}>
+          <LinkRow
+            icon="🧩"
+            title={completeness ? `Mi perfil 360 · ${Math.round(completeness.pct)}%` : "Mi perfil 360"}
+            subtitle={completeness ? `${completeness.label} · completa a tu ritmo` : "Cuéntanos de ti a tu ritmo"}
+            onPress={() => router.push("/profile360")}
+            last
+          />
+        </Card>
         <Card>
           <ProfileSummary account={data} />
           <GradientButton
-            title="✏️ Editar perfil"
+            title="✏️ Editar datos básicos"
             variant="ghost"
             style={{ marginTop: 14 }}
             onPress={() => router.push({ pathname: "/onboarding/profile", params: { mode: "edit" } })}
@@ -106,7 +188,64 @@ export default function AccountScreen() {
         </Card>
 
         <SectionTitle>Privacidad y datos</SectionTitle>
+        {legal ? (
+          <Card style={{ marginBottom: 10, gap: 4 }}>
+            <View style={[styles.consentRow, { borderBottomWidth: 0 }]}>
+              <Text style={{ fontSize: 18, width: 26, textAlign: "center" }}>🩺</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.consentName}>Datos de salud</Text>
+                <Text style={styles.consentSub}>
+                  {legal.healthDataConsent
+                    ? "Autorizado: chequeo de salud y check-in diario, cifrados"
+                    : "Sin autorización: no guardamos chequeo ni check-in"}
+                </Text>
+              </View>
+              {healthBusy ? (
+                <ActivityIndicator color={colors.primary} />
+              ) : (
+                <Switch
+                  value={legal.healthDataConsent}
+                  onValueChange={toggleHealthData}
+                  trackColor={{ true: colors.primary, false: colors.track }}
+                  accessibilityLabel="Autorización para tratar mis datos de salud"
+                />
+              )}
+            </View>
+            {legal.minor ? (
+              <Text style={styles.privacyLead}>Tu cuenta es de una persona menor de edad: tu madre, padre o tutor autorizó su uso.</Text>
+            ) : null}
+          </Card>
+        ) : null}
+        {sensitiveAreas.length > 0 ? (
+          <Card style={{ marginBottom: 10, gap: 4 }}>
+            <Text style={styles.privacyLead}>
+              Áreas privadas: solo guardamos tus respuestas con tu permiso, cifradas. Si revocas un permiso, borramos esas respuestas.
+            </Text>
+            {sensitiveAreas.map((a, i) => (
+              <View key={a.key} style={[styles.consentRow, i === sensitiveAreas.length - 1 && { borderBottomWidth: 0 }]}>
+                <Text style={{ fontSize: 18, width: 26, textAlign: "center" }}>{a.icon}</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.consentName}>{a.name}</Text>
+                  <Text style={styles.consentSub}>{a.consented ? `Permitido · ${a.answered} respuestas` : "Sin permiso: no te preguntamos"}</Text>
+                </View>
+                {consentBusy === a.key ? (
+                  <ActivityIndicator color={colors.primary} />
+                ) : (
+                  <Switch
+                    value={a.consented}
+                    onValueChange={(v) => toggleConsent(a, v)}
+                    disabled={consentBusy !== null}
+                    trackColor={{ true: colors.primary, false: colors.track }}
+                    accessibilityLabel={`Permiso para ${a.name}`}
+                  />
+                )}
+              </View>
+            ))}
+          </Card>
+        ) : null}
         <Card style={{ paddingVertical: 4 }}>
+          <LinkRow icon="🔐" title="Política de tratamiento de datos" subtitle="Cómo tratamos y protegemos tus datos" onPress={() => router.push("/legal/politica")} />
+          <LinkRow icon="📄" title="Términos y condiciones" onPress={() => router.push("/legal/terminos")} />
           <LinkRow icon="📥" title="Exportar mis datos" subtitle="Descarga una copia en JSON" onPress={actions.exportData} loading={actions.exporting} />
           <LinkRow icon="🚪" title="Cerrar sesión" onPress={actions.signOut} />
           <LinkRow icon="🗑️" title="Eliminar mi cuenta" subtitle="Borrado total y permanente" onPress={actions.removeAccount} loading={actions.deleting} danger last />
@@ -126,4 +265,8 @@ const createStyles = ({ colors }: Theme) => ({
   world: { color: "#fff", fontSize: 12, fontWeight: "700" as const, marginTop: 6 },
   body: { paddingHorizontal: 16 },
   row: { flexDirection: "row" as const, gap: 10, marginTop: 10 },
+  privacyLead: { fontSize: 12, color: colors.textMuted, lineHeight: 17, marginBottom: 4 },
+  consentRow: { flexDirection: "row" as const, alignItems: "center" as const, gap: 12, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: colors.border },
+  consentName: { fontSize: 14, fontWeight: "600" as const, color: colors.text },
+  consentSub: { fontSize: 12, color: colors.textMuted, marginTop: 1 },
 });

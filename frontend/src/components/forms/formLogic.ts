@@ -67,9 +67,31 @@ export function rangeDefault(q: Question): number {
   return min + Math.round((max - min) / 2 / step) * step;
 }
 
-/** Mensaje de error de una respuesta, o null si es válida. */
-export function validate(question: Question, value: AnswerValue | undefined): string | null {
-  if (!isAnswered(value)) return question.required ? "Esta pregunta es obligatoria." : null;
+/** ¿Es una fecha real en formato AAAA-MM-DD? */
+export function isValidIsoDate(value: string): boolean {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value.trim());
+  if (!m) return false;
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  const d = Number(m[3]);
+  const date = new Date(Date.UTC(y, mo - 1, d));
+  return y >= 1900 && y <= 2100 && date.getUTCFullYear() === y && date.getUTCMonth() === mo - 1 && date.getUTCDate() === d;
+}
+
+/** ¿La pregunta cuenta como obligatoria? En modo sin presión (`optional`) ninguna lo es. */
+export function isRequired(question: Question, optional = false): boolean {
+  return question.required && !optional;
+}
+
+/**
+ * Mensaje de error de una respuesta, o null si es válida.
+ * `optional` = modo sin presión: no hay obligatorias, solo se valida lo que se escribió.
+ */
+export function validate(question: Question, value: AnswerValue | undefined, optional = false): string | null {
+  if (!isAnswered(value)) return isRequired(question, optional) ? "Esta pregunta es obligatoria." : null;
+  if (question.type === "date" && typeof value === "string" && !isValidIsoDate(value)) {
+    return "Escribe la fecha como AAAA-MM-DD (por ejemplo, 2026-12-31).";
+  }
   if (question.type === "number" && typeof value === "number") {
     if (question.min != null && value < question.min) return `El valor mínimo es ${question.min}${question.unit ? ` ${question.unit}` : ""}.`;
     if (question.max != null && value > question.max) return `El valor máximo es ${question.max}${question.unit ? ` ${question.unit}` : ""}.`;
@@ -103,4 +125,13 @@ export function payloadFor(spec: FormSpec, answers: Answers): Answers {
   return out;
 }
 
-export const SUPPORTED_TYPES = ["options", "multi", "range", "number", "text"];
+export const SUPPORTED_TYPES = ["options", "multi", "range", "number", "text", "date"];
+
+/** Respuestas de `payload` que cambiaron respecto a las iniciales del formulario (para guardar parcial). */
+export function changedAnswers(initial: Answers, payload: Answers): Answers {
+  const out: Answers = {};
+  for (const [id, v] of Object.entries(payload)) {
+    if (JSON.stringify(initial[id]) !== JSON.stringify(v)) out[id] = v;
+  }
+  return out;
+}

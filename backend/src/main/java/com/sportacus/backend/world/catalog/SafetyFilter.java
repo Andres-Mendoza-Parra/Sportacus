@@ -50,7 +50,8 @@ public class SafetyFilter {
         HealthSummary h = user.health();
         UserProfileData p = user.profile();
         Double bmi = p.bmi();
-        return h.hasLowerLimbIssue() || h.hasAny("embarazo", "osteoporosis", "postoperatorio")
+        return !h.vigorousAllowed() || h.hasLowerLimbIssue()
+                || h.hasAny("embarazo", "osteoporosis", "postoperatorio", "movilidad_reducida")
                 || p.ageOr(30) >= 65 || (bmi != null && bmi >= 35);
     }
 

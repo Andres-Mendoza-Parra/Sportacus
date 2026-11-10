@@ -62,6 +62,47 @@ public class GlobalExceptionHandler {
                 .body(ApiError.of(400, "Datos inválidos", List.of("El cuerpo de la petición no es válido")));
     }
 
+    /** Registro repetido (p. ej. una carrera entre dos peticiones iguales). */
+    @ExceptionHandler(org.springframework.dao.DuplicateKeyException.class)
+    public ResponseEntity<ApiError> handleDuplicate(org.springframework.dao.DuplicateKeyException ex) {
+        log.warn("Registro duplicado rechazado ({})", rootName(ex));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ApiError.of(409, "Conflicto",
+                List.of("Eso ya estaba registrado. Recarga para ver la información más reciente.")));
+    }
+
+    /**
+     * Restricciones de la base de datos (rangos, claves foráneas…): 400 con mensaje neutro. Nunca se registra el
+     * mensaje original porque incluye la fila completa, que puede llevar datos de salud.
+     */
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    public ResponseEntity<ApiError> handleIntegrity(org.springframework.dao.DataIntegrityViolationException ex) {
+        log.warn("Datos rechazados por una restricción de la base de datos ({})", rootName(ex));
+        return ResponseEntity.badRequest().body(ApiError.of(400, "Datos inválidos",
+                List.of("Algunos datos no son válidos. Revisa los valores e intenta de nuevo.")));
+    }
+
+    /** Parámetros con tipo inválido (p. ej. un UUID mal formado en la ruta) o ausentes. */
+    @ExceptionHandler({org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class,
+            org.springframework.web.bind.MissingServletRequestParameterException.class})
+    public ResponseEntity<ApiError> handleBadParam(Exception ex) {
+        return ResponseEntity.badRequest()
+                .body(ApiError.of(400, "Datos inválidos", List.of("Algún parámetro de la petición no es válido")));
+    }
+
+    /** Ruta inexistente: 404, no un 500 con traza en el log. */
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public ResponseEntity<ApiError> handleNotFound(org.springframework.web.servlet.resource.NoResourceFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiError.of(404, "No encontrado", List.of("No encontramos lo que buscas")));
+    }
+
+    private static String rootName(Throwable ex) {
+        Throwable t = ex;
+        while (t.getCause() != null && t.getCause() != t) t = t.getCause();
+        String state = t instanceof java.sql.SQLException sql ? " " + sql.getSQLState() : "";
+        return t.getClass().getSimpleName() + state;
+    }
+
     /** Errores no previstos: se registran completos en el log y al cliente se le da un mensaje neutro. */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGeneric(Exception ex) {

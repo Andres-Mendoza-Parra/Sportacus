@@ -1,0 +1,45 @@
+{
+  "key": "terminos",
+  "version": "1.0",
+  "title": "Términos y condiciones de uso",
+  "updatedAt": "2026-11-09",
+  "summary": "Sportacus es un proyecto educativo y gratuito para personas de 12 años o más. Te orienta para entrenar, pero no reemplaza a profesionales de la salud: escucha a tu cuerpo y consulta cuando lo necesites.",
+  "sections": [
+    {
+      "title": "1. Qué es Sportacus",
+      "body": "Sportacus (nombre provisional) es un proyecto académico con fines educativos. Te propone planes de entrenamiento organizados por mundos (por ejemplo, gimnasio, calistenia, running, salud y fútbol), te muestra tu progreso y responde preguntas con un asistente.\n\nEs gratuito y no tiene publicidad, compras ni fines de lucro.\n\nAl crear tu cuenta aceptas estos términos y la Política de tratamiento de datos personales. Si no estás de acuerdo, no uses la app."
+    },
+    {
+      "title": "2. Edad mínima",
+      "body": "Debes tener 12 años o más para usar Sportacus.\n\nSi tienes entre 12 y 17 años, necesitas que tu madre, padre o tutor conozca y autorice que uses la app. Te recomendamos revisar estos términos y la política de datos en compañía de esa persona. En tu caso, Sportacus aplica límites de intensidad adecuados para tu edad."
+    },
+    {
+      "title": "3. Sportacus no reemplaza a profesionales de la salud",
+      "body": "La información, los planes y las respuestas del asistente son orientaciones generales con fines educativos. No son un diagnóstico, un tratamiento ni una prescripción médica, y no reemplazan la valoración de profesionales de la medicina, la fisioterapia, la nutrición o el entrenamiento deportivo.\n\n• El chequeo de salud es un tamizaje para cuidarte, no un examen médico. Si te recomendamos consultar a un profesional antes de hacer actividad intensa, hazlo.\n• Si sientes dolor en el pecho, falta de aire desproporcionada, mareo, desmayo, palpitaciones o un dolor que empeora, detén el ejercicio y busca atención médica.\n• En una emergencia en Colombia llama a la línea 123.\n• Si tienes una condición de salud, estás en embarazo o te recuperas de una lesión o cirugía, consulta con tu profesional de confianza antes de empezar o cambiar tu entrenamiento."
+    },
+    {
+      "title": "4. Tus compromisos",
+      "body": "Al usar Sportacus te comprometes a:\n\n• Dar información veraz, sobre todo la de tu edad y tu salud: con ella cuidamos tu seguridad.\n• Escuchar a tu cuerpo, respetar tus límites y entrenar en un lugar y con un equipo seguros.\n• Cuidar tu contraseña y no compartir tu cuenta.\n• Usar la app de forma respetuosa: no intentar acceder a cuentas ajenas, no afectar el funcionamiento del servicio y no usarla para fines distintos al entrenamiento personal."
+    },
+    {
+      "title": "5. Responsabilidad",
+      "body": "Sportacus se ofrece como un proyecto académico, en el estado en que se encuentra y sin garantía de que esté siempre disponible o libre de errores. Hacemos nuestro mejor esfuerzo para que los planes sean seguros y estén basados en evidencia, pero cada cuerpo es distinto.\n\nTú decides si haces o no cada ejercicio. En la medida en que la ley colombiana lo permita, el equipo del proyecto no responde por lesiones o daños que resulten de ignorar las advertencias de la app, de dar información falsa o de entrenar sin la valoración profesional que te recomendamos. Nada en estos términos limita los derechos que la ley te reconoce y que no se pueden renunciar."
+    },
+    {
+      "title": "6. El asistente",
+      "body": "El asistente genera respuestas automáticas con un modelo de inteligencia artificial que funciona dentro de la infraestructura de Sportacus. Puede equivocarse: revisa sus respuestas con criterio y, ante dudas de salud, consulta a un profesional. No escribas en el chat datos que no quieras compartir."
+    },
+    {
+      "title": "7. Contenidos e imágenes",
+      "body": "Los textos, planes y diseños de Sportacus son del proyecto. Algunas imágenes y videos de ejercicios provienen de fuentes externas y se usan conforme a sus licencias; sus derechos pertenecen a sus autores. No copies ni redistribuyas el contenido de la app con fines comerciales."
+    },
+    {
+      "title": "8. Tu cuenta",
+      "body": "Puedes descargar tus datos o borrar tu cuenta cuando quieras desde Cuenta → Privacidad. Podemos suspender una cuenta que se use para dañar el servicio o a otras personas, avisándote cuando sea posible.\n\nComo Sportacus es un proyecto académico, podría terminar. Si eso pasa, te avisaremos con anticipación para que puedas descargar tus datos."
+    },
+    {
+      "title": "9. Cambios, ley aplicable y contacto",
+      "body": "Versión 1.0, vigente desde el 9 de noviembre de 2026. Si cambiamos estos términos de forma importante, te pediremos que los aceptes de nuevo en la app.\n\nEstos términos se rigen por las leyes de la República de Colombia.\n\nContacto: privacidad@sportacus.app [MARCADOR: reemplazar por el correo real antes de publicar]."
+    }
+  ]
+}

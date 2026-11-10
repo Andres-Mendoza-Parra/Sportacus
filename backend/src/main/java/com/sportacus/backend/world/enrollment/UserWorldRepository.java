@@ -78,6 +78,14 @@ public class UserWorldRepository {
                 """, UUID.class, userId, worldKey, trackKey, level, json.write(profile), json.write(state));
     }
 
+    /**
+     * Serializa inscripciones y cambios de mundo del mismo usuario dentro de la transacción en curso (auditoría A6:
+     * dos peticiones simultáneas chocaban con uq_user_world_active y daban 500).
+     */
+    public void lockUser(UUID userId) {
+        jdbc.queryForList("SELECT 1 FROM pg_advisory_xact_lock(hashtext(?))", Integer.class, "user_world:" + userId);
+    }
+
     public void activate(UUID userId, String worldKey) {
         jdbc.update("UPDATE user_world SET status = 'pausado' WHERE user_id = ? AND status = 'activo'", userId);
         jdbc.update("UPDATE user_world SET status = 'activo', last_active_at = now() WHERE user_id = ? AND world_key = ?",
@@ -107,6 +115,21 @@ public class UserWorldRepository {
         jdbc.update("UPDATE user_world_goal SET status = 'abandonada' WHERE user_world_id = ? AND status = 'activa'",
                 userWorldId);
         for (GoalSpec g : goals == null ? List.<GoalSpec>of() : goals) {
+            jdbc.update("""
+                    INSERT INTO user_world_goal (user_world_id, goal_key, label, target, target_date)
+                    VALUES (?, ?, ?, ?::jsonb, ?)
+                    """, userWorldId, g.goalKey(), g.label(), json.write(g.target() == null ? Map.of() : g.target()),
+                    g.targetDate());
+        }
+    }
+
+    /** Modo edición: añade las metas nuevas sin tocar las que ya tiene (activas o logradas). */
+    public void addMissingGoals(UUID userWorldId, List<GoalSpec> goals) {
+        java.util.Set<String> existing = new java.util.HashSet<>(jdbc.queryForList("""
+                SELECT goal_key FROM user_world_goal WHERE user_world_id = ? AND status <> 'abandonada'
+                """, String.class, userWorldId));
+        for (GoalSpec g : goals == null ? List.<GoalSpec>of() : goals) {
+            if (!existing.add(g.goalKey())) continue;
             jdbc.update("""
                     INSERT INTO user_world_goal (user_world_id, goal_key, label, target, target_date)
                     VALUES (?, ?, ?, ?::jsonb, ?)
@@ -145,6 +168,11 @@ public class UserWorldRepository {
                 ON CONFLICT (user_world_id, progression_key) DO UPDATE SET current_step = EXCLUDED.current_step,
                     best_step = GREATEST(user_progression.best_step, EXCLUDED.current_step), updated_at = now()
                 """, userWorldId, progressionKey, step, step);
+    }
+
+    /** Modo edición: escribe los escalones ya fusionados (nunca borra progresiones ni baja best_step). */
+    public void mergeProgressions(UUID userWorldId, Map<String, Integer> steps) {
+        if (steps != null) steps.forEach((k, v) -> setProgressionStep(userWorldId, k, v));
     }
 
     public void replaceProgressions(UUID userWorldId, Map<String, Integer> steps) {

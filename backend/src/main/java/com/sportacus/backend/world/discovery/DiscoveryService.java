@@ -88,13 +88,29 @@ public class DiscoveryService {
     }
 
     public DiscoveryResult discover(UserContext user, Answers answers) {
+        List<RankedWorld> ranking = rank(user, answers);
+        List<String> notices = new ArrayList<>();
+        if (user.health().mustRefer()) {
+            notices.add("Marcaste señales que un profesional debe revisar: empieza por Salud y Rehabilitación y consulta antes de hacer actividad intensa.");
+        }
+        jdbc.update("INSERT INTO world_discovery (user_id, answers, ranking) VALUES (?, ?::jsonb, ?::jsonb)",
+                user.userId(), json.write(answers.asMap()), json.write(ranking));
+        return new DiscoveryResult(ranking, notices);
+    }
+
+    /**
+     * Ranking sin guardar nada. Con respuestas vacías sirve para las sugerencias de Mi Base: entonces pesan solo el
+     * perfil común, la salud y el Perfil 360.
+     */
+    public List<RankedWorld> rank(UserContext user, Answers answers) {
         DiscoveryInput input = new DiscoveryInput(answers, user);
         List<RankedWorld> ranking = new ArrayList<>();
         for (WorldInfo w : catalog.worlds()) {
             if (!w.selectable()) continue;
             WorldModule module = registry.find(w.key()).orElse(null);
             if (module == null) continue;
-            List<Factor> factors = module.discoveryFactors(input);
+            List<Factor> factors = new ArrayList<>(module.discoveryFactors(input));
+            factors.addAll(ProfileDiscoveryFactors.of(w.key(), user));
             double total = BASE_SCORE + factors.stream().mapToDouble(Factor::points).sum();
             int score = (int) Math.round(Math.max(0, Math.min(100, total)));
             List<String> reasons = factors.stream().filter(Factor::positive)
@@ -105,13 +121,7 @@ public class DiscoveryService {
                     factors));
         }
         ranking.sort(Comparator.comparingInt(RankedWorld::score).reversed());
-        List<String> notices = new ArrayList<>();
-        if (user.health().mustRefer()) {
-            notices.add("Marcaste señales que un profesional debe revisar: empieza por Salud y Rehabilitación y consulta antes de hacer actividad intensa.");
-        }
-        jdbc.update("INSERT INTO world_discovery (user_id, answers, ranking) VALUES (?, ?::jsonb, ?::jsonb)",
-                user.userId(), json.write(answers.asMap()), json.write(ranking));
-        return new DiscoveryResult(ranking, notices);
+        return ranking;
     }
 
     public void markChosen(java.util.UUID userId, String worldKey) {

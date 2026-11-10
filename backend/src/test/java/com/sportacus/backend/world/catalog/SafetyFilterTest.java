@@ -67,4 +67,14 @@ class SafetyFilterTest {
         assertFalse(eq.contains("barra_olimpica"));
         assertTrue(SafetyFilter.hasEquipment(movement("bajo", List.of(), List.of("barra_dominadas")), eq));
     }
+
+    @Test
+    void sinChequeoDeSaludModoPrudenteSinImpactoAlto() {
+        UserProfileData p = new UserProfileData(Year.now().getValue() - 30, null, 70.0, 175.0, 2, 3, 45, List.of(),
+                List.of("casa"), List.of(), true);
+        UserContext u = new UserContext(UUID.randomUUID(), "x", p, HealthSummary.unknown());
+        assertFalse(filter.allowed(movement("alto", List.of(), List.of()), u));
+        assertTrue(filter.allowed(movement("medio", List.of(), List.of()), u));
+        assertFalse(u.health().vigorousAllowed());
+    }
 }

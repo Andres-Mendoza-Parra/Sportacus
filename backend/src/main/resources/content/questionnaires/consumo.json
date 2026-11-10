@@ -1,0 +1,268 @@
+{
+  "area": {
+    "key": "consumo",
+    "name": "Tabaco, alcohol y cafeína",
+    "icon": "☕",
+    "sortOrder": 170,
+    "description": "Lo que consumes y cómo afecta tu energía, tu sueño y tu recuperación. Sin juicios.",
+    "sensitive": true
+  },
+  "questionnaires": [
+    {
+      "key": "audit_c",
+      "title": "Consumo de alcohol (AUDIT-C)",
+      "subtitle": "1 minuto",
+      "minutes": 1,
+      "sourceKey": "audit_c",
+      "questions": [
+        {
+          "id": "co_auditc_1",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia tomas alguna bebida alcohólica?",
+          "hint": null,
+          "options": [
+            {"id":"0","icon":null,"text":"Nunca","sub":null},
+            {"id":"1","icon":null,"text":"Una vez al mes o menos","sub":null},
+            {"id":"2","icon":null,"text":"De 2 a 4 veces al mes","sub":null},
+            {"id":"3","icon":null,"text":"De 2 a 3 veces por semana","sub":null},
+            {"id":"4","icon":null,"text":"4 o más veces por semana","sub":null}
+          ],
+          "why": "El alcohol influye en la recuperación y el sueño: lo usamos para ajustar tu plan.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "co_auditc_2",
+          "type": "options",
+          "prompt": "¿Cuántas bebidas alcohólicas sueles tomar en un día en que bebes?",
+          "hint": "Una bebida ≈ una cerveza de 330 ml, una copa de vino de 140 ml o un trago de 40 ml de licor.",
+          "options": [
+            {"id":"0","icon":null,"text":"1 o 2","sub":null},
+            {"id":"1","icon":null,"text":"3 o 4","sub":null},
+            {"id":"2","icon":null,"text":"5 o 6","sub":null},
+            {"id":"3","icon":null,"text":"7 a 9","sub":null},
+            {"id":"4","icon":null,"text":"10 o más","sub":null}
+          ],
+          "why": "Nos ayuda a darte pautas de recuperación realistas.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"co_auditc_1","in":["1","2","3","4"]},
+          "cadence": null
+        },
+        {
+          "id": "co_auditc_3",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia tomas 6 o más bebidas alcohólicas en una sola ocasión?",
+          "hint": "Una bebida ≈ una cerveza de 330 ml, una copa de vino de 140 ml o un trago de 40 ml de licor.",
+          "options": [
+            {"id":"0","icon":null,"text":"Nunca","sub":null},
+            {"id":"1","icon":null,"text":"Menos de una vez al mes","sub":null},
+            {"id":"2","icon":null,"text":"Mensualmente","sub":null},
+            {"id":"3","icon":null,"text":"Semanalmente","sub":null},
+            {"id":"4","icon":null,"text":"A diario o casi a diario","sub":null}
+          ],
+          "why": "Tras días de mucho consumo te sugerimos sesiones más suaves e hidratación.",
+          "uses": ["plan","asistente","seguridad"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"co_auditc_1","in":["1","2","3","4"]},
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "consumo_habitos",
+      "title": "Tabaco, cafeína y otros",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "co_tabaco",
+          "type": "options",
+          "prompt": "¿Fumas o vapeas?",
+          "hint": null,
+          "options": [
+            {"id":"no","icon":"➖","text":"No","sub":null},
+            {"id":"ocasional","icon":"🚬","text":"Ocasionalmente","sub":null},
+            {"id":"diario","icon":"🚬","text":"A diario","sub":null},
+            {"id":"vapeo","icon":"💨","text":"Vapeo","sub":null}
+          ],
+          "why": "El tabaco afecta la capacidad aeróbica: ajustamos el cardio y celebramos cada mejora.",
+          "uses": ["seguridad","plan","asistente"],
+          "priority": 4,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "co_tabaco_cantidad",
+          "type": "options",
+          "prompt": "¿Cuántos cigarrillos fumas al día?",
+          "hint": null,
+          "options": [
+            {"id":"1_5","icon":null,"text":"1 a 5","sub":null},
+            {"id":"6_10","icon":null,"text":"6 a 10","sub":null},
+            {"id":"11_20","icon":null,"text":"11 a 20","sub":null},
+            {"id":"mas_20","icon":null,"text":"Más de 20","sub":null}
+          ],
+          "why": "Nos ayuda a ajustar la progresión del cardio y a mostrarte avances reales.",
+          "uses": ["plan"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"co_tabaco","in":["diario"]},
+          "cadence": null
+        },
+        {
+          "id": "co_tabaco_dejar",
+          "type": "options",
+          "prompt": "¿Has pensado en dejarlo o reducirlo?",
+          "hint": null,
+          "options": [
+            {"id":"intentando","icon":null,"text":"Lo estoy intentando","sub":null},
+            {"id":"pensando","icon":null,"text":"Lo estoy pensando","sub":null},
+            {"id":"no","icon":null,"text":"Por ahora no","sub":null}
+          ],
+          "why": "Si quieres, el ejercicio puede ser un gran aliado: te acompañamos sin presión.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"co_tabaco","in":["ocasional","diario","vapeo"]},
+          "cadence": null
+        },
+        {
+          "id": "co_exfumador",
+          "type": "options",
+          "prompt": "¿Fumaste en el pasado?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"menos_1a","icon":null,"text":"Sí, lo dejé hace menos de 1 año","sub":null},
+            {"id":"mas_1a","icon":null,"text":"Sí, lo dejé hace más de 1 año","sub":null}
+          ],
+          "why": "Si lo dejaste hace poco, tu capacidad aeróbica puede mejorar rápido: lo aprovechamos.",
+          "uses": ["plan","asistente"],
+          "priority": 1,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"co_tabaco","in":["no"]},
+          "cadence": null
+        },
+        {
+          "id": "co_cafeina",
+          "type": "options",
+          "prompt": "¿Cuántas tazas de café, té negro o bebidas energéticas tomas al día?",
+          "hint": null,
+          "options": [
+            {"id":"0","icon":null,"text":"Ninguna","sub":null},
+            {"id":"1","icon":null,"text":"1","sub":null},
+            {"id":"2_3","icon":null,"text":"2 o 3","sub":null},
+            {"id":"4_mas","icon":null,"text":"4 o más","sub":null}
+          ],
+          "why": "La cafeína puede ayudarte a rendir o quitarte sueño: te decimos cuándo aprovecharla.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "co_cafeina_hora",
+          "type": "options",
+          "prompt": "¿Hasta qué hora sueles tomar cafeína?",
+          "hint": null,
+          "options": [
+            {"id":"manana","icon":null,"text":"Solo en la mañana","sub":null},
+            {"id":"mediodia","icon":null,"text":"Hasta el mediodía","sub":null},
+            {"id":"tarde","icon":null,"text":"En la tarde","sub":null},
+            {"id":"noche","icon":null,"text":"En la noche","sub":null}
+          ],
+          "why": "Si es tarde, puede afectar tu sueño y tu recuperación.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"co_cafeina","in":["1","2_3","4_mas"]},
+          "cadence": null
+        },
+        {
+          "id": "co_energizantes",
+          "type": "options",
+          "prompt": "¿Tomas bebidas energizantes o preentrenos?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"frecuente","icon":null,"text":"Con frecuencia","sub":null}
+          ],
+          "why": "Te damos información para usarlos con cuidado o alternativas.",
+          "uses": ["seguridad","asistente"],
+          "priority": 1,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "co_alcohol_entreno",
+          "type": "options",
+          "prompt": "¿Sueles tomar alcohol la noche antes de entrenar o competir?",
+          "hint": null,
+          "options": [
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"si","icon":null,"text":"Sí, con frecuencia","sub":null}
+          ],
+          "why": "Te sugerimos qué sesión conviene al día siguiente.",
+          "uses": ["plan","asistente"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": {"question":"co_auditc_1","in":["1","2","3","4"]},
+          "cadence": null
+        },
+        {
+          "id": "co_cannabis",
+          "type": "options",
+          "prompt": "¿Consumes cannabis?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"No","sub":null},
+            {"id":"ocasional","icon":null,"text":"Ocasionalmente","sub":null},
+            {"id":"frecuente","icon":null,"text":"Con frecuencia","sub":null}
+          ],
+          "why": "Es confidencial: solo lo usamos para darte pautas de seguridad y recuperación.",
+          "uses": ["seguridad","asistente"],
+          "priority": 1,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

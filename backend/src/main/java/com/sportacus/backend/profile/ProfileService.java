@@ -36,10 +36,14 @@ public class ProfileService {
     private final JdbcTemplate jdbc;
     private final SensitiveDataCipher cipher;
     private final Json json;
+    private final Profile360Service profile360;
+    private final ProfileAnswerRepository answers;
 
     public ProfileService(ProfileRepository profiles, HealthService health, EnrollmentService enrollment,
             UserRepository users, PasswordEncoder passwordEncoder, JdbcTemplate jdbc, SensitiveDataCipher cipher,
-            Json json) {
+            Json json, Profile360Service profile360, ProfileAnswerRepository answers) {
+        this.profile360 = profile360;
+        this.answers = answers;
         this.profiles = profiles;
         this.health = health;
         this.enrollment = enrollment;
@@ -50,28 +54,31 @@ public class ProfileService {
         this.json = json;
     }
 
-    /** Estado del recibimiento: qué pasos faltan. */
-    public record OnboardingStatus(boolean profileDone, boolean healthDone, boolean worldDone) {
-    }
-
     public record AccountView(UUID userId, String name, String email, UserProfileData profile, Integer age, Double bmi,
-            HealthSummary health, List<MyWorld> worlds, OnboardingStatus onboarding) {
+            HealthSummary health, List<MyWorld> worlds, Profile360Service.Completeness completeness,
+            String activeWorld) {
     }
 
     public AccountView account(User user) {
         UserProfileData p = profiles.load(user.getId());
         HealthSummary h = health.summary(user.getId());
         List<MyWorld> worlds = enrollment.myWorlds(user);
+        String active = worlds.stream().filter(MyWorld::active).map(MyWorld::key).findFirst().orElse("base");
         return new AccountView(user.getId(), user.visibleName(), user.getEmail(), p, p.age(), p.bmi(), h, worlds,
-                new OnboardingStatus(p.completed(), h.screened(), !worlds.isEmpty()));
+                profile360.completeness(user.getId()), active);
     }
 
     public FormSpec form(User user) {
         return ProfileForm.form().withAnswers(profiles.asAnswers(user.getId()));
     }
 
+    @Transactional
     public AccountView saveForm(User user, Answers answers) {
-        profiles.save(user.getId(), answers);
+        // Validado contra la definición: "abc" en días o una opción inexistente es 400, no un NULL silencioso.
+        Answers checked = com.sportacus.backend.world.enrollment.FormAnswersValidator.validate(ProfileForm.form(),
+                answers == null ? Answers.empty() : answers);
+        profiles.save(user.getId(), checked);
+        profile360.recordProfileForm(user.getId(), checked);
         return account(user);
     }
 
@@ -96,6 +103,10 @@ public class ProfileService {
         }
         if (req.weightKg() != null || req.heightCm() != null) {
             profiles.patchBody(user.getId(), req.weightKg(), req.heightCm());
+            Map<String, Object> body = new LinkedHashMap<>();
+            if (req.weightKg() != null) body.put("p_weight", req.weightKg());
+            if (req.heightCm() != null) body.put("p_height", req.heightCm());
+            profile360.recordProfileForm(user.getId(), new Answers(body));
         }
         return account(user);
     }
@@ -138,16 +149,96 @@ public class ProfileService {
                 SELECT world_key, track_key, level, status, profile::text AS perfil, enrolled_at
                 FROM user_world WHERE user_id = ?
                 """, id));
+        out.put("progresiones", jdbc.queryForList("""
+                SELECT w.world_key, p.progression_key, p.current_step, p.best_step, p.updated_at
+                FROM user_progression p JOIN user_world w ON w.id = p.user_world_id WHERE w.user_id = ?
+                ORDER BY w.world_key, p.progression_key
+                """, id));
+        out.put("metas", jdbc.queryForList("""
+                SELECT w.world_key, g.goal_key, g.label, g.target::text AS objetivo, g.target_date, g.status,
+                       g.achieved_by, g.created_at, g.achieved_at
+                FROM user_world_goal g JOIN user_world w ON w.id = g.user_world_id WHERE w.user_id = ?
+                ORDER BY g.created_at
+                """, id));
+        out.put("planes", plans(id));
         out.put("sesiones", jdbc.queryForList("""
-                SELECT s.performed_on, s.title, s.duration_min, s.rpe, s.pain_before, s.pain_after, s.pain_next_day,
-                       s.distance_m, w.world_key
+                SELECT s.id, s.performed_on, s.title, s.duration_min, s.rpe, s.pain_before, s.pain_after,
+                       s.pain_next_day, s.mood_before, s.mood_after, s.distance_m, s.completed, s.notes, w.world_key,
+                       s.created_at
                 FROM session_log s JOIN user_world w ON w.id = s.user_world_id WHERE s.user_id = ? ORDER BY s.performed_on
+                """, id));
+        out.put("series_registradas", jdbc.queryForList("""
+                SELECT b.session_log_id, b.movement_key, b.set_index, b.reps, b.load_kg, b.rir, b.hold_s, b.duration_s,
+                       b.distance_m, b.pain, b.completed
+                FROM block_log b JOIN session_log s ON s.id = b.session_log_id WHERE s.user_id = ?
+                ORDER BY s.performed_on, b.session_log_id, b.set_index
                 """, id));
         out.put("metricas", jdbc.queryForList("""
                 SELECT metric_key, value, recorded_at, source FROM metric_entry WHERE user_id = ? ORDER BY recorded_at
                 """, id));
-        out.put("logros", jdbc.queryForList("SELECT key, title, achieved_at FROM achievement WHERE user_id = ?", id));
+        out.put("perfil_360", answers.export(id));
+        out.put("estados_preguntas", jdbc.queryForList("""
+                SELECT question_key, status, until, updated_at FROM profile_question_state WHERE user_id = ?
+                ORDER BY question_key
+                """, id));
+        out.put("consentimientos", answers.consents(id));
+        out.put("registro_consentimientos", optionalTable("consent_log", """
+                SELECT document, version, granted, source, created_at FROM consent_log WHERE user_id = ?
+                ORDER BY created_at
+                """, id));
+        out.put("favoritos", jdbc.queryForList(
+                "SELECT movement_key, created_at FROM favorite_movement WHERE user_id = ? ORDER BY created_at", id));
+        out.put("reacciones_ejercicios", jdbc.queryForList("""
+                SELECT world_key, movement_key, reaction, created_at FROM movement_feedback WHERE user_id = ?
+                ORDER BY created_at
+                """, id));
+        out.put("descubrimientos", jdbc.queryForList("""
+                SELECT answers::text AS respuestas, ranking::text AS ranking, chosen_world_key, created_at
+                FROM world_discovery WHERE user_id = ? ORDER BY created_at
+                """, id));
+        out.put("racha", jdbc.queryForList(
+                "SELECT current_days, longest_days, last_active_date FROM user_streak WHERE user_id = ?", id));
+        out.put("logros", jdbc.queryForList(
+                "SELECT key, world_key, title, achieved_at FROM achievement WHERE user_id = ? ORDER BY achieved_at", id));
+        out.put("eventos_de_uso", optionalTable("event_log", """
+                SELECT name, props::text AS propiedades, source, occurred_at FROM event_log WHERE user_id = ?
+                ORDER BY occurred_at
+                """, id));
         return out;
+    }
+
+    /** Planes (activos y archivados) con sus sesiones y bloques. */
+    private List<Map<String, Object>> plans(UUID userId) {
+        List<Map<String, Object>> plans = jdbc.queryForList("""
+                SELECT p.id, w.world_key, p.track_key, p.title, p.summary, p.status, p.weeks, p.starts_on, p.created_at
+                FROM plan p JOIN user_world w ON w.id = p.user_world_id WHERE w.user_id = ? ORDER BY p.created_at
+                """, userId);
+        Map<Object, List<Map<String, Object>>> sessions = new LinkedHashMap<>();
+        jdbc.queryForList("""
+                SELECT s.plan_id, s.id, s.week_index, s.day_index, s.weekday, s.title, s.kind, s.est_minutes
+                FROM plan_session s JOIN plan p ON p.id = s.plan_id JOIN user_world w ON w.id = p.user_world_id
+                WHERE w.user_id = ? ORDER BY s.week_index, s.day_index
+                """, userId).forEach(s -> sessions.computeIfAbsent(s.remove("plan_id"), k -> new java.util.ArrayList<>()).add(s));
+        Map<Object, List<Map<String, Object>>> blocks = new LinkedHashMap<>();
+        jdbc.queryForList("""
+                SELECT b.plan_session_id, b.order_index, b.block_type, b.movement_key, b.title,
+                       b.prescription::text AS prescripcion
+                FROM plan_block b JOIN plan_session s ON s.id = b.plan_session_id JOIN plan p ON p.id = s.plan_id
+                JOIN user_world w ON w.id = p.user_world_id WHERE w.user_id = ? ORDER BY b.order_index
+                """, userId).forEach(b -> blocks.computeIfAbsent(b.remove("plan_session_id"), k -> new java.util.ArrayList<>()).add(b));
+        for (Map<String, Object> p : plans) {
+            List<Map<String, Object>> ss = sessions.getOrDefault(p.get("id"), List.of());
+            for (Map<String, Object> s : ss) s.put("bloques", blocks.getOrDefault(s.get("id"), List.of()));
+            p.put("sesiones", ss);
+        }
+        return plans;
+    }
+
+    /** Tablas que pueden no existir en una base a medio migrar: la exportación nunca falla por ellas. */
+    private List<Map<String, Object>> optionalTable(String table, String sql, UUID userId) {
+        Boolean exists = jdbc.queryForObject("SELECT to_regclass(?) IS NOT NULL", Boolean.class, table);
+        if (!Boolean.TRUE.equals(exists)) return List.of();
+        return jdbc.queryForList(sql, userId);
     }
 
     /** Borrado total: todas las tablas cuelgan de app_user con ON DELETE CASCADE. */

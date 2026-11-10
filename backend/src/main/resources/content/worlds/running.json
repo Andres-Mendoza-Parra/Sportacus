@@ -231,7 +231,7 @@
       "cues": ["Tensión suave, nunca dolor", "Pie de atrás apuntando al frente"],
       "mistakes": ["Rebotar", "Levantar el talón"],
       "regions": ["tren_inferior"], "muscles": ["gemelos"],
-      "equipment": [], "environments": ["exterior", "parque", "casa"], "impact": "bajo", "source": "sportacus"
+      "equipment": [], "environments": ["exterior", "parque", "casa"], "impact": "bajo", "media": { "images": ["https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/0.jpg", "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/1.jpg"] }, "source": "sportacus"
     },
     {
       "key": "movilidad_cadera_corredor",
@@ -246,7 +246,7 @@
       "cues": ["Aprieta el glúteo de la pierna de atrás", "Espalda neutra"],
       "mistakes": ["Arquear la zona lumbar"],
       "regions": ["tren_inferior"], "muscles": ["gluteos", "cuadriceps", "aductores"],
-      "equipment": [], "environments": ["exterior", "parque", "casa"], "impact": "bajo", "source": "sportacus"
+      "equipment": [], "environments": ["exterior", "parque", "casa"], "impact": "bajo", "media": { "images": ["https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg", "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/1.jpg"] }, "source": "sportacus"
     },
     { "ref": "elevacion_talones", "role": "accesorio", "level": 1, "pattern": "fuerza_corredor", "attrs": { "run": false } },
     { "ref": "puente_gluteo", "role": "accesorio", "level": 1, "pattern": "fuerza_corredor", "attrs": { "run": false } },

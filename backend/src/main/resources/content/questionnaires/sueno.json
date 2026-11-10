@@ -1,0 +1,312 @@
+{
+  "area": {
+    "key": "sueno",
+    "name": "Sueño y recuperación",
+    "icon": "😴",
+    "sortOrder": 40,
+    "description": "Cómo duermes y te recuperas. Ajusta el volumen de tus sesiones.",
+    "sensitive": false
+  },
+  "questionnaires": [
+    {
+      "key": "sueno_habitos",
+      "title": "Tus hábitos de sueño",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "sl_horas",
+          "type": "range",
+          "prompt": "¿Cuántas horas duermes en una noche normal?",
+          "hint": null,
+          "min": 3,
+          "max": 12,
+          "step": 1,
+          "unit": "h",
+          "why": "Dormir poco reduce la recuperación: ajustamos el volumen y los días de descanso.",
+          "uses": ["plan","asistente"],
+          "priority": 5,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "sl_calidad",
+          "type": "range",
+          "prompt": "En general, ¿qué tan bien duermes?",
+          "hint": "1 = muy mal, 5 = muy bien.",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "unit": null,
+          "why": "Si duermes mal, priorizamos recuperación y evitamos sesiones intensas tarde.",
+          "uses": ["plan","asistente"],
+          "priority": 4,
+          "refreshDays": 30,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "sl_acostarse",
+          "type": "options",
+          "prompt": "¿A qué hora sueles acostarte?",
+          "hint": null,
+          "options": [
+            {"id":"antes_21","icon":null,"text":"Antes de las 9 p. m.","sub":null},
+            {"id":"21_22","icon":null,"text":"9 a 10 p. m.","sub":null},
+            {"id":"22_23","icon":null,"text":"10 a 11 p. m.","sub":null},
+            {"id":"23_24","icon":null,"text":"11 p. m. a medianoche","sub":null},
+            {"id":"despues_24","icon":null,"text":"Después de medianoche","sub":null},
+            {"id":"variable","icon":null,"text":"Varía mucho","sub":null}
+          ],
+          "why": "Evitamos proponerte sesiones intensas muy cerca de tu hora de dormir.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "sl_despertar",
+          "type": "options",
+          "prompt": "¿A qué hora sueles despertarte?",
+          "hint": null,
+          "options": [
+            {"id":"antes_5","icon":null,"text":"Antes de las 5 a. m.","sub":null},
+            {"id":"5_6","icon":null,"text":"5 a 6 a. m.","sub":null},
+            {"id":"6_7","icon":null,"text":"6 a 7 a. m.","sub":null},
+            {"id":"7_8","icon":null,"text":"7 a 8 a. m.","sub":null},
+            {"id":"despues_8","icon":null,"text":"Después de las 8 a. m.","sub":null},
+            {"id":"variable","icon":null,"text":"Varía mucho","sub":null}
+          ],
+          "why": "Nos dice si entrenar temprano es realista para ti.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "sl_regular",
+          "type": "options",
+          "prompt": "¿Te acuestas y levantas a horas parecidas, incluso el fin de semana?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"mas_o_menos","icon":null,"text":"Más o menos","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null}
+          ],
+          "why": "Un horario regular mejora la recuperación; te damos ideas si cuesta.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "sl_latencia",
+          "type": "options",
+          "prompt": "¿Cuánto tardas en quedarte dormido?",
+          "hint": null,
+          "options": [
+            {"id":"menos_15","icon":null,"text":"Menos de 15 minutos","sub":null},
+            {"id":"15_30","icon":null,"text":"15 a 30 minutos","sub":null},
+            {"id":"30_60","icon":null,"text":"30 a 60 minutos","sub":null},
+            {"id":"mas_60","icon":null,"text":"Más de 1 hora","sub":null}
+          ],
+          "why": "Si tardas, evitamos estímulos tarde y te sugerimos rutinas de relajación.",
+          "uses": ["asistente","plan"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "sl_despertares",
+          "type": "options",
+          "prompt": "¿Te despiertas durante la noche?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Casi nunca","sub":null},
+            {"id":"una","icon":null,"text":"Una vez","sub":null},
+            {"id":"varias","icon":null,"text":"Varias veces","sub":null},
+            {"id":"muchas","icon":null,"text":"Muchas veces","sub":null}
+          ],
+          "why": "Un sueño interrumpido pide más cuidado con el volumen de entrenamiento.",
+          "uses": ["plan","asistente"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "sl_descansado",
+          "type": "options",
+          "prompt": "¿Te levantas con sensación de descanso?",
+          "hint": null,
+          "options": [
+            {"id":"siempre","icon":null,"text":"Casi siempre","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"casi_nunca","icon":null,"text":"Casi nunca","sub":null}
+          ],
+          "why": "Si casi nunca, usamos el check-in diario para ajustar la intensidad.",
+          "uses": ["plan","asistente"],
+          "priority": 3,
+          "refreshDays": 30,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "sl_somnolencia",
+          "type": "options",
+          "prompt": "¿Te da mucho sueño durante el día?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Casi nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"a_menudo","icon":null,"text":"A menudo","sub":null}
+          ],
+          "why": "Si te pasa a menudo, cuidamos más la intensidad y te sugerimos consultarlo.",
+          "uses": ["seguridad","asistente"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "sueno_entorno",
+      "title": "Tu descanso en detalle",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "sl_siesta",
+          "type": "options",
+          "prompt": "¿Haces siesta?",
+          "hint": null,
+          "options": [
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"corta","icon":null,"text":"Sí, corta (menos de 30 min)","sub":null},
+            {"id":"larga","icon":null,"text":"Sí, larga","sub":null}
+          ],
+          "why": "Una siesta corta puede ayudarte a recuperar; te damos pautas para que sume.",
+          "uses": ["asistente"],
+          "priority": 1,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "sl_pantallas",
+          "type": "options",
+          "prompt": "¿Usas el celular o pantallas en la cama antes de dormir?",
+          "hint": null,
+          "options": [
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"siempre","icon":null,"text":"Casi siempre","sub":null}
+          ],
+          "why": "Te damos ideas sencillas para cuidar tu descanso, sin regaños.",
+          "uses": ["asistente"],
+          "priority": 1,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "sl_interrupciones",
+          "type": "multi",
+          "prompt": "¿Qué suele interrumpir tu sueño?",
+          "hint": null,
+          "options": [
+            {"id":"ruido","icon":null,"text":"Ruido","sub":null},
+            {"id":"luz","icon":null,"text":"Luz","sub":null},
+            {"id":"calor","icon":null,"text":"Calor","sub":null},
+            {"id":"frio","icon":null,"text":"Frío","sub":null},
+            {"id":"colchon","icon":null,"text":"Colchón o almohada","sub":null},
+            {"id":"pareja","icon":null,"text":"Mi pareja","sub":null},
+            {"id":"mascota","icon":null,"text":"Mascotas","sub":null},
+            {"id":"bebe","icon":null,"text":"Bebé o niños","sub":null},
+            {"id":"preocupaciones","icon":null,"text":"Preocupaciones","sub":null},
+            {"id":"bano","icon":null,"text":"Ir al baño","sub":null},
+            {"id":"ninguno","icon":null,"text":"Nada en especial","sub":null}
+          ],
+          "why": "Te damos consejos específicos para lo que de verdad te afecta.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "sl_ronquido",
+          "type": "options",
+          "prompt": "¿Te han dicho que roncas fuerte o que haces pausas al respirar dormido?",
+          "hint": null,
+          "options": [
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"no_se","icon":null,"text":"No lo sé","sub":null}
+          ],
+          "why": "No es un diagnóstico: si pasa, te sugerimos comentarlo con un profesional de salud.",
+          "uses": ["seguridad","asistente"],
+          "priority": 2,
+          "refreshDays": 365,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "sl_recuperacion",
+          "type": "options",
+          "prompt": "Después de un esfuerzo fuerte, ¿cuánto tardas en sentirte recuperado?",
+          "hint": null,
+          "options": [
+            {"id":"1d","icon":null,"text":"Al día siguiente","sub":null},
+            {"id":"2d","icon":null,"text":"Unos 2 días","sub":null},
+            {"id":"3d","icon":null,"text":"3 días o más","sub":null},
+            {"id":"no_se","icon":null,"text":"No lo sé","sub":null}
+          ],
+          "why": "Define cuántos días dejamos entre sesiones exigentes.",
+          "uses": ["plan"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}

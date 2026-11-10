@@ -1,4 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -6,10 +7,13 @@ import { TrackList } from "../../../components/onboarding/PlanPieces";
 import WorldHero from "../../../components/onboarding/WorldHero";
 import { isSelectable } from "../../../components/onboarding/WorldCardItem";
 import { Card, SectionTitle } from "../../../components/ui/Card";
+import { useToast } from "../../../components/ui/Feedback";
 import GradientButton from "../../../components/ui/GradientButton";
 import { ScreenSkeleton } from "../../../components/ui/Skeleton";
 import { EmptyState, ErrorState } from "../../../components/ui/States";
+import { useWorld } from "../../../context/WorldContext";
 import { useLoader } from "../../../hooks/useLoader";
+import { extractErrorMessage } from "../../../services/api";
 import { fetchWorlds } from "../../../services/worldsService";
 import { Theme, deriveAccent, useThemedStyles, useTheme } from "../../../theme";
 
@@ -20,6 +24,9 @@ export default function WorldDetailScreen() {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const worlds = useLoader(fetchWorlds, [key]);
+  const toast = useToast();
+  const { activate } = useWorld();
+  const [activating, setActivating] = useState(false);
 
   if (worlds.loading) return <ScreenSkeleton cards={3} />;
   const world = worlds.data?.find((w) => w.key === key);
@@ -37,6 +44,20 @@ export default function WorldDetailScreen() {
 
   const accent = deriveAccent(world.color);
   const selectable = isSelectable(world);
+
+  async function activateThis() {
+    if (!world) return;
+    setActivating(true);
+    try {
+      await activate(world.key);
+      toast.success(`${world.icon} ${world.name} es ahora tu mundo activo`);
+      router.dismissTo("/home");
+    } catch (error) {
+      toast.error(extractErrorMessage(error));
+    } finally {
+      setActivating(false);
+    }
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
@@ -75,8 +96,13 @@ export default function WorldDetailScreen() {
       </ScrollView>
 
       <View style={[styles.footer, { paddingBottom: 16 + insets.bottom }]}>
-        {world.enrolled ? (
-          <Text style={styles.muted}>Ya estás inscrito en este mundo. Puedes activarlo desde la galería o tu Cuenta.</Text>
+        {world.active ? (
+          <GradientButton title="Ir a mi mundo" onPress={() => router.dismissTo("/home")} />
+        ) : world.enrolled ? (
+          <View style={{ gap: 8 }}>
+            <Text style={styles.muted}>Este mundo ya está en tus mundos: tu plan y tu progreso siguen ahí.</Text>
+            <GradientButton title="Activar este mundo" onPress={activateThis} loading={activating} />
+          </View>
         ) : selectable ? (
           <GradientButton title="Elegir este mundo" onPress={() => router.push({ pathname: "/onboarding/setup/[key]", params: { key: world.key } })} />
         ) : (

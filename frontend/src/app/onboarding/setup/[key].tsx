@@ -4,25 +4,32 @@ import { useState } from "react";
 import FormScreen from "../../../components/forms/FormScreen";
 import EnrollResult from "../../../components/onboarding/EnrollResult";
 import { useToast } from "../../../components/ui/Feedback";
-import { useAuth } from "../../../context/AuthContext";
 import { useWorld } from "../../../context/WorldContext";
 import { extractErrorMessage } from "../../../services/api";
 import { Answers, EnrollResponse } from "../../../services/types";
 import { enrollWorld, fetchWorldOnboarding } from "../../../services/worldsService";
 
-/** Paso 4–5: onboarding propio del mundo → inscripción (crea el plan y activa el mundo) → resultado. */
+/**
+ * Inscripción en un mundo: primero las preguntas mínimas para armar el plan; las opcionales quedan
+ * plegadas en "Afinar más (opcional)". Con ?mode=edit (tarjeta "Afina tu plan") vuelve atrás al guardar.
+ */
 export default function WorldSetupScreen() {
-  const { key } = useLocalSearchParams<{ key: string }>();
+  const { key, mode } = useLocalSearchParams<{ key: string; mode?: string }>();
+  const editing = mode === "edit";
   const toast = useToast();
-  const { markOnboarded } = useAuth();
-  const { refresh } = useWorld();
+  const { refresh, invalidate } = useWorld();
   const [result, setResult] = useState<EnrollResponse | null>(null);
 
   async function submit(answers: Answers) {
     try {
       const response = await enrollWorld(key, answers);
-      await markOnboarded();
       await refresh().catch(() => undefined);
+      if (editing) {
+        invalidate();
+        toast.success("Listo: ajustamos tu plan con lo que nos contaste.");
+        router.dismissTo("/home");
+        return;
+      }
       setResult(response);
     } catch (error) {
       toast.error(extractErrorMessage(error));
@@ -32,9 +39,20 @@ export default function WorldSetupScreen() {
 
   function exit() {
     if (router.canGoBack()) router.back();
+    else if (editing) router.replace("/home");
     else router.replace({ pathname: "/onboarding/world/[key]", params: { key } });
   }
 
-  if (result) return <EnrollResult result={result} onEnter={() => router.replace("/home")} />;
-  return <FormScreen load={() => fetchWorldOnboarding(key)} loadKey={key} submitLabel="Crear mi plan" onSubmit={submit} onExit={exit} />;
+  if (result) return <EnrollResult result={result} onEnter={() => router.dismissTo("/home")} />;
+  return (
+    <FormScreen
+      load={() => fetchWorldOnboarding(key)}
+      loadKey={key}
+      submitLabel={editing ? "Guardar" : "Crear mi plan"}
+      onSubmit={submit}
+      onExit={exit}
+      exitIcon={editing ? "close" : "back"}
+      deferOptional={!editing}
+    />
+  );
 }

@@ -1,0 +1,287 @@
+{
+  "area": {
+    "key": "relacion_comida",
+    "name": "Relación con la comida y la imagen corporal",
+    "icon": "🫶",
+    "sortOrder": 160,
+    "description": "Cómo te sientes con la comida y tu cuerpo. Nos ayuda a cuidarte y a hablarte con respeto. No es un diagnóstico.",
+    "sensitive": true
+  },
+  "questionnaires": [
+    {
+      "key": "relacion_comida_sentir",
+      "title": "Cómo te sientes con la comida",
+      "subtitle": "2 minutos · no es un diagnóstico",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "rc_preocupacion",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia la comida o tu peso ocupan tanto tus pensamientos que te afectan el día?",
+          "hint": "No es un diagnóstico: solo nos ayuda a hablarte con cuidado.",
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"a_menudo","icon":null,"text":"A menudo","sub":null},
+            {"id":"siempre","icon":null,"text":"Siempre","sub":null}
+          ],
+          "why": "Si es así, evitamos el conteo y los mensajes sobre peso y priorizamos el bienestar.",
+          "uses": ["seguridad","asistente"],
+          "priority": 4,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "rc_control",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia sientes que pierdes el control cuando comes?",
+          "hint": "No es un diagnóstico: solo nos ayuda a hablarte con cuidado.",
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"a_menudo","icon":null,"text":"A menudo","sub":null},
+            {"id":"siempre","icon":null,"text":"Siempre","sub":null}
+          ],
+          "why": "Nos ayuda a no darte consejos que puedan sumar presión.",
+          "uses": ["seguridad","asistente"],
+          "priority": 4,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "rc_compensar",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia sientes que tienes que \"compensar\" lo que comiste (más ejercicio, saltar comidas u otras formas)?",
+          "hint": "No es un diagnóstico: solo nos ayuda a hablarte con cuidado.",
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"a_menudo","icon":null,"text":"A menudo","sub":null},
+            {"id":"siempre","icon":null,"text":"Siempre","sub":null}
+          ],
+          "why": "Así nunca usamos el ejercicio como castigo ni como pago por lo que comes.",
+          "uses": ["seguridad","asistente"],
+          "priority": 4,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "rc_restriccion",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia te saltas comidas o te restringes mucho para cambiar tu cuerpo?",
+          "hint": "No es un diagnóstico: solo nos ayuda a hablarte con cuidado.",
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"a_menudo","icon":null,"text":"A menudo","sub":null},
+            {"id":"siempre","icon":null,"text":"Siempre","sub":null}
+          ],
+          "why": "Si pasa, cuidamos que tengas energía suficiente para entrenar y no sugerimos déficits.",
+          "uses": ["seguridad","asistente"],
+          "priority": 4,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "rc_emocional",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia comes para calmar emociones como estrés, aburrimiento o tristeza?",
+          "hint": "No es un diagnóstico: solo nos ayuda a hablarte con cuidado.",
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"a_menudo","icon":null,"text":"A menudo","sub":null},
+            {"id":"siempre","icon":null,"text":"Siempre","sub":null}
+          ],
+          "why": "Te damos otras herramientas para esos momentos, sin juzgar.",
+          "uses": ["seguridad","asistente"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "rc_culpa_ejercicio",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia sientes culpa si un día no entrenas?",
+          "hint": "No es un diagnóstico: solo nos ayuda a hablarte con cuidado.",
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"a_menudo","icon":null,"text":"A menudo","sub":null},
+            {"id":"siempre","icon":null,"text":"Siempre","sub":null}
+          ],
+          "why": "Si pasa, reforzamos el descanso como parte del plan, no como un fallo.",
+          "uses": ["seguridad","asistente"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    },
+    {
+      "key": "relacion_comida_cuerpo",
+      "title": "Tu cuerpo y tus avances",
+      "subtitle": "2 minutos",
+      "minutes": 2,
+      "sourceKey": "sportacus",
+      "questions": [
+        {
+          "id": "rc_paz_cuerpo",
+          "type": "range",
+          "prompt": "¿Qué tan en paz te sientes con tu cuerpo?",
+          "hint": "1 = nada en paz, 5 = muy en paz.",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "unit": null,
+          "why": "Ajustamos cómo te mostramos avances para que sumen y no resten.",
+          "uses": ["asistente","progreso"],
+          "priority": 3,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "rc_comparacion",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia te comparas con cuerpos que ves en redes o en el entorno?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"a_veces","icon":null,"text":"A veces","sub":null},
+            {"id":"a_menudo","icon":null,"text":"A menudo","sub":null},
+            {"id":"siempre","icon":null,"text":"Siempre","sub":null}
+          ],
+          "why": "Elegimos mensajes que valoren lo que tu cuerpo hace, no cómo se ve.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": 90,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "rc_ver_peso",
+          "type": "options",
+          "prompt": "¿Quieres ver tu peso y tus medidas en la app?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí, me sirven","sub":null},
+            {"id":"solo_tendencia","icon":null,"text":"Solo la tendencia, sin números","sub":null},
+            {"id":"no","icon":null,"text":"Prefiero no verlos","sub":null}
+          ],
+          "why": "Si prefieres no verlos, los ocultamos y medimos tu progreso de otras formas.",
+          "uses": ["progreso","asistente"],
+          "priority": 4,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "rc_pesarse",
+          "type": "options",
+          "prompt": "¿Con qué frecuencia te pesas?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Casi nunca","sub":null},
+            {"id":"mensual","icon":null,"text":"Una vez al mes","sub":null},
+            {"id":"semanal","icon":null,"text":"Cada semana","sub":null},
+            {"id":"diario","icon":null,"text":"A diario o más","sub":null}
+          ],
+          "why": "Si te pesas mucho, te proponemos espaciarlo y fijarte en otros logros.",
+          "uses": ["asistente","progreso"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "rc_enfoque",
+          "type": "options",
+          "prompt": "¿En qué quieres que nos enfoquemos al hablar de tus avances?",
+          "hint": null,
+          "options": [
+            {"id":"rendimiento","icon":null,"text":"Lo que puedo hacer (fuerza, resistencia)","sub":null},
+            {"id":"bienestar","icon":null,"text":"Cómo me siento","sub":null},
+            {"id":"salud","icon":null,"text":"Indicadores de salud","sub":null},
+            {"id":"apariencia","icon":null,"text":"Cambios físicos","sub":null}
+          ],
+          "why": "Celebramos lo que es importante para ti.",
+          "uses": ["progreso","asistente"],
+          "priority": 3,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "rc_dietas",
+          "type": "options",
+          "prompt": "¿Cuántas veces has hecho dietas muy estrictas?",
+          "hint": null,
+          "options": [
+            {"id":"nunca","icon":null,"text":"Nunca","sub":null},
+            {"id":"una","icon":null,"text":"Una vez","sub":null},
+            {"id":"varias","icon":null,"text":"Varias veces","sub":null},
+            {"id":"muchas","icon":null,"text":"Muchas veces","sub":null}
+          ],
+          "why": "Si han sido varias, evitamos enfoques restrictivos y apostamos por hábitos sostenibles.",
+          "uses": ["asistente"],
+          "priority": 2,
+          "refreshDays": null,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        },
+        {
+          "id": "rc_acompanamiento",
+          "type": "options",
+          "prompt": "¿Te acompaña un profesional (nutrición o psicología) en este tema?",
+          "hint": null,
+          "options": [
+            {"id":"si","icon":null,"text":"Sí","sub":null},
+            {"id":"antes","icon":null,"text":"Antes sí","sub":null},
+            {"id":"no","icon":null,"text":"No","sub":null},
+            {"id":"me_gustaria","icon":null,"text":"No, pero me gustaría","sub":null}
+          ],
+          "why": "Si es así, nuestras sugerencias se mantienen suaves y complementarias.",
+          "uses": ["seguridad","asistente"],
+          "priority": 2,
+          "refreshDays": 180,
+          "metric": null,
+          "profileField": null,
+          "showIf": null,
+          "cadence": null
+        }
+      ]
+    }
+  ]
+}
