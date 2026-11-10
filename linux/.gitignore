@@ -1,0 +1,7 @@
+# Secretos y datos del servidor: nunca al repositorio.
+.env
+backups/*
+!backups/.gitkeep
+URL_PUBLICA.txt
+.tunel.pid
+*.log

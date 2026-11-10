@@ -7,7 +7,8 @@ spring:
 
   datasource:
     # Esquema por Mundos (docs/14 §6). El esquema antiguo "sportacus" queda como respaldo.
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/sportacus?currentSchema=sportacus_v2}
+    # Postgres 16 + pgvector en Docker (docker-compose.yml, puerto 5433; docs/24). El nativo del 5432 queda de respaldo.
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/sportacus?currentSchema=sportacus_v2}
     username: ${DB_USER:sportacus_app}
     password: ${DB_PASSWORD:lyoko}
     driver-class-name: org.postgresql.Driver
@@ -34,14 +35,25 @@ spring:
 
 sportacus:
   rag:
-    # Todo el motor de IA corre local vía Ollama (Docker, puerto 11434): ningún dato
-    # de usuarios ni del catálogo sale de esta máquina. Sin Ollama corriendo, el chat
-    # y el enriquecimiento de ejercicios se desactivan solos sin romper el resto de la app.
+    # Todo el motor de IA corre local vía Ollama (docker-compose.yml, puerto 11434; docs/24): ningún dato de usuarios
+    # ni del catálogo sale de esta máquina. Sin Ollama, el chat responde 503 y el resto de la app funciona igual.
     ollama-base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
     embedding-model: ${RAG_EMBEDDING_MODEL:nomic-embed-text}
     embedding-dimensions: ${RAG_EMBEDDING_DIMENSIONS:768}
-    chat-model: ${RAG_CHAT_MODEL:qwen2.5:7b-instruct}
-    top-k: ${RAG_TOP_K:5}
+    # Prefijos que nomic-embed-text espera para distinguir preguntas de documentos (vacíos para otros modelos).
+    query-prefix: '${RAG_QUERY_PREFIX:search_query: }'
+    document-prefix: '${RAG_DOCUMENT_PREFIX:search_document: }'
+    # qwen2.5:3b cabe entero en una GPU de 4 GB; con más memoria, qwen2.5:7b responde mejor (RAG_CHAT_MODEL).
+    chat-model: ${RAG_CHAT_MODEL:qwen2.5:3b}
+    num-ctx: ${RAG_NUM_CTX:6144}            # ventana de contexto (reglas + conocimiento + perfil + historial)
+    temperature: ${RAG_TEMPERATURE:0.3}
+    keep-alive: ${RAG_KEEP_ALIVE:30m}       # cuánto tiempo queda el modelo cargado en memoria tras la última pregunta
+    timeout-seconds: ${RAG_TIMEOUT_SECONDS:120}
+    top-k: ${RAG_TOP_K:5}                   # fragmentos de conocimiento por pregunta
+    max-distance: ${RAG_MAX_DISTANCE:0.55}  # distancia de coseno máxima para considerar relevante un fragmento
+    world-boost: ${RAG_WORLD_BOOST:0.05}    # ventaja para los fragmentos del mundo activo
+    auto-index: ${RAG_AUTO_INDEX:true}      # pone al día la memoria al arrancar (solo lo que cambió)
+    startup-wait-minutes: ${RAG_STARTUP_WAIT_MINUTES:15}
   jwt:
     # JWT_SECRET: ≥ 32 bytes (texto o Base64). El valor por defecto es SOLO de desarrollo (ver JwtService.DEV_SECRET):
     # con el perfil prod la aplicación no arranca sin la variable.

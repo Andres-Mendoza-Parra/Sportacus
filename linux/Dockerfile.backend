@@ -1,0 +1,25 @@
+# Imagen del backend de Sportacus (compilación en dos etapas). El contexto de build es ../backend (ver docker-compose.yml);
+# no se modifica nada del proyecto: el Dockerfile vive en linux/.
+
+# ── Etapa 1: compilar con Maven + Java 21 (la memoria de Maven se limita para equipos de 3 GB)
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /app
+ENV MAVEN_OPTS="-Xmx600m -XX:+UseSerialGC"
+COPY pom.xml .
+# Descarga las dependencias en una capa aparte: las siguientes compilaciones la reutilizan.
+RUN mvn -B -q dependency:go-offline || true
+COPY src ./src
+RUN mvn -B -q -DskipTests package && cp target/backend-*.jar /app/app.jar
+
+# ── Etapa 2: solo el JRE y el JAR, con un usuario sin privilegios
+FROM eclipse-temurin:21-jre
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd -r -u 1001 sportacus && mkdir -p /app && chown sportacus /app
+WORKDIR /app
+COPY --from=build --chown=sportacus /app/app.jar app.jar
+USER sportacus
+EXPOSE 8082
+HEALTHCHECK --interval=15s --timeout=5s --start-period=120s --retries=10 \
+    CMD curl -fs http://localhost:8082/api/legal/documents >/dev/null || exit 1
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

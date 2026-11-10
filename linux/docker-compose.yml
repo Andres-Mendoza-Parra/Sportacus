@@ -1,0 +1,105 @@
+# Despliegue de Sportacus en el servidor Ubuntu (docs/25). Pensado para un equipo modesto: 3 GB de RAM, sin GPU.
+# Servicios: Postgres 16 + pgvector, Ollama (IA local en CPU) y el backend Spring Boot dockerizado.
+# No se usa n8n. Todo se gestiona con los scripts de esta carpeta (iniciar.sh, detener.sh, 04-desplegar.sh…).
+name: sportacus
+
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.1-pg16
+    container_name: sportacus-postgres
+    restart: unless-stopped
+    # Ajustes pequeños para no competir con Ollama por la RAM.
+    command: ["postgres", "-c", "shared_buffers=128MB", "-c", "effective_cache_size=512MB", "-c", "work_mem=4MB",
+              "-c", "maintenance_work_mem=64MB", "-c", "max_connections=60"]
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_SUPERUSER_PASSWORD}
+      POSTGRES_DB: postgres
+      SPORTACUS_DB: ${SPORTACUS_DB:-sportacus}
+      SPORTACUS_DB_USER: ${DB_USER:-sportacus_app}
+      SPORTACUS_DB_PASSWORD: ${DB_PASSWORD}
+      TZ: America/Bogota
+      PGTZ: America/Bogota
+    ports:
+      # Solo desde el propio servidor (administración por SSH). La red no ve la base de datos.
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d:ro
+      - ./backups:/backups
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ${SPORTACUS_DB:-sportacus}"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  ollama:
+    # IA 100% local en CPU. Sin puertos publicados: solo el backend (misma red de Docker) puede hablarle.
+    image: ollama/ollama:0.12.6
+    container_name: sportacus-ollama
+    restart: unless-stopped
+    environment:
+      OLLAMA_KEEP_ALIVE: ${RAG_KEEP_ALIVE:-10m}
+      OLLAMA_NUM_PARALLEL: "1"
+      OLLAMA_MAX_LOADED_MODELS: "2"
+    volumes:
+      - ollama_data:/root/.ollama
+    mem_limit: 2g
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  ollama-modelos:
+    # Tarea de una sola vez: descarga los modelos si faltan y termina. Las siguientes veces es instantánea.
+    image: ollama/ollama:0.12.6
+    container_name: sportacus-ollama-modelos
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >
+        ollama pull ${RAG_EMBEDDING_MODEL:-nomic-embed-text} &&
+        ollama pull ${RAG_CHAT_MODEL:-qwen2.5:1.5b} &&
+        echo "Modelos listos"
+    restart: "no"
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../linux/Dockerfile.backend
+    image: sportacus-backend:local
+    container_name: sportacus-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod            # exige JWT_SECRET y SPORTACUS_DATA_KEY: no arranca sin ellos
+      DB_URL: jdbc:postgresql://postgres:5432/${SPORTACUS_DB:-sportacus}?currentSchema=sportacus_v2
+      DB_USER: ${DB_USER:-sportacus_app}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      SPORTACUS_DATA_KEY: ${SPORTACUS_DATA_KEY}
+      SPORTACUS_ADMIN_EMAILS: ${SPORTACUS_ADMIN_EMAILS:-}
+      OLLAMA_BASE_URL: http://ollama:11434
+      RAG_CHAT_MODEL: ${RAG_CHAT_MODEL:-qwen2.5:1.5b}
+      RAG_EMBEDDING_MODEL: ${RAG_EMBEDDING_MODEL:-nomic-embed-text}
+      RAG_NUM_CTX: ${RAG_NUM_CTX:-4096}
+      RAG_TIMEOUT_SECONDS: ${RAG_TIMEOUT_SECONDS:-240}
+      RAG_KEEP_ALIVE: ${RAG_KEEP_ALIVE:-10m}
+      RAG_STARTUP_WAIT_MINUTES: ${RAG_STARTUP_WAIT_MINUTES:-30}
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx420m -XX:+UseSerialGC -XX:MaxMetaspaceSize=160m -XX:+ExitOnOutOfMemoryError"
+      TZ: America/Bogota
+    ports:
+      - "${BACKEND_PORT:-8082}:8082"           # visible en la red local; el túnel de Cloudflare apunta aquí
+    mem_limit: 750m
+
+volumes:
+  postgres_data:
+  ollama_data:

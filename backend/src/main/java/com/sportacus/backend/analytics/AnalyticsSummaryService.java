@@ -1,18 +1,14 @@
 package com.sportacus.backend.analytics;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.sportacus.backend.profile.Profile360Service;
+import com.sportacus.backend.security.AdminAccess;
 
 /**
  * Resumen de producto para el equipo (GET /api/admin/analytics/summary). Solo agregados: ningún dato individual.
@@ -32,18 +28,17 @@ public class AnalyticsSummaryService {
 
     private final JdbcTemplate jdbc;
     private final Profile360Service profile360;
-    private final Set<String> admins;
+    private final AdminAccess adminAccess;
 
     public AnalyticsSummaryService(JdbcTemplate jdbc, Profile360Service profile360,
-            @Value("${sportacus.admin-emails:}") String adminEmails) {
+            AdminAccess adminAccess) {
         this.jdbc = jdbc;
         this.profile360 = profile360;
-        this.admins = Arrays.stream(adminEmails == null ? new String[0] : adminEmails.split(","))
-                .map(s -> s.trim().toLowerCase(Locale.ROOT)).filter(s -> !s.isEmpty()).collect(Collectors.toSet());
+        this.adminAccess = adminAccess;
     }
 
     public boolean isAdmin(String email) {
-        return email != null && admins.contains(email.trim().toLowerCase(Locale.ROOT));
+        return adminAccess.isAdmin(email);
     }
 
     public record WorldStat(String key, long enrolled, long active) {

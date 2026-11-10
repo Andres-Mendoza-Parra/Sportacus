@@ -1,0 +1,194 @@
+{
+  "_nota": "Base de conocimiento curada del asistente (docs/24). Cada guía se vectoriza como un fragmento. Texto general y prudente: no reemplaza la valoración de un profesional. Al editar, el backend reindexa solo lo que cambió al arrancar.",
+  "guias": [
+    {
+      "id": "actividad_oms_adultos",
+      "title": "Cuánta actividad física se recomienda (adultos)",
+      "world": null,
+      "text": "Para personas adultas de 18 a 64 años la Organización Mundial de la Salud recomienda acumular cada semana entre 150 y 300 minutos de actividad aeróbica moderada, o entre 75 y 150 minutos de actividad vigorosa, o una combinación equivalente. Además, se recomiendan ejercicios de fortalecimiento muscular de intensidad moderada o mayor que trabajen los grandes grupos musculares al menos 2 días por semana. Cualquier cantidad de actividad es mejor que ninguna: si hoy no llegas a esas cifras, empieza con poco y ve aumentando. También conviene reducir el tiempo sentado e interrumpirlo con movimiento.",
+      "source": "OMS, Directrices sobre actividad física y hábitos sedentarios (2020)"
+    },
+    {
+      "id": "actividad_oms_adolescentes",
+      "title": "Actividad física recomendada para adolescentes (12 a 17 años)",
+      "world": null,
+      "text": "Para niñas, niños y adolescentes de 5 a 17 años la OMS recomienda un promedio de 60 minutos diarios de actividad física moderada a vigorosa, sobre todo aeróbica. Al menos 3 días por semana conviene incluir actividades vigorosas y ejercicios que fortalezcan músculos y huesos (saltos, juegos, deportes, ejercicios con el propio peso). En adolescentes el entrenamiento de fuerza es seguro y útil si se aprende primero la técnica, con cargas moderadas, repeticiones controladas y supervisión de una persona adulta o entrenadora; no se busca llegar al fallo ni levantar el máximo posible.",
+      "source": "OMS, Directrices sobre actividad física y hábitos sedentarios (2020)"
+    },
+    {
+      "id": "actividad_oms_mayores",
+      "title": "Actividad física para personas mayores de 65 años",
+      "world": null,
+      "text": "Las personas de 65 años o más tienen las mismas recomendaciones aeróbicas y de fuerza que el resto de los adultos (150 a 300 minutos moderados por semana y fuerza 2 o más días). Además, se recomienda actividad física variada que priorice el equilibrio funcional y la fuerza al menos 3 días por semana, para prevenir caídas. Si una condición de salud limita la actividad, la idea es mantenerse tan activa o activo como esa condición lo permita, ajustando la intensidad.",
+      "source": "OMS, Directrices sobre actividad física y hábitos sedentarios (2020)"
+    },
+    {
+      "id": "descanso_entre_series",
+      "title": "Cuánto descansar entre series",
+      "world": null,
+      "text": "El descanso entre series depende del objetivo. Para fuerza con cargas altas y ejercicios multiarticulares (sentadilla, peso muerto, press) se suelen usar de 2 a 3 minutos o más, para rendir bien en la serie siguiente. Para ganar músculo (hipertrofia) son habituales de 1 a 2 minutos; descansos un poco más largos en los ejercicios grandes no perjudican. Para resistencia muscular o circuitos se usan descansos cortos, de 30 a 90 segundos. Si la técnica se deteriora o te falta el aire, descansa un poco más: la calidad de la serie importa más que el reloj.",
+      "source": "ACSM, Position Stand: Progression models in resistance training for healthy adults (2009)"
+    },
+    {
+      "id": "descanso_entre_sesiones",
+      "title": "Descanso entre sesiones y recuperación",
+      "world": null,
+      "text": "Como referencia general, se recomienda dejar alrededor de 48 horas antes de volver a entrenar intensamente el mismo grupo muscular. Puedes entrenar días seguidos si alternas zonas del cuerpo o intensidades (por ejemplo, fuerza un día y caminata suave el siguiente). Los días de descanso activo (caminar, movilidad, bicicleta suave) ayudan a recuperarse. Señales de que necesitas más descanso: cansancio que no se va, rendimiento que baja varias sesiones seguidas, mal sueño, irritabilidad o dolor que persiste. Cada 4 a 8 semanas de entrenamiento exigente puede servir una semana de descarga con menos volumen.",
+      "source": "ACSM, Guidelines for Exercise Testing and Prescription (11.ª ed.)"
+    },
+    {
+      "id": "dolor_muscular_vs_lesion",
+      "title": "Agujetas (dolor muscular tardío) frente a dolor de lesión",
+      "world": null,
+      "text": "El dolor muscular de aparición tardía (agujetas) aparece entre 12 y 24 horas después de un ejercicio nuevo o más intenso, alcanza su máximo entre las 24 y 72 horas y se siente difuso en el músculo trabajado, como rigidez o sensibilidad al tocar. Es normal y mejora con movimiento suave. En cambio, conviene detenerse y consultar si el dolor es agudo o punzante, aparece de golpe durante el ejercicio, está en una articulación, se acompaña de hinchazón, moretón, chasquido, pérdida de fuerza u hormigueo, o no mejora en una semana. En esos casos no entrenes la zona hasta que una persona profesional de la salud lo valore.",
+      "source": "ACSM, Delayed Onset Muscle Soreness (DOMS), información para el público"
+    },
+    {
+      "id": "senales_alarma",
+      "title": "Señales de alarma para detener el ejercicio",
+      "world": null,
+      "text": "Detén el ejercicio y busca atención médica si aparece dolor, presión u opresión en el pecho, falta de aire desproporcionada al esfuerzo, mareo intenso o desmayo, palpitaciones muy irregulares, confusión, dolor que se irradia al brazo, cuello o mandíbula, o una debilidad repentina de un lado del cuerpo. Si alguno de estos síntomas es intenso o no cede con el reposo, llama a los servicios de emergencia. El asistente de Sportacus no diagnostica ni reemplaza la valoración médica.",
+      "source": "ACSM, Guidelines for Exercise Testing and Prescription; American Heart Association"
+    },
+    {
+      "id": "calentamiento",
+      "title": "Cómo calentar antes de entrenar",
+      "world": null,
+      "text": "Un buen calentamiento dura entre 5 y 10 minutos. Empieza con actividad general suave que suba poco a poco la temperatura y el pulso (caminar rápido, trotar suave, saltar la cuerda, bicicleta). Sigue con movilidad dinámica de las articulaciones que vas a usar (círculos de cadera y hombro, zancadas con giro, balanceos de pierna). Termina con series de aproximación del primer ejercicio con menos carga o a menor velocidad. El estiramiento estático largo se deja mejor para después o para otra sesión, porque justo antes de esfuerzos de fuerza o velocidad puede restar algo de rendimiento.",
+      "source": "ACSM, Guidelines for Exercise Testing and Prescription (11.ª ed.)"
+    },
+    {
+      "id": "enfriamiento_estiramiento",
+      "title": "Vuelta a la calma y estiramientos",
+      "world": null,
+      "text": "Al terminar, de 5 a 10 minutos de actividad suave ayudan a que el pulso y la respiración vuelvan a la normalidad. Para mejorar la flexibilidad se recomienda estirar los grandes grupos musculares al menos 2 o 3 días por semana, manteniendo cada estiramiento entre 10 y 30 segundos (hasta 60 en personas mayores), sin rebotes y hasta sentir tensión, nunca dolor. Estirar es más eficaz con el músculo caliente.",
+      "source": "ACSM, Position Stand: Quantity and quality of exercise (2011)"
+    },
+    {
+      "id": "intensidad_rpe_rir",
+      "title": "Cómo medir la intensidad: esfuerzo percibido (RPE), repeticiones en reserva (RIR) y prueba del habla",
+      "world": null,
+      "text": "El esfuerzo percibido (RPE) es una escala de 1 a 10 sobre qué tan duro se siente el esfuerzo: 1 a 2 muy suave, 3 a 4 suave, 5 a 6 moderado, 7 a 8 duro, 9 a 10 máximo. Las repeticiones en reserva (RIR) indican cuántas repeticiones más podrías haber hecho con buena técnica al terminar una serie: RIR 2 significa que te quedaban dos. En Sportacus se usa RIR para regular la carga sin llegar al fallo. Para el ejercicio aeróbico sirve la prueba del habla: a intensidad moderada puedes hablar pero no cantar; a intensidad vigorosa solo puedes decir unas pocas palabras sin pausar para respirar.",
+      "source": "ACSM, Guidelines for Exercise Testing and Prescription; Helms et al. (2016), escala RIR"
+    },
+    {
+      "id": "sobrecarga_progresiva",
+      "title": "Cómo progresar: sobrecarga progresiva",
+      "world": null,
+      "text": "Para seguir mejorando el cuerpo necesita un estímulo un poco mayor con el tiempo. Se puede progresar sumando repeticiones dentro de un rango (por ejemplo de 8 a 12) y, cuando llegas al tope con buena técnica en todas las series, subir la carga un poco (alrededor de 2 a 10 %); también agregando una serie, pasando a una variante más difícil del ejercicio o reduciendo el apoyo. Cambia una sola variable a la vez y progresa solo si la técnica se mantiene. En Sportacus el plan sube de nivel cuando registras sesiones completas con buen esfuerzo.",
+      "source": "ACSM, Position Stand: Progression models in resistance training for healthy adults (2009)"
+    },
+    {
+      "id": "respiracion_fuerza",
+      "title": "Cómo respirar al hacer ejercicios de fuerza",
+      "world": null,
+      "text": "Como pauta general, exhala durante la fase de esfuerzo (al subir, empujar o tirar) e inhala en la fase de regreso controlado. No retengas el aire durante varias repeticiones seguidas. Las personas con hipertensión, problemas cardíacos, embarazo o glaucoma deben evitar la maniobra de Valsalva (aguantar la respiración con fuerza) y priorizar cargas moderadas.",
+      "source": "ACSM, Resistance training for health (información para el público)"
+    },
+    {
+      "id": "comer_antes",
+      "title": "Qué comer antes de entrenar",
+      "world": null,
+      "text": "Si comes entre 2 y 4 horas antes de entrenar, una comida con carbohidratos (arroz, pasta, papa, pan, avena, fruta), algo de proteína (huevo, lácteos, pollo, legumbres) y poca grasa y fibra suele sentar bien. Si solo tienes 30 a 60 minutos, mejor un refrigerio pequeño y fácil de digerir, como una fruta (banano), yogur o una tostada. Para sesiones cortas o suaves no hace falta comer algo especial. Prueba en entrenamientos lo que te sienta bien antes de usarlo en un partido o una carrera. Si tienes una condición como diabetes, sigue la pauta de tu profesional de la salud.",
+      "source": "ACSM, Academy of Nutrition and Dietetics y Dietitians of Canada, Nutrition and Athletic Performance (2016)"
+    },
+    {
+      "id": "comer_despues",
+      "title": "Qué comer después de entrenar y cuánta proteína",
+      "world": null,
+      "text": "Después de entrenar ayuda una comida o refrigerio con proteína y carbohidratos en las horas siguientes, por ejemplo arroz con pollo, huevos con arepa o un yogur con fruta y avena. Para personas activas se recomienda en general entre 1,2 y 2,0 gramos de proteína por kilo de peso al día, repartidos en varias comidas de unos 20 a 40 gramos. Lo más importante es el total del día y la constancia, no la ventana exacta. Si tienes enfermedad renal u otra condición, consulta antes de aumentar la proteína.",
+      "source": "ACSM, Academy of Nutrition and Dietetics y Dietitians of Canada, Nutrition and Athletic Performance (2016); ISSN Position Stand: protein and exercise (2017)"
+    },
+    {
+      "id": "hidratacion",
+      "title": "Hidratación durante el ejercicio",
+      "world": null,
+      "text": "Empieza bien hidratada o hidratado: unas horas antes bebe agua de forma normal (orientativo: 5 a 7 ml por kilo de peso unas 4 horas antes). Durante el ejercicio bebe a sorbos según la sed y la duración; la meta es no perder más del 2 % del peso corporal por sudor. Para sesiones de más de una hora, con mucho calor o mucho sudor, una bebida con electrolitos y carbohidratos puede ayudar. Después, repón líquidos; una referencia es beber alrededor de 1,25 a 1,5 litros por cada kilo perdido. Beber en exceso, muy por encima de lo que sudas, también es riesgoso.",
+      "source": "ACSM, Position Stand: Exercise and fluid replacement (2007)"
+    },
+    {
+      "id": "calor",
+      "title": "Entrenar con calor",
+      "world": null,
+      "text": "Con calor y humedad altos, entrena en las horas más frescas, baja la intensidad los primeros días (el cuerpo tarda de 1 a 2 semanas en aclimatarse), usa ropa clara y transpirable e hidrátate. Detente, busca sombra y enfríate si aparecen mareo, dolor de cabeza, náuseas, calambres, piel muy caliente o confusión: pueden ser señales de agotamiento por calor o golpe de calor, que es una emergencia.",
+      "source": "ACSM, Position Stand: Exertional heat illness during training and competition (2007)"
+    },
+    {
+      "id": "sueno",
+      "title": "Sueño y recuperación",
+      "world": null,
+      "text": "Las personas adultas necesitan dormir 7 horas o más por noche de forma regular; las adolescentes y los adolescentes, entre 8 y 10 horas. Dormir poco reduce el rendimiento, la recuperación y la motivación, y aumenta el riesgo de lesión. Si una noche dormiste mal, puede ser mejor hacer una sesión más suave. Ayuda mantener horarios regulares, evitar pantallas y comidas pesadas justo antes de dormir y no entrenar muy intenso en la hora previa al sueño si te desvela.",
+      "source": "American Academy of Sleep Medicine y Sleep Research Society (2015); AASM, recomendaciones pediátricas (2016)"
+    },
+    {
+      "id": "constancia_habitos",
+      "title": "Cómo ser constante y crear el hábito",
+      "world": null,
+      "text": "La constancia pesa más que la intensidad. Ayuda elegir días y horas fijas, empezar con sesiones cortas que sí puedas cumplir, preparar la ropa o el lugar con anticipación, ligar el entrenamiento a otra rutina (por ejemplo, después del trabajo) y registrar cada sesión para ver el progreso. Si fallas un día, no compenses con el doble: retoma en la siguiente sesión. Sportacus no te presiona: puedes ajustar días y minutos en tu perfil y el plan se adapta solo.",
+      "source": "Principios de cambio de conducta (Michie et al., 2011); principio de no presión de Sportacus"
+    },
+    {
+      "id": "running_progresion",
+      "title": "Cómo aumentar el volumen al correr sin lesionarte",
+      "world": "running",
+      "text": "Aumenta el volumen semanal de forma gradual: una referencia práctica es no subir más de alrededor de un 10 % por semana, y cada 3 o 4 semanas hacer una semana más suave. La mayor parte de los kilómetros conviene correrlos a ritmo cómodo, en el que puedes conversar; los trabajos intensos (series, ritmo) son una parte menor. Si eres principiante, alterna caminar y trotar. Cambios bruscos de volumen, de calzado o de superficie se asocian a lesiones por sobreuso como la periostitis o el dolor de rodilla. El dolor que te hace cojear o cambiar la zancada es motivo para parar.",
+      "source": "Nielsen et al. (2014), progresión del volumen en corredores principiantes; ACSM, guía para principiantes en carrera"
+    },
+    {
+      "id": "fuerza_tecnica_primero",
+      "title": "Técnica antes que carga",
+      "world": "gym",
+      "text": "En el gimnasio, aprende primero el patrón de movimiento con poca carga: rango completo y controlado, espalda neutra, rodillas siguiendo la línea de los pies y movimientos sin rebotes. Sube la carga solo cuando todas las series salen con buena técnica y te quedan 1 o 2 repeticiones en reserva. Pide ayuda a alguien que te asista (spotter) en press de banca o sentadillas pesadas, y usa los seguros del rack.",
+      "source": "NSCA, Essentials of Strength Training and Conditioning (4.ª ed.)"
+    },
+    {
+      "id": "calistenia_progresiones",
+      "title": "Progresiones en calistenia",
+      "world": "calisthenics",
+      "text": "En calistenia la carga es tu propio peso, así que se progresa cambiando la palanca y el apoyo: por ejemplo, flexiones en pared, luego inclinadas, luego en el suelo y después con pies elevados; dominadas con banda o negativas antes de las completas. Domina de 3 a 5 series limpias en el rango alto de repeticiones antes de pasar al siguiente escalón. Fortalecer muñecas, hombros y el agarre reduce molestias al avanzar a ejercicios más exigentes.",
+      "source": "Principios de progresión del entrenamiento con el peso corporal; NSCA"
+    },
+    {
+      "id": "futbol_prevencion",
+      "title": "Prevención de lesiones en fútbol",
+      "world": "football",
+      "text": "Los programas de calentamiento estructurado como FIFA 11+ (unos 20 minutos de carrera, fuerza, equilibrio y saltos, al menos 2 veces por semana) reducen las lesiones en jugadoras y jugadores aficionados en alrededor de un tercio. El ejercicio nórdico de isquiotibiales ayuda a prevenir lesiones del muslo posterior. Después de un partido conviene un día de recuperación activa y no acumular entrenamientos intensos en días seguidos.",
+      "source": "Sadigursky et al. (2017), revisión sobre FIFA 11+; van der Horst et al. (2015), ejercicio nórdico"
+    },
+    {
+      "id": "salud_condiciones",
+      "title": "Ejercicio con condiciones de salud crónicas",
+      "world": "health",
+      "text": "Para la mayoría de las personas con hipertensión, diabetes tipo 2, artrosis o dolor lumbar crónico, la actividad física regular es parte del tratamiento. Conviene empezar con intensidad baja a moderada, progresar despacio y combinar actividad aeróbica, fuerza y movilidad. Con diabetes, revisa la glucosa antes y después si usas insulina u otros medicamentos que causan hipoglucemia y lleva algo dulce. Con hipertensión, evita aguantar la respiración en esfuerzos de fuerza. Si tienes una condición no controlada o síntomas nuevos, consulta antes de aumentar la intensidad. El Mundo Salud de Sportacus adapta el plan a lo que declaras en el chequeo de salud.",
+      "source": "ACSM, Exercise Management for Persons with Chronic Diseases and Disabilities; OMS (2020)"
+    },
+    {
+      "id": "embarazo",
+      "title": "Actividad física en el embarazo y posparto",
+      "world": null,
+      "text": "Si no hay contraindicaciones médicas, durante el embarazo y el posparto se recomienda acumular al menos 150 minutos semanales de actividad aeróbica moderada e incluir fortalecimiento y estiramientos suaves. Conviene evitar deportes de contacto o con riesgo de caída, el ejercicio acostada boca arriba por periodos largos después del primer trimestre y el calor excesivo. Cualquier plan durante el embarazo debe contar con el aval de la persona profesional que hace el control prenatal.",
+      "source": "OMS, Directrices sobre actividad física y hábitos sedentarios (2020); ACOG Committee Opinion 804 (2020)"
+    },
+    {
+      "id": "app_como_funciona",
+      "title": "Cómo funciona Sportacus",
+      "world": null,
+      "text": "Sportacus organiza el entrenamiento en Mundos: Gimnasio, Calistenia, Running, Salud y Fútbol, más Mi Base, el punto de partida de todas las cuentas. Al registrarte solo se piden los datos esenciales; el resto lo completas cuando quieras en el Perfil 360, con cuestionarios por áreas (físico, ánimo, hábitos, alimentación, recursos, ubicación, entre otras). Cada respuesta personaliza el plan. El plan es dinámico: si cambias tus días, minutos, salud o respuestas, se regenera solo y la app te muestra el motivo. Tus días y minutos disponibles son límites estrictos que el plan no supera. Puedes registrar sesiones, marcar metas como logradas, ver tus logros y hacer un check-in diario de cómo te sientes.",
+      "source": "Sportacus, documentación del producto"
+    },
+    {
+      "id": "app_privacidad",
+      "title": "Privacidad y datos en Sportacus",
+      "world": null,
+      "text": "En Sportacus tus datos se usan solo para crear tu plan y cuidarte mientras entrenas; no se venden ni se comparten con anunciantes. Los datos de salud son opcionales, van cifrados y solo se tratan si das una autorización aparte. El asistente funciona con un modelo de inteligencia artificial que corre en el propio servidor de Sportacus: tus preguntas no se envían a servicios externos, y tus datos personales solo se usan en la respuesta si activas 'usar mis datos'. Desde tu perfil puedes descargar todos tus datos, corregirlos o borrar la cuenta. Las preguntas de cualquier cuestionario se pueden omitir, posponer o responder 'prefiero no decir'.",
+      "source": "Sportacus, Política de tratamiento de datos personales"
+    },
+    {
+      "id": "app_modo_prudente",
+      "title": "Modo prudente y chequeo de salud",
+      "world": null,
+      "text": "Si no has hecho el chequeo de salud, Sportacus usa el modo prudente: el plan evita esfuerzos de alta intensidad y de alto impacto hasta que completes el chequeo. Si el chequeo muestra señales que requieren valoración profesional (por ejemplo, dolor en el pecho al esforzarte), el plan pasa a sesiones suaves y la app te recomienda consultar antes de exigirte más. Puedes actualizar el chequeo cuando cambie tu situación y el plan se ajusta automáticamente.",
+      "source": "Sportacus, documentación del producto; cuestionario de preparación para la actividad física (PAR-Q+)"
+    }
+  ]
+}

@@ -1,108 +1,117 @@
 package com.sportacus.backend.rag;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.sportacus.backend.common.Json;
-import com.sportacus.backend.world.catalog.CatalogModels.AssessmentInfo;
-import com.sportacus.backend.world.catalog.CatalogModels.ProgressionInfo;
-import com.sportacus.backend.world.catalog.CatalogModels.TrackInfo;
-import com.sportacus.backend.world.catalog.CatalogModels.WorldInfo;
-import com.sportacus.backend.world.catalog.CatalogModels.WorldMovement;
-import com.sportacus.backend.world.catalog.CatalogRepository;
 
 /**
- * Convierte el catálogo por mundos (mundos, rutas, movimientos, progresiones y tests) en fragmentos
- * vectorizados de {@code knowledge_chunk}, cada uno etiquetado con su {@code world_key} para que el
- * asistente recupere primero el conocimiento del mundo activo. Se dispara a mano
- * (POST /api/admin/rag/reindex) para no bloquear el arranque si Ollama no tiene los modelos.
+ * Mantiene {@code knowledge_chunk} al día con {@link KnowledgeCorpus}, de forma incremental: solo genera vectores
+ * para los fragmentos nuevos o cuyo texto cambió (huella SHA-256), borra los que ya no existen y rehace todo si cambia
+ * el modelo de embeddings. Se ejecuta al arrancar ({@link RagStartupIndexer}) y a pedido de un administrador.
  */
 @Service
 public class KnowledgeIngestionService {
 
-    private final JdbcTemplate jdbc;
-    private final EmbeddingClient embeddingClient;
-    private final CatalogRepository catalog;
-    private final Json json;
+    private static final Logger log = LoggerFactory.getLogger(KnowledgeIngestionService.class);
+    private static final int BATCH = 16;
 
-    public KnowledgeIngestionService(JdbcTemplate jdbc, EmbeddingClient embeddingClient, CatalogRepository catalog,
-            Json json) {
+    private final JdbcTemplate jdbc;
+    private final EmbeddingClient embeddings;
+    private final KnowledgeCorpus corpus;
+    private final KnowledgeRetrievalService retrieval;
+    private final Json json;
+    private final ReentrantLock running = new ReentrantLock();
+
+    public KnowledgeIngestionService(JdbcTemplate jdbc, EmbeddingClient embeddings, KnowledgeCorpus corpus,
+            KnowledgeRetrievalService retrieval, Json json) {
         this.jdbc = jdbc;
-        this.embeddingClient = embeddingClient;
-        this.catalog = catalog;
+        this.embeddings = embeddings;
+        this.corpus = corpus;
+        this.retrieval = retrieval;
         this.json = json;
     }
 
-    /** @return cuántos fragmentos se (re)generaron. */
-    public int reindexAll() {
-        if (!KnowledgeRetrievalService.tableExists(jdbc)) {
-            throw new IllegalStateException("pgvector no está instalado: no existe knowledge_chunk (ver V2__rag_opcional.sql)");
-        }
-        int count = 0;
-        for (WorldInfo w : catalog.worlds()) {
-            upsert("world", w.key(), w.key(), "Mundo " + w.name() + ". " + w.tagline() + ". " + w.description()
-                    + ". Destacados: " + String.join("; ", w.highlights()));
-            count++;
-            for (TrackInfo t : w.tracks()) {
-                upsert("track", w.key() + ":" + t.key(), w.key(),
-                        "Ruta " + t.name() + " del mundo " + w.name() + ". " + t.description());
-                count++;
-            }
-            for (WorldMovement m : catalog.movements(w.key())) {
-                upsert("movement", w.key() + ":" + m.key(), w.key(), movementText(w, m));
-                count++;
-            }
-            for (ProgressionInfo p : catalog.progressions(w.key())) {
-                StringBuilder sb = new StringBuilder("Progresión " + p.name() + " (" + w.name() + ")");
-                if (p.description() != null) sb.append(". ").append(p.description());
-                sb.append(". Escalones en orden: ");
-                p.steps().forEach(s -> sb.append(s.index() + 1).append(") ").append(s.name()).append("; "));
-                upsert("progression", p.key(), w.key(), sb.toString());
-                count++;
-            }
-            for (AssessmentInfo a : catalog.assessments(w.key())) {
-                upsert("assessment", a.key(), w.key(), "Test " + a.name() + " (" + w.name() + "). " + a.description()
-                        + ". Instrucciones: " + String.join(" ", a.instructions())
-                        + (a.safetyNote() == null ? "" : ". Seguridad: " + a.safetyNote()));
-                count++;
-            }
-        }
-        return count;
+    /** Resultado de una indexación: cuántos fragmentos hay, cuántos se vectorizaron, cuántos seguían iguales y cuántos se borraron. */
+    public record IndexReport(int total, int embedded, int unchanged, int removed, long millis) {
     }
 
-    private String movementText(WorldInfo w, WorldMovement wm) {
-        var m = wm.movement();
-        StringBuilder sb = new StringBuilder("Movimiento: ").append(m.name()).append(" (mundo ").append(w.name()).append(")");
-        append(sb, "Descripción", m.description());
-        append(sb, "Músculos", String.join(", ", m.muscles()));
-        append(sb, "Equipo", m.equipment().isEmpty() ? "sin equipo" : String.join(", ", m.equipment()));
-        append(sb, "Nivel (1-5)", String.valueOf(wm.level()));
-        append(sb, "Patrón", wm.pattern());
-        append(sb, "Pasos", String.join(" ", m.steps()));
-        append(sb, "Claves técnicas", String.join(" ", m.cues()));
-        append(sb, "Errores comunes", String.join("; ", m.commonMistakes()));
-        if (!m.contraindications().isEmpty()) {
-            append(sb, "Contraindicaciones", String.join(", ", m.contraindications().stream()
-                    .map(c -> catalog.tagLabels().getOrDefault(c.tag(), c.tag()) + " (" + c.level() + ")").toList()));
+    /** @param force true vuelve a generar todos los vectores aunque el texto no haya cambiado. */
+    public IndexReport reindex(boolean force) {
+        if (!retrieval.isAvailable()) {
+            throw new IllegalStateException("pgvector no está instalado: no existe knowledge_chunk (ver docs/24)");
         }
-        return sb.toString();
+        if (!running.tryLock()) {
+            throw new IllegalStateException("Ya hay una indexación en curso");
+        }
+        try {
+            long start = System.currentTimeMillis();
+            List<KnowledgeDoc> docs = corpus.build();
+            Map<String, String> existing = new HashMap<>();
+            jdbc.query("SELECT source_type || '|' || source_id, coalesce(content_hash, '') || '|' || coalesce(embedding_model, '') FROM knowledge_chunk",
+                    rs -> {
+                        existing.put(rs.getString(1), rs.getString(2));
+                    });
+            String model = embeddings.model();
+            List<KnowledgeDoc> pending = new ArrayList<>();
+            Set<String> keep = new HashSet<>();
+            for (KnowledgeDoc d : docs) {
+                String key = d.sourceType() + "|" + d.sourceId();
+                if (!keep.add(key)) continue; // claves repetidas en el catálogo: se queda la primera
+                if (force || !(d.hash() + "|" + model).equals(existing.get(key))) pending.add(d);
+            }
+            for (int i = 0; i < pending.size(); i += BATCH) {
+                List<KnowledgeDoc> batch = pending.subList(i, Math.min(i + BATCH, pending.size()));
+                List<float[]> vectors = embeddings.embedDocuments(batch.stream().map(KnowledgeDoc::embeddingText).toList());
+                for (int j = 0; j < batch.size(); j++) upsert(batch.get(j), vectors.get(j), model);
+            }
+            int removed = 0;
+            for (String key : existing.keySet()) {
+                if (keep.contains(key)) continue;
+                String[] parts = key.split("\\|", 2);
+                removed += jdbc.update("DELETE FROM knowledge_chunk WHERE source_type = ? AND source_id = ?", parts[0], parts[1]);
+            }
+            IndexReport report = new IndexReport(keep.size(), pending.size(), keep.size() - pending.size(), removed,
+                    System.currentTimeMillis() - start);
+            log.info("Memoria del asistente: {} fragmentos ({} vectorizados, {} sin cambios, {} borrados) en {} ms",
+                    report.total(), report.embedded(), report.unchanged(), report.removed(), report.millis());
+            return report;
+        } finally {
+            running.unlock();
+        }
     }
 
-    private void upsert(String sourceType, String sourceId, String worldKey, String content) {
-        String vector = KnowledgeRetrievalService.toVectorLiteral(embeddingClient.embed(content));
+    public boolean isRunning() {
+        return running.isLocked();
+    }
+
+    private void upsert(KnowledgeDoc d, float[] vector, String model) {
+        Map<String, Object> metadata = new HashMap<>();
+        if (d.worldKey() != null) metadata.put("world", d.worldKey());
+        if (d.reference() != null) metadata.put("reference", d.reference());
         jdbc.update("""
-                INSERT INTO knowledge_chunk (source_type, source_id, world_key, content, embedding, metadata, updated_at)
-                VALUES (?, ?, ?, ?, ?::vector, ?::jsonb, now())
+                INSERT INTO knowledge_chunk (source_type, source_id, world_key, title, content, embedding, metadata,
+                                             content_hash, embedding_model, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?::vector, ?::jsonb, ?, ?, now())
                 ON CONFLICT (source_type, source_id) DO UPDATE
-                    SET world_key = EXCLUDED.world_key, content = EXCLUDED.content, embedding = EXCLUDED.embedding,
-                        metadata = EXCLUDED.metadata, updated_at = now()
-                """, sourceType, sourceId, worldKey, content, vector, json.write(Map.of("world", worldKey)));
+                    SET world_key = EXCLUDED.world_key, title = EXCLUDED.title, content = EXCLUDED.content,
+                        embedding = EXCLUDED.embedding, metadata = EXCLUDED.metadata,
+                        content_hash = EXCLUDED.content_hash, embedding_model = EXCLUDED.embedding_model, updated_at = now()
+                """, d.sourceType(), d.sourceId(), d.worldKey(), truncate(d.title(), 160), d.content(),
+                KnowledgeRetrievalService.toVectorLiteral(vector), json.write(metadata), d.hash(), model);
     }
 
-    private static void append(StringBuilder sb, String label, String value) {
-        if (value == null || value.isBlank()) return;
-        sb.append(". ").append(label).append(": ").append(value.trim());
+    private static String truncate(String s, int max) {
+        return s.length() <= max ? s : s.substring(0, max - 1) + "…";
     }
 }
